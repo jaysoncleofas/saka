@@ -11,8 +11,8 @@
         <ul class="sidebar-menu">
             <li class="menu-header">Dashboard</li>
 
-            <li class="{{ Nav::isRoute('dashboard') }}">
-                <a class="nav-link" href="{{ route('dashboard') }}"><i class="fas fa-fire"></i> <span>Dashboard</span></a>
+            <li class="{{ Nav::isRoute('dashboard.index') }}">
+                <a class="nav-link" href="{{ route('dashboard.index') }}"><i class="fas fa-fire"></i> <span>Dashboard</span></a>
             </li>
 
             <li>
@@ -33,9 +33,10 @@
                 <a class="nav-link" href="credits.html"><i class="fas fa-th"></i> <span>Rooms</span></a>
             </li>
             
-            <li>
-                <a class="nav-link" href="credits.html"><i class="fas fa-users"></i> <span>Users</span></a>
+            <li class="{{ Nav::hasSegment('users') . Nav::hasSegment('user') }}">
+                <a class="nav-link" href="{{ route('user.index') }}"><i class="fas fa-users"></i> <span>Users</span></a>
             </li>
+
         </ul>
 
         <div class="mt-4 mb-4 p-3 hide-sidebar-mini">

@@ -30,9 +30,9 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'firstName' => 'required',
-            'lastName' => 'required',
-            'email' => 'required',
+            'firstName' => 'required|min:2',
+            'lastName' => 'required|min:2',
+            'email' => 'required|email',
         ]);
 
         $user = Auth::user();
