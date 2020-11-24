@@ -14,10 +14,10 @@
                 </div>
                 <div class="card-wrap">
                     <div class="card-header">
-                        <h4>Total Admin</h4>
+                        <h4>Total Users</h4>
                     </div>
                     <div class="card-body">
-                        10
+                        {{ number_format($users) }}
                     </div>
                 </div>
             </div>
@@ -29,10 +29,10 @@
                 </div>
                 <div class="card-wrap">
                     <div class="card-header">
-                        <h4>News</h4>
+                        <h4>Cottages</h4>
                     </div>
                     <div class="card-body">
-                        42
+                        {{ number_format($cottages) }}
                     </div>
                 </div>
             </div>
@@ -44,10 +44,10 @@
                 </div>
                 <div class="card-wrap">
                     <div class="card-header">
-                        <h4>Reports</h4>
+                        <h4>Rooms</h4>
                     </div>
                     <div class="card-body">
-                        1,201
+                        {{ number_format($rooms) }}
                     </div>
                 </div>
             </div>
@@ -59,10 +59,41 @@
                 </div>
                 <div class="card-wrap">
                     <div class="card-header">
-                        <h4>Online Users</h4>
+                        <h4>Clients</h4>
                     </div>
                     <div class="card-body">
-                        47
+                        {{ number_format($clients) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Transactions</h4>
+                    <div class="card-header-action">
+                        <a href="{{ route('transaction.create') }}" class="btn btn-primary">Add</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" width="100%" id="datatables">
+                            <thead>
+                                <tr>
+                                    <th>Control Number</th>
+                                    <th>Client</th>
+                                    <th>Cottage/s</th>
+                                    <th>Room/s</th>
+                                    <th>Check In</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

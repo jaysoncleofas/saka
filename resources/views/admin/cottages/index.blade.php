@@ -4,16 +4,16 @@
 
 <section class="section">
     <div class="section-header">
-        <h1>Users</h1>
+        <h1>Cottages</h1>
     </div>
     <div class="section-body">
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>List of Users</h4>
+                        <h4>List of Cottages</h4>
                         <div class="card-header-action">
-                            <a href="{{ route('user.create') }}" class="btn btn-primary">Add User</a>
+                            <a href="{{ route('cottage.create') }}" class="btn btn-primary">Add Cottage</a>
                         </div>
                     </div>
                     <div class="card-body">
@@ -21,10 +21,10 @@
                             <table class="table table-striped" width="100%" id="datatables">
                                 <thead>
                                     <tr>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Email</th>
-                                        <th>User Type</th>
+                                        <th>Cottage</th>
+                                        <th>Price</th>
+                                        <th>Overnight Price</th>
+                                        <th>Descriptions</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -49,7 +49,7 @@
             serverSide: true,
             responsive: true,
             ajax: {
-                'url': '{!! route("user.datatables") !!}',
+                'url': '{!! route("cottage.datatables") !!}',
                 'type': 'GET',
                 'headers': {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -57,20 +57,20 @@
             },
             aaSorting: [],
             columns: [{
-                    data: 'firstName',
-                    name: 'firstName'
+                    data: 'name',
+                    name: 'name'
                 },
                 {
-                    data: 'lastName',
-                    name: 'lastName'
+                    data: 'price',
+                    name: 'price'
                 },
                 {
-                    data: 'email',
-                    name: 'email'
+                    data: 'overnightPrice',
+                    name: 'overnightPrice'
                 },
                 {
-                    data: 'role.name',
-                    name: 'role.name'
+                    data: 'descriptions',
+                    name: 'descriptions'
                 },
                 {
                     data: 'actions',

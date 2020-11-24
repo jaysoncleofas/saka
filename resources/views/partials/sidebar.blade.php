@@ -21,16 +21,16 @@
 
             <li class="menu-header">Manage</li>
 
-            <li>
-                <a class="nav-link" href="credits.html"><i class="fas fa-users"></i> <span>Clients</span></a>
+            <li class="{{ Nav::hasSegment('clients') . Nav::hasSegment('client') }}">
+                <a class="nav-link" href="{{ route('client.index') }}"><i class="fas fa-users"></i> <span>Clients</span></a>
             </li>
 
-            <li>
-                <a class="nav-link" href="credits.html"><i class="fas fa-home"></i> <span>Cottages</span></a>
+            <li class="{{ Nav::hasSegment('cottages') . Nav::hasSegment('cottage') }}">
+                <a class="nav-link" href="{{ route('cottage.index') }}"><i class="fas fa-home"></i> <span>Cottages</span></a>
             </li>
             
-            <li>
-                <a class="nav-link" href="credits.html"><i class="fas fa-th"></i> <span>Rooms</span></a>
+            <li class="{{ Nav::hasSegment('rooms') . Nav::hasSegment('room') }}">
+                <a class="nav-link" href="{{ route('room.index') }}"><i class="fas fa-th"></i> <span>Rooms</span></a>
             </li>
             
             <li class="{{ Nav::hasSegment('users') . Nav::hasSegment('user') }}">
@@ -41,7 +41,7 @@
 
         <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
             <a href="https://getstisla.com/docs" class="btn btn-primary btn-lg btn-block btn-icon-split">
-                <i class="fas fa-rocket"></i> Add Visitors
+                <i class="fas fa-rocket"></i> Add Transaction
             </a>
         </div>
     </aside>

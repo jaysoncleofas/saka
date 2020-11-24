@@ -8,9 +8,13 @@
                     aria-label="Close"> <span aria-hidden="true">×</span> </button>
             </div>
             <div class="modal-body"> This action can not be undone. Do you want to continue?</div>
-            <div class="modal-footer"> 
-                <button type="button" class="btn btn-danger btn-shadow" id="">Yes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <div class="modal-footer">
+                <form action="">
+                    <input type="hidden" name="deleteId" id="deleteId">
+                    <button type="sumit" class="btn btn-danger btn-shadow" id="">Yes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

@@ -4,16 +4,16 @@
 
 <section class="section">
     <div class="section-header">
-        <h1>Users</h1>
+        <h1>Clients</h1>
     </div>
     <div class="section-body">
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>List of Users</h4>
+                        <h4>List of Clients</h4>
                         <div class="card-header-action">
-                            <a href="{{ route('user.create') }}" class="btn btn-primary">Add User</a>
+                            <a href="{{ route('client.create') }}" class="btn btn-primary">Add Client</a>
                         </div>
                     </div>
                     <div class="card-body">
@@ -23,8 +23,10 @@
                                     <tr>
                                         <th>First Name</th>
                                         <th>Last Name</th>
-                                        <th>Email</th>
-                                        <th>User Type</th>
+                                        <th>Middle Name</th>
+                                        <th>Contacts</th>
+                                        <th>Age</th>
+                                        <th>Address</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -49,7 +51,7 @@
             serverSide: true,
             responsive: true,
             ajax: {
-                'url': '{!! route("user.datatables") !!}',
+                'url': '{!! route("client.datatables") !!}',
                 'type': 'GET',
                 'headers': {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -65,12 +67,20 @@
                     name: 'lastName'
                 },
                 {
-                    data: 'email',
-                    name: 'email'
+                    data: 'middleName',
+                    name: 'middleName'
                 },
                 {
-                    data: 'role.name',
-                    name: 'role.name'
+                    data: 'contact',
+                    name: 'contact'
+                },
+                {
+                    data: 'age',
+                    name: 'age'
+                },
+                {
+                    data: 'address',
+                    name: 'address'
                 },
                 {
                     data: 'actions',
