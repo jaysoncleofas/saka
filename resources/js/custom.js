@@ -32,4 +32,22 @@ $(document).ready(function () {
                 }
             });
     });
+
+    $(window).scroll(function() {
+        var nav = $('.navbar');
+        var top = 200;
+        if ($(window).scrollTop() >= top) {
+    
+            nav.addClass('top-nav-collapse');
+            nav.addClass('bg-light');
+
+            // nav.addClass('navbar-dark');
+    
+        } else {
+            nav.removeClass('top-nav-collapse');
+            nav.removeClass('bg-light');
+            // nav.removeClass('navbar-dark');
+            // nav.addClass('navbar-light');
+        }
+    });
 });
