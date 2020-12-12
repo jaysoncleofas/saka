@@ -24,7 +24,7 @@
                                         <th>First Name</th>
                                         <th>Last Name</th>
                                         <th>Middle Name</th>
-                                        <th>Contacts</th>
+                                        <th>Contact</th>
                                         <th>Age</th>
                                         <th>Address</th>
                                         <th>Actions</th>

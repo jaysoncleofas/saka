@@ -27,6 +27,9 @@ window.iziToast = require('iziToast');
 
 window.swal = require('sweetalert');
 
+window.select2 = require('select2');
+
+window.mask = require('jquery-mask-plugin');
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

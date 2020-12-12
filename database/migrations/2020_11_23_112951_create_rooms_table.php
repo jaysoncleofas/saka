@@ -20,6 +20,7 @@ class CreateRoomsTable extends Migration
             $table->decimal('overnightPrice', 10, 2)->nullable();
             $table->decimal('extraPerson', 10, 2)->nullable();
             $table->text('descriptions')->nullable();
+            $table->text('image')->nullable();
             $table->timestamps();
         });
     }

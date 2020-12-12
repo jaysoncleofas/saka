@@ -26,48 +26,16 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
     {{-- Libraries --}}
-    {{-- <link href="{{ asset('stisla/assets/css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('stisla/assets/css/components.css') }}" rel="stylesheet">
-    <link href="{{ asset('DataTables/datatables.min.css') }}" rel="stylesheet"> --}}
+    {{-- <link href="{{ asset('stisla/assets/css/style.css') }}" rel="stylesheet"> --}}
+    {{-- <link href="{{ asset('stisla/assets/css/components.css') }}" rel="stylesheet"> --}}
+    {{-- <link href="{{ asset('DataTables/datatables.min.css') }}" rel="stylesheet"> --}}
+    @yield('style')
 </head>
 
 <body>
-    <nav class="navbar fixed-top navbar-expand-lg navbar-light scrolling-navbar">
-        <div class="container">
-            <a class="navbar-brand" href="#">Saka Resort</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="about">About</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="rooms">Rooms</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="cottages">Cottages</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact">Contact</a>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-    </nav>
-
     @yield('content')
 
+    @yield('script')
 </body>
 
 </html>

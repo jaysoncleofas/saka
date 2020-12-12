@@ -15,21 +15,25 @@
                 <a class="nav-link" href="{{ route('dashboard.index') }}"><i class="fas fa-fire"></i> <span>Dashboard</span></a>
             </li>
 
-            <li>
-                <a class="nav-link" href="credits.html"><i class="far fa-file-alt"></i> <span>Reservations</span></a>
+            <li class="{{ Nav::isRoute('reservation.index') }}">
+                <a class="nav-link" href="{{ route('reservation.index') }}"><i class="far fa-file-alt"></i> <span>Reservations</span></a>
             </li>
 
             <li class="menu-header">Manage</li>
+
+            <li class="{{ Nav::hasSegment('transactions') . Nav::hasSegment('transaction') }}">
+                <a class="nav-link" href="{{ route('transaction.index') }}"><i class="fas fa-list"></i> <span>Transactions</span></a>
+            </li>
 
             <li class="{{ Nav::hasSegment('clients') . Nav::hasSegment('client') }}">
                 <a class="nav-link" href="{{ route('client.index') }}"><i class="fas fa-users"></i> <span>Clients</span></a>
             </li>
 
-            <li class="{{ Nav::hasSegment('cottages') . Nav::hasSegment('cottage') }}">
+            <li class="{{ Nav::hasSegment('all-cottages') . Nav::hasSegment('cottage') }}">
                 <a class="nav-link" href="{{ route('cottage.index') }}"><i class="fas fa-home"></i> <span>Cottages</span></a>
             </li>
             
-            <li class="{{ Nav::hasSegment('rooms') . Nav::hasSegment('room') }}">
+            <li class="{{ Nav::hasSegment('all-rooms') . Nav::hasSegment('room') }}">
                 <a class="nav-link" href="{{ route('room.index') }}"><i class="fas fa-th"></i> <span>Rooms</span></a>
             </li>
             
@@ -40,7 +44,7 @@
         </ul>
 
         <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
-            <a href="https://getstisla.com/docs" class="btn btn-primary btn-lg btn-block btn-icon-split">
+            <a href="{{ route('transaction.create') }}" class="btn btn-primary btn-lg btn-block btn-icon-split">
                 <i class="fas fa-rocket"></i> Add Transaction
             </a>
         </div>

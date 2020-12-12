@@ -22,9 +22,11 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     {{-- Libraries --}}
+    {{-- <link href="{{ asset('select2/dist/css/select2.min.css') }}" rel="stylesheet"> --}}
     <link href="{{ asset('stisla/assets/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('stisla/assets/css/components.css') }}" rel="stylesheet">
     <link href="{{ asset('DataTables/datatables.min.css') }}" rel="stylesheet">
+    @yield('style')
 </head>
 <body>
     <div id="app">

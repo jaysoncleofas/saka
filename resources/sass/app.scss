@@ -10,6 +10,17 @@
 // izitoast
 @import '~izitoast/dist/css/iziToast';
 
+// select2
+@import '~select2/dist/css/select2';
+
 // textarea.form-control {
 //     height: 64px !important;
 // }
+
+.badge-warning {
+    background-color: #ffc107;
+}
+
+.form-control.edited {
+    height: 100% !important;
+} 

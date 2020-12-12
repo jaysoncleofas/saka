@@ -21,9 +21,10 @@
                             <table class="table table-striped" width="100%" id="datatables">
                                 <thead>
                                     <tr>
+                                        <th>Image</th>
                                         <th>Cottage</th>
                                         <th>Price</th>
-                                        <th>Overnight Price</th>
+                                        {{-- <th>Overnight Price</th> --}}
                                         <th>Descriptions</th>
                                         <th>Actions</th>
                                     </tr>
@@ -57,6 +58,9 @@
             },
             aaSorting: [],
             columns: [{
+                    data: 'image',
+                    name: 'image'
+                },{
                     data: 'name',
                     name: 'name'
                 },
@@ -64,10 +68,10 @@
                     data: 'price',
                     name: 'price'
                 },
-                {
-                    data: 'overnightPrice',
-                    name: 'overnightPrice'
-                },
+                // {
+                //     data: 'overnightPrice',
+                //     name: 'overnightPrice'
+                // },
                 {
                     data: 'descriptions',
                     name: 'descriptions'

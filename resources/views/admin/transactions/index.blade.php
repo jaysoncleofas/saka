@@ -4,16 +4,16 @@
 
 <section class="section">
     <div class="section-header">
-        <h1>Clients</h1>
+        <h1>Transactions</h1>
     </div>
     <div class="section-body">
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>List of Clients</h4>
+                        <h4>List of Transactions</h4>
                         <div class="card-header-action">
-                            <a href="{{ route('client.create') }}" class="btn btn-primary">Add Client</a>
+                            <a href="{{ route('transaction.create') }}" class="btn btn-primary">Add Transaction</a>
                         </div>
                     </div>
                     <div class="card-body">
@@ -21,12 +21,13 @@
                             <table class="table table-striped" width="100%" id="datatables">
                                 <thead>
                                     <tr>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Middle Name</th>
-                                        <th>Contacts</th>
-                                        <th>Age</th>
-                                        <th>Address</th>
+                                        <th>Invoice Number</th>
+                                        <th>Client</th>
+                                        <th>Cottage/s</th>
+                                        <th>Room/s</th>
+                                        <th>Check In / Check Out</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -51,7 +52,7 @@
             serverSide: true,
             responsive: true,
             ajax: {
-                'url': '{!! route("client.datatables") !!}',
+                'url': '{!! route("transaction.datatables") !!}',
                 'type': 'GET',
                 'headers': {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -59,28 +60,32 @@
             },
             aaSorting: [],
             columns: [{
-                    data: 'firstName',
-                    name: 'firstName'
+                    data: 'id',
+                    name: 'id'
                 },
                 {
-                    data: 'lastName',
-                    name: 'lastName'
+                    data: 'client',
+                    name: 'client'
                 },
                 {
-                    data: 'middleName',
-                    name: 'middleName'
+                    data: 'cottage',
+                    name: 'cottage'
                 },
                 {
-                    data: 'contact',
-                    name: 'contact'
+                    data: 'room',
+                    name: 'room'
                 },
                 {
-                    data: 'age',
-                    name: 'age'
+                    data: 'checkin',
+                    name: 'checkin'
                 },
                 {
-                    data: 'address',
-                    name: 'address'
+                    data: 'reservation',
+                    name: 'reservation'
+                },
+                {
+                    data: 'status',
+                    name: 'status'
                 },
                 {
                     data: 'actions',

@@ -44,6 +44,18 @@ class RoomController extends Controller
         ]);
 
         $room = new Room();
+
+        if ($request->hasFile('image')) {
+            $request->validate([
+                'image' => 'bail|image|mimes:jpg,png,jpeg,gif,svg|max:10000',
+            ]);
+            
+            $image = $request->image;
+            $name = time().'room.'.$image->getClientOriginalExtension();
+            $image->storeAs('public/rooms', $name);
+            $room->image = $name;
+        }
+
         $room->name = $request->room;
         $room->price = $request->price;
         $room->overnightPrice = $request->overnightPrice;
@@ -75,6 +87,17 @@ class RoomController extends Controller
             'descriptions' => 'nullable|min:2',
         ]);
 
+        if ($request->hasFile('image')) {
+            $request->validate([
+                'image' => 'bail|image|mimes:jpg,png,jpeg,gif,svg|max:10000',
+            ]);
+            
+            $image = $request->image;
+            $name = time().'room.'.$image->getClientOriginalExtension();
+            $image->storeAs('public/rooms', $name);
+            $room->image = $name;
+        }
+
         $room->name = $request->room;
         $room->price = $request->price;
         $room->overnightPrice = $request->overnightPrice;
@@ -85,7 +108,7 @@ class RoomController extends Controller
         session()->flash('notification', 'Successfully updated!');
         session()->flash('type', 'success');
 
-        return redirect()->back();
+        return redirect()->route('room.index');
     }
 
     public function destroy($id)
@@ -106,7 +129,29 @@ class RoomController extends Controller
                 ->addColumn('actions', function ($room) {
                     return '<a href="'.route('room.edit', $room->id).'" class="btn btn-primary btn-action mr-1" title="Edit"><i class="fas fa-pencil-alt"></i></a><a class="btn btn-danger btn-action trigger-delete" title="Delete" data-action="'.route('room.destroy', $room->id).'" data-model="room"><i class="fas fa-trash"></i></a>';
                 })
-                ->rawColumns(['actions'])
+                ->addColumn('image', function ($room) {
+                    return '<img src="'.($room->image ? asset('storage/rooms/'.$room->image) : asset('images/img07.jpg')).'" class="img-fluid img-preview z-depth-1" style="object-fit: cover;height:90px; width:90px;">';
+                })
+                ->editColumn('price', function ($room) {
+                    return 'P'.number_format($room->price, 0);
+                })
+                ->rawColumns(['actions', 'image', 'price'])
                 ->toJson();
+    }
+
+    public function image_remove(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+        ]);
+
+        $room = Room::findOrFail($request->id);
+        $room->image = null;
+        $room->save();
+
+        session()->flash('notification', 'Successfully removed!');
+        session()->flash('type', 'success');
+
+        return response('success', 200);
     }
 }

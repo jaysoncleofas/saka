@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Client;
+use DB;
 
 
 class ClientController extends Controller
@@ -40,7 +41,7 @@ class ClientController extends Controller
             'firstName' => 'required|min:2',
             'lastName' => 'required|min:2',
             'middleName' => 'nullable|min:2',
-            'contact' => 'nullable',
+            'contact' => 'required|unique:clients',
             'age' => 'nullable',
             'address' => 'nullable',
         ]);
@@ -57,7 +58,13 @@ class ClientController extends Controller
         session()->flash('notification', 'Successfully added!');
         session()->flash('type', 'success');
 
-        return redirect()->route('client.index');
+        return redirect()->route('client.show', compact('client'));
+    }
+
+    public function show($id)
+    {
+        $client = Client::find($id);
+        return view('admin.clients.show', compact('client'));
     }
 
     public function edit($id)
@@ -74,7 +81,7 @@ class ClientController extends Controller
             'firstName' => 'required|min:2',
             'lastName' => 'required|min:2',
             'middleName' => 'nullable|min:2',
-            'contact' => 'nullable',
+            'contact' => 'required|unique:clients,contact,'.$client->id,
             'age' => 'nullable',
             'address' => 'nullable',
         ]);
@@ -113,5 +120,12 @@ class ClientController extends Controller
                 })
                 ->rawColumns(['actions'])
                 ->toJson();
+    }
+
+    public function get_clients()
+    {
+        // $clients = Client::orderBy('firstName', 'desc')->get();
+        $clients = DB::table('clients')->select(DB::raw('CONCAT(firstName, " ", lastName, ", ",contact) AS text'), 'id')->orderBy('firstName', 'asc')->get();
+        return response()->json(['clients' => $clients], 200);
     }
 }

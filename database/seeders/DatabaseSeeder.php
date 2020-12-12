@@ -15,7 +15,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleSeeder::class,
+            RoomSeeder::class,
+            CottageSeeder::class,
         ]);
-        \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(11)->create();
+        \App\Models\Client::factory(11)->create();
     }
 }

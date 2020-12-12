@@ -13,6 +13,7 @@
     <script src="{{ asset('stisla/assets/js/stisla.js') }}"></script>
     <script src="{{ asset('stisla/assets/js/scripts.js') }}"></script>
     <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
+    {{-- <script src="{{ asset('select2/dist/js/select2.full.min.js') }}"></script> --}}
     <script src="{{ asset('stisla/assets/js/custom.js') }}"></script>
     @include('partials.notification')
 </body>

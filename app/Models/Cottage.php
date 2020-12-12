@@ -10,4 +10,9 @@ class Cottage extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    public function transactions()
+    {
+    	return $this->belongsToMany('App\Models\Transaction');
+    }
 }

@@ -10,4 +10,8 @@ class Client extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    public function getFullNameAttribute() {
+		return ucfirst($this->firstName) . ' ' . ucfirst($this->lastName);
+	}
 }

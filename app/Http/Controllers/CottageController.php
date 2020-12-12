@@ -43,6 +43,18 @@ class CottageController extends Controller
         ]);
 
         $cottage = new Cottage();
+        
+        if ($request->hasFile('image')) {
+            $request->validate([
+                'image' => 'bail|image|mimes:jpg,png,jpeg,gif,svg|max:10000',
+            ]);
+            
+            $image = $request->image;
+            $name = time().'cottage.'.$image->getClientOriginalExtension();
+            $image->storeAs('public/cottages', $name);
+            $cottage->image = $name;
+        }
+
         $cottage->name = $request->cottage;
         $cottage->price = $request->price;
         $cottage->overnightPrice = $request->overnightPrice;
@@ -72,6 +84,17 @@ class CottageController extends Controller
             'extraPerson' => 'nullable',
             'descriptions' => 'nullable|min:2',
         ]);
+
+        if ($request->hasFile('image')) {
+            $request->validate([
+                'image' => 'bail|image|mimes:jpg,png,jpeg,gif,svg|max:10000',
+            ]);
+            
+            $image = $request->image;
+            $name = time().'cottage.'.$image->getClientOriginalExtension();
+            $image->storeAs('public/cottages', $name);
+            $cottage->image = $name;
+        }
 
         $cottage->name = $request->cottage;
         $cottage->price = $request->price;
@@ -103,7 +126,29 @@ class CottageController extends Controller
                 ->addColumn('actions', function ($cottage) {
                     return '<a href="'.route('cottage.edit', $cottage->id).'" class="btn btn-primary btn-action mr-1" title="Edit"><i class="fas fa-pencil-alt"></i></a><a class="btn btn-danger btn-action trigger-delete" title="Delete" data-action="'.route('cottage.destroy', $cottage->id).'" data-model="cottage"><i class="fas fa-trash"></i></a>';
                 })
-                ->rawColumns(['actions'])
+                ->addColumn('image', function ($cottage) {
+                    return '<img src="'.($cottage->image ? asset('storage/cottages/'.$cottage->image) : asset('images/img07.jpg')).'" class="img-fluid img-preview z-depth-1" style="object-fit: cover;height:90px; width:90px;">';
+                })
+                ->editColumn('price', function ($cottage) {
+                    return 'P'.number_format($cottage->price, 0);
+                })
+                ->rawColumns(['actions', 'image', 'price'])
                 ->toJson();
+    }
+
+    public function image_remove(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+        ]);
+
+        $cottage = Cottage::findOrFail($request->id);
+        $cottage->image = null;
+        $cottage->save();
+
+        session()->flash('notification', 'Successfully removed!');
+        session()->flash('type', 'success');
+
+        return response('success', 200);
     }
 }

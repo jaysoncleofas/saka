@@ -19,9 +19,16 @@ class CreateTransactionsTable extends Migration
             $table->foreign('client_id')->references('id')->on('clients');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->string('controlNumber');
-            $table->dateTime('checkIn_at')->nullable();
+            $table->dateTime('checkIn_at');
             $table->dateTime('checkOut_at')->nullable();
+            $table->integer('adult')->default(0);
+            $table->integer('kids')->default(0);
+            $table->integer('senior')->default(0);
+            $table->unsignedBigInteger('type_id');
+            $table->foreign('type_id')->references('id')->on('types');
+            $table->boolean('is_breakfast')->default(false);
+            $table->boolean('is_reservation')->default(false);
+            $table->enum('status', ['pending', 'active', 'paid']);
             $table->timestamps();
         });
     }
