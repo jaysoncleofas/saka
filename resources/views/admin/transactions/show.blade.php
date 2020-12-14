@@ -27,15 +27,15 @@
                                     <li class="list-group-item"><strong>Contact:</strong> {{ $transaction->client->contact }}</li>
                                     <li class="list-group-item"><strong>Age:</strong> {{ $transaction->client->age }}</li>
                                     <li class="list-group-item"><strong>Address:</strong> {{ $transaction->client->address }}</li>
-                                    <li class="list-group-item"><strong>Check In:</strong> {{ $transaction->checkIn_at->format('M d, Y, h:i a') }}</li>
-                                    <li class="list-group-item"><strong>Check Out:</strong> {{ $transaction->checkOut_at ? $transaction->checkOut_at->format('M d, Y, h:i a') : '-' }}</li>
+                                    <li class="list-group-item"><strong>Check In:</strong> {{ $transaction->checkIn_at->format('M d, Y h:i a') }}</li>
+                                    <li class="list-group-item"><strong>Check Out:</strong> {{ $transaction->checkOut_at ? $transaction->checkOut_at->format('M d, Y h:i a') : '-' }}</li>
                                 </ul>
                             </div>
                             <div class="col-lg-6">
                                 <ul class="list-group">
-                                    <li class="list-group-item"><strong>Adult:</strong> {{ $transaction->adult }}</li>
+                                    <li class="list-group-item"><strong>Adults:</strong> {{ $transaction->adult }}</li>
                                     <li class="list-group-item"><strong>Kids:</strong> {{ $transaction->kids }}</li>
-                                    <li class="list-group-item"><strong>Senior Citizen:</strong> {{ $transaction->senior }}</li>
+                                    <li class="list-group-item"><strong>Senior Citizens:</strong> {{ $transaction->senior }}</li>
                                     <li class="list-group-item"><strong>Day/Night Use:</strong> {{ $transaction->type->name }}</li>
                                     <li class="list-group-item"><strong>Breakfast:</strong> {{ $transaction->is_breakfast == 1 ? 'Yes' : 'No' }}</li>
                                     <li class="list-group-item">

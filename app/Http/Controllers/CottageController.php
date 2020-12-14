@@ -87,7 +87,7 @@ class CottageController extends Controller
 
         if ($request->hasFile('image')) {
             $request->validate([
-                'image' => 'bail|image|mimes:jpg,png,jpeg,gif,svg|max:10000',
+                'image' => 'bail|image|mimes:jpg,png,jpeg,gif,svg|max:50000',
             ]);
             
             $image = $request->image;
@@ -105,7 +105,7 @@ class CottageController extends Controller
         session()->flash('notification', 'Successfully updated!');
         session()->flash('type', 'success');
 
-        return redirect()->back();
+        return redirect()->route('cottage.index');
     }
 
     public function destroy($id)

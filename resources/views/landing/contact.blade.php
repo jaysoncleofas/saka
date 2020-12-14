@@ -116,8 +116,8 @@
     <div class="container">
         <div class="request-info-wrapper">
             <div class="image-wrapper request-info"><img
-                    src="https://assets.website-files.com/5f28567562c2bb7095a14f34/5f3406833d7865a717909c6e_image-request-info-hotel-template.jpg"
-                    srcset="https://assets.website-files.com/5f28567562c2bb7095a14f34/5f3406833d7865a717909c6e_image-request-info-hotel-template-p-500.jpeg 500w, https://assets.website-files.com/5f28567562c2bb7095a14f34/5f3406833d7865a717909c6e_image-request-info-hotel-template.jpg 1560w"
+                    src="{{ asset('/pics/pic10.jpg') }}"
+                    {{-- srcset="https://assets.website-files.com/5f28567562c2bb7095a14f34/5f3406833d7865a717909c6e_image-request-info-hotel-template-p-500.jpeg 500w, https://assets.website-files.com/5f28567562c2bb7095a14f34/5f3406833d7865a717909c6e_image-request-info-hotel-template.jpg 1560w" --}}
                     sizes="(max-width: 767px) 100vw, (max-width: 991px) 654px, 50vw"
                     style="opacity: 1; transform: translate3d(0px, 0px, 0px) scale3d(1.1, 1.1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;"
                     data-w-id="a7bd4ca7-b754-97b7-fa57-9c69621a36e9" alt="" class="image request-info"></div>
@@ -131,7 +131,7 @@
                         <div>Reservation</div>
                     </div>
                     <h2 class="title request-info">Get a reservation today</h2>
-                    <p class="paragraph request-info">Day use (9am-5pm), Exclusive Rental (9am-5pm), Entrance fee: 100PHP, 15,000PHP Good for 60 pax</p>
+                    <p class="paragraph request-info">Day use (9am-5pm), Exclusive Rental (9am-5pm),<br> Entrance fee: 100PHP, 15,000PHP Good for 60 pax</p>
                 </div>
                 <div class="card request-info">
                     <div class="card-body">

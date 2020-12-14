@@ -96,7 +96,7 @@ class UserController extends Controller
         session()->flash('notification', 'Successfully updated!');
         session()->flash('type', 'success');
 
-        return redirect()->back();
+        return redirect()->route('user.index');
     }
 
     public function destroy($id)

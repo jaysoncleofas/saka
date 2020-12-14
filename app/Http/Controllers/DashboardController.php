@@ -49,14 +49,18 @@ class DashboardController extends Controller
                     return '<a href="'.route('client.show', $transaction->client_id).'" class="btn btn-link">'.$transaction->client->firstName.' '.$transaction->client->lastName.'</a>';
                 })
                 ->addColumn('cottage', function ($transaction) {
-                    foreach($transaction->cottages as $cottage) {
-                        return $cottage->name;
+                    $cottages_array = [];
+                    foreach ($transaction->cottages as $cottage) {
+                        array_push($cottages_array, $cottage->name);
                     }
+                    return implode(', ', $cottages_array);
                 })
                 ->addColumn('room', function ($transaction) {
-                    foreach($transaction->rooms as $room) {
-                        return $room->name;
+                    $rooms_array = [];
+                    foreach ($transaction->rooms as $room) {
+                        array_push($rooms_array, $room->name);
                     }
+                    return implode(', ', $rooms_array);
                 })
                 ->addColumn('checkin', function ($transaction) {
                     if($transaction->checkOut_at) {

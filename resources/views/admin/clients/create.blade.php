@@ -76,7 +76,7 @@
 
                             <div class="form-group">
                                 <label for="address">Address</label>
-                                <textarea class="form-control @error('address') is-invalid @enderror" name="address" id="address"></textarea>
+                                <textarea class="form-control edited @error('address') is-invalid @enderror" name="address" id="address"></textarea>
                                 @error('address')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

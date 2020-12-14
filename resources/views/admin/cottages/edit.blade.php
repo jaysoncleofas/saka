@@ -71,9 +71,12 @@
                                         <input type="file" name="image" onchange="previewFile()">
                                     </div>
                                 </div>
+
+                                @if ($cottage->image)
                                 <a href="javascript:void(0);" data-href="{{ route('cottage.image.remove') }}" class="btn btn-danger btn-sm remove_image mt-3" data-method="put" data-value="{{ $cottage->id }}">
                                     <span><i class="fa fa-times"></i> Remove</span>
                                 </a>
+                                @endif
         
                                 @if ($errors->has('image'))
                                     <span class="invalid-feedback" role="alert">

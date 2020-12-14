@@ -97,7 +97,7 @@ class ClientController extends Controller
         session()->flash('notification', 'Successfully updated!');
         session()->flash('type', 'success');
 
-        return redirect()->back();
+        return redirect()->route('client.index');
     }
 
     public function destroy($id)
