@@ -61,7 +61,7 @@
             style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;">
             <div class="dash-accent"></div>
             <h2 class="title cta">Visit our resort today</h2>
-            <p class="paragraph cta">We are open from 9am-6pm for day swim, 6pm-10pm for night swim, and we also accept overnight stay</p>
+            <p class="paragraph cta">We are open from 9am-5pm for day swim, 5pm-9pm for night swim, and we also accept overnight stay</p>
             <a href="cottages" class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mr-2">Browse Cottages</a>
         </div>
     </div>

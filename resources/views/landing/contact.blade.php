@@ -96,7 +96,7 @@
                     src="https://assets.website-files.com/5f28567562c2bb7095a14f34/5f2b5416f856c13479427c88_icon-contact-02-hotel-template.svg"
                     alt="" class="contact-icon">
                 <div class="contact-link-wrapper">
-                    <a href="tel:0921 812 8099" class="contact-link">0921 812 8099</a>
+                    <a href="tel:0921 812 8099" class="contact-link">0906 503 9647</a>
                 </div>
             </div>
             <div data-w-id="9eb1ef8b-c8b8-6a04-7bc0-145f4e9b3d76"
@@ -105,7 +105,7 @@
                     src="https://assets.website-files.com/5f28567562c2bb7095a14f34/5f2b54165a57dc778ea040db_icon-contact-03-hotel-template.svg"
                     alt="" class="contact-icon">
                 <div class="contact-link-wrapper">
-                    <a href="mailto:sakaresort@gmail.com"class="contact-link">sakaresort@gmail.com</a>
+                    <a href="mailto:sakaresort@gmail.com"class="contact-link">sakaresort@yahoo.com</a>
                 </div>
             </div>
         </div>

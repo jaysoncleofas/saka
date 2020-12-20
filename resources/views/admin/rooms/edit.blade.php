@@ -8,7 +8,7 @@
     </div>
     <div class="section-body">
         <div class="row">
-            <div class="col-12 col-md-6 col-lg-6">
+            <div class="col-12 col-md-12 col-lg-6">
                 <div class="card">
                     <div class="card-header">
                         <h4>Update Room</h4>
@@ -18,7 +18,7 @@
                             @csrf @method('PUT')
 
                             <div class="row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-12 col-lg-6">
                                     <label for="room">Room</label>
                                     <input type="text" class="form-control @error('room') is-invalid @enderror"
                                         name="room" id="room" value="{{ $room->name }}">
