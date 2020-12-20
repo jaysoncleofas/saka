@@ -61,3 +61,6 @@ Route::resource('reservation', App\Http\Controllers\ReservationController::class
 Route::get('/reservations', [App\Http\Controllers\ReservationController::class, 'index'])->name('reservation.index');
 Route::get('/reservations-datatables', [App\Http\Controllers\ReservationController::class, 'datatables'])->name('reservation.datatables');
 Route::put('/reservation-approve', [App\Http\Controllers\ReservationController::class, 'approve'])->name('reservation.approve');
+
+Route::get('/reports', [App\Http\Controllers\ReportController::class, 'index']);
+Route::get('/reports-datatables', [App\Http\Controllers\ReportController::class, 'datatables'])->name('report.datatables');
