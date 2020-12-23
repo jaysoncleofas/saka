@@ -17,10 +17,11 @@ class CreateRoomsTable extends Migration
             $table->id();
             $table->string('name');
             $table->decimal('price', 10, 2);
-            $table->decimal('overnightPrice', 10, 2)->nullable();
             $table->decimal('extraPerson', 10, 2)->nullable();
+            $table->integer('extraPersonAvailable')->nullable();
             $table->text('descriptions')->nullable();
             $table->text('image')->nullable();
+            $table->enum('entrancefee', ['Inclusive', 'Exclusive']);
             $table->timestamps();
         });
     }

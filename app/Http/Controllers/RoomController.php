@@ -38,9 +38,10 @@ class RoomController extends Controller
         $request->validate([
             'room' => 'required|min:2',
             'price' => 'required',
-            'overnightPrice' => 'nullable',
             'extraPerson' => 'nullable',
+            'entrancefee' => 'required',
             'descriptions' => 'nullable|min:2',
+            'maxExtraPerson' => 'nullable',
         ]);
 
         $room = new Room();
@@ -58,9 +59,10 @@ class RoomController extends Controller
 
         $room->name = $request->room;
         $room->price = $request->price;
-        $room->overnightPrice = $request->overnightPrice;
         $room->extraPerson = $request->extraPerson;
+        $room->entrancefee = $request->entrancefee;
         $room->descriptions = $request->descriptions;
+        $room->extraPersonAvailable = $request->maxExtraPerson;
         $room->save();
 
         session()->flash('notification', 'Successfully added!');
@@ -82,9 +84,10 @@ class RoomController extends Controller
         $request->validate([
             'room' => 'required|min:2',
             'price' => 'required',
-            'overnightPrice' => 'nullable',
             'extraPerson' => 'nullable',
+            'entrancefee' => 'required',
             'descriptions' => 'nullable|min:2',
+            'maxExtraPerson' => 'nullable',
         ]);
 
         if ($request->hasFile('image')) {
@@ -100,9 +103,10 @@ class RoomController extends Controller
 
         $room->name = $request->room;
         $room->price = $request->price;
-        $room->overnightPrice = $request->overnightPrice;
         $room->extraPerson = $request->extraPerson;
+        $room->entrancefee = $request->entrancefee;
         $room->descriptions = $request->descriptions;
+        $room->extraPersonAvailable = $request->maxExtraPerson;
         $room->save();
 
         session()->flash('notification', 'Successfully updated!');
@@ -135,7 +139,15 @@ class RoomController extends Controller
                 ->editColumn('price', function ($room) {
                     return 'P'.number_format($room->price, 0);
                 })
-                ->rawColumns(['actions', 'image', 'price'])
+                ->editColumn('extraPerson', function ($room) {
+                    return ($room->extraPerson !=0 ? 'P'.number_format($room->extraPerson, 0) : '-');
+                    // return 'P'.number_format($room->price, 0);
+                })
+                ->editColumn('extraPersonAvailable', function ($room) {
+                    return ($room->extraPersonAvailable ? $room->extraPersonAvailable : '-');
+                    // return 'P'.number_format($room->price, 0);
+                })
+                ->rawColumns(['actions', 'image', 'price', 'extraPerson', 'extraPersonAvailable'])
                 ->toJson();
     }
 

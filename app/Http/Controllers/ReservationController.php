@@ -8,6 +8,10 @@ use App\Models\Transaction;
 use Yajra\DataTables\Facades\DataTables;
 use Carbon\Carbon;
 use Auth;
+use App\Models\Cottage;
+use App\Models\Room;
+use App\Models\Entrancefee;
+use App\Models\Breakfast;
 
 class ReservationController extends Controller
 {
@@ -16,66 +20,32 @@ class ReservationController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $data['pending'] = Transaction::whereIs_reservation(1)->whereStatus('pending')->count();
+        $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfWeek()->startOfDay();
+        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfWeek()->endOfDay();
+        $data['pending'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('pending')->count();
+        $data['approved'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('active')->count();
         return view('admin.reservations.index', $data);
     }
 
-    public function store(Request $request)
+    public function create()
     {
-        // return $request->all();
-        $request->validate([
-            'firstName' => 'required',
-            'lastName' => 'required',
-            'contactNumber' => 'required',
-            'checkin' => 'required',
-            'checkout' => 'required',
-            'adult' => 'required|numeric',
-            'kids' => 'required|numeric',
-            'senior' => 'nullable|numeric',
-            'types' => 'nullable',
-            'breakfast' => 'nullable',
-            'cottages' => 'required_without:rooms',
-            'rooms' => 'required_without:cottages',
-        ]);
-
-        $client = Client::whereContact($request->contactNumber)->first();
-        if(empty($client)) {
-            $client = Client::create([
-                'firstName' => $request->firstName,
-                'lastName' => $request->lastName,
-                'contact' => $request->contactNumber,
-            ]);
-        }
-
-        $auth = Auth::user();
-        $transaction = new Transaction();
-        $transaction->client_id = $client->id;
-        $transaction->user_id = $auth->id;
-        $transaction->checkIn_at = $request->checkin;
-        $transaction->checkOut_at = $request->checkout;
-        $transaction->adult = $request->adult ?? 0;
-        $transaction->kids = $request->kids ?? 0;
-        $transaction->senior = $request->senior ?? 0;
-        $transaction->type_id = $request->types;
-        $transaction->is_breakfast = $request->breakfast;
-        $transaction->status = 'pending';
-        $transaction->is_reservation = 1;
-        $transaction->save();
-
-        $transaction->rooms()->sync($request->rooms);
-        $transaction->cottages()->sync($request->cottages);
-
-        session()->flash('notification', 'Your reservation has been sent, expect a call to confirm your reservation.');
-        session()->flash('type', 'success');
-
-        return redirect()->back();
+        $data['cottages'] = Cottage::all();
+        $data['rooms'] = Room::all();
+        $data['entranceFees'] = Entrancefee::all();
+        $data['breakfasts'] = Breakfast::all();
+        return view('admin.reservations.create', $data);
     }
 
-    public function datatables()
+    public function datatables(Request $request)
     {
-        $transactions = Transaction::where('is_reservation', 1)->orderBy('created_at', 'asc')->get();
+        $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfWeek()->startOfDay();
+        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfWeek()->endOfDay();
+        // $data['pending'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('pending')->count();
+        // $data['approved'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('active')->count();
+
+        $transactions = Transaction::where('is_reservation', 1)->whereBetween('checkIn_at', [$startDay, $endDay])->orderBy('created_at', 'asc')->get();
 
         return DataTables::of($transactions)
                 ->editColumn('id', function ($transaction) {
@@ -85,25 +55,27 @@ class ReservationController extends Controller
                     return '<a href="'.route('client.show', $transaction->client_id).'" class="btn btn-link">'.$transaction->client->firstName.' '.$transaction->client->lastName.'</a>';
                 })
                 ->addColumn('cottage', function ($transaction) {
-                    $cottages_array = [];
-                    foreach ($transaction->cottages as $cottage) {
-                        array_push($cottages_array, $cottage->name);
+                    if($transaction->cottage) {
+                        return $transaction->cottage->name;
+                    } else {
+                        return '-';
                     }
-                    return implode(', ', $cottages_array);
                 })
                 ->addColumn('room', function ($transaction) {
-                    $rooms_array = [];
-                    foreach ($transaction->rooms as $room) {
-                        array_push($rooms_array, $room->name);
+                    if($transaction->room) {
+                        return $transaction->room->name;
+                    } else {
+                        return '-';
                     }
-                    return implode(', ', $rooms_array);
                 })
                 ->addColumn('checkin', function ($transaction) {
+                    return $transaction->checkIn_at->format('M d, Y h:i a');
+                })
+                ->addColumn('checkout', function ($transaction) {
                     if($transaction->checkOut_at) {
-                        return $transaction->checkIn_at->format('M d, Y h:i a').' / '.$transaction->checkOut_at->format('M d, Y h:i a');
                         return $transaction->checkOut_at->format('M d, Y h:i a');
                     } else {
-                        return $transaction->checkIn_at->format('M d, Y h:i a').' / - ';
+                        return '-';
                     }
                 })
                 ->addColumn('approve', function ($transaction) {
@@ -125,7 +97,7 @@ class ReservationController extends Controller
                 ->addColumn('actions', function ($transaction) {
                     return '<a href="'.route('transaction.show', $transaction->id).'" class="btn btn-info btn-action mr-1" title="Show"><i class="fas fa-eye"></i></a><a href="'.route('transaction.edit', $transaction->id).'" class="btn btn-primary btn-action mr-1" title="Edit"><i class="fas fa-pencil-alt"></i></a><a class="btn btn-danger btn-action trigger-delete" title="Delete" data-action="'.route('transaction.destroy', $transaction->id).'" data-model="transaction"><i class="fas fa-trash"></i></a>';
                 })
-                ->rawColumns(['actions', 'client', 'cottage', 'checkin', 'id', 'approve','status'])
+                ->rawColumns(['actions', 'client', 'cottage', 'checkin', 'checkout', 'id', 'approve','status'])
                 ->toJson();
     }
 

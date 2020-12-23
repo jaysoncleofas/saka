@@ -24,8 +24,9 @@
                                         <th>Image</th>
                                         <th>Room</th>
                                         <th>Price</th>
-                                        {{-- <th>Overnight Price</th> --}}
-                                        {{-- <th>Extra Person</th> --}}
+                                        <th>Extra Person</th>
+                                        <th>Max Extra Person</th>
+                                        <th>Entrance fee</th>
                                         <th>Descriptions</th>
                                         <th>Actions</th>
                                     </tr>
@@ -69,14 +70,18 @@
                     data: 'price',
                     name: 'price'
                 },
-                // {
-                //     data: 'overnightPrice',
-                //     name: 'overnightPrice'
-                // },
-                // {
-                //     data: 'extraPerson',
-                //     name: 'extraPerson'
-                // },
+                {
+                    data: 'extraPerson',
+                    name: 'extraPerson'
+                },
+                {
+                    data: 'extraPersonAvailable',
+                    name: 'extraPersonAvailable'
+                },
+                {
+                    data: 'entrancefee',
+                    name: 'entrancefee'
+                },
                 {
                     data: 'descriptions',
                     name: 'descriptions'

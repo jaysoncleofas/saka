@@ -11,7 +11,8 @@ class Client extends Model
 
     protected $guarded = ['id'];
 
-    public function getFullNameAttribute() {
-		return ucfirst($this->firstName) . ' ' . ucfirst($this->lastName);
-	}
+    public function getFullNameAttribute() 
+    {
+		  return ucfirst($this->firstName) . ' ' . ucfirst($this->lastName);
+	  }
 }

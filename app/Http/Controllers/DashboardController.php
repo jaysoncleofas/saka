@@ -28,18 +28,24 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['active_transactions'] = Transaction::whereStatus('active')->count();
-        $data['total_transactions'] = Transaction::count();
-        $data['walkin'] = Transaction::whereIs_reservation(0)->count();
-        $data['reservation'] = Transaction::whereIs_reservation(1)->count();
+        $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfDay();
+        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfDay();
+
+        $data['active_transactions'] = Transaction::whereStatus('active')->whereBetween('checkIn_at', [$startDay, $endDay])->count();
+        // $data['total_transactions'] = Transaction::whereStatus('active')->whereBetween('checkIn_at', [$startDay, $endDay])->count();
+        $data['walkin'] = Transaction::whereStatus('active')->whereIs_reservation(0)->whereBetween('checkIn_at', [$startDay, $endDay])->count();
+        $data['reservation'] = Transaction::whereStatus('active')->whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->count();
         return view('admin.dashboard', $data);
     }
 
-    public function transaction_datatables()
+    public function transaction_datatables(Request $request)
     {
-        $transactions = Transaction::whereStatus('active')->orderBy('created_at', 'asc')->get();
+        $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfDay();
+        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfDay();
+
+        $transactions = Transaction::whereStatus('active')->whereBetween('checkIn_at', [$startDay, $endDay])->orderBy('created_at', 'asc')->get();
 
         return DataTables::of($transactions)
                 ->editColumn('id', function ($transaction) {
@@ -49,25 +55,27 @@ class DashboardController extends Controller
                     return '<a href="'.route('client.show', $transaction->client_id).'" class="btn btn-link">'.$transaction->client->firstName.' '.$transaction->client->lastName.'</a>';
                 })
                 ->addColumn('cottage', function ($transaction) {
-                    $cottages_array = [];
-                    foreach ($transaction->cottages as $cottage) {
-                        array_push($cottages_array, $cottage->name);
+                    if($transaction->cottage) {
+                        return $transaction->cottage->name;
+                    } else {
+                        return '-';
                     }
-                    return implode(', ', $cottages_array);
                 })
                 ->addColumn('room', function ($transaction) {
-                    $rooms_array = [];
-                    foreach ($transaction->rooms as $room) {
-                        array_push($rooms_array, $room->name);
+                    if($transaction->room) {
+                        return $transaction->room->name;
+                    } else {
+                        return '-';
                     }
-                    return implode(', ', $rooms_array);
                 })
                 ->addColumn('checkin', function ($transaction) {
+                    return $transaction->checkIn_at->format('M d, Y h:i a');
+                })
+                ->addColumn('checkout', function ($transaction) {
                     if($transaction->checkOut_at) {
-                        return $transaction->checkIn_at->format('M d, Y h:i a').' / '.$transaction->checkOut_at->format('M d, Y h:i a');
                         return $transaction->checkOut_at->format('M d, Y h:i a');
                     } else {
-                        return $transaction->checkIn_at->format('M d, Y h:i a').' / - ';
+                        return '-';
                     }
                 })
                 ->addColumn('reservation', function ($transaction) {
@@ -80,7 +88,7 @@ class DashboardController extends Controller
                     return '<a href="'.route('transaction.show', $transaction->id).'" class="btn btn-primary btn-action mr-1" title="Show">Details</a>';
                     // return '<a href="'.route('transaction.show', $transaction->id).'" class="btn btn-info btn-action mr-1" title="Show"><i class="fas fa-eye"></i></a><a href="'.route('transaction.edit', $transaction->id).'" class="btn btn-primary btn-action mr-1" title="Edit"><i class="fas fa-pencil-alt"></i></a><a class="btn btn-danger btn-action trigger-delete" title="Delete" data-action="'.route('transaction.destroy', $transaction->id).'" data-model="transaction"><i class="fas fa-trash"></i></a>';
                 })
-                ->rawColumns(['actions', 'client', 'cottage', 'checkin', 'reservation', 'id'])
+                ->rawColumns(['actions', 'client', 'cottage', 'checkin', 'checkout', 'reservation', 'id'])
                 ->toJson();
     }
 }

@@ -9,6 +9,10 @@ use App\Models\Transaction;
 use Auth; 
 use Yajra\DataTables\Facades\DataTables;
 use Carbon\Carbon;
+use App\Models\Bill;
+use App\Models\Entrancefee;
+use App\Models\Breakfast;
+use App\Models\Resort;
 
 class TransactionController extends Controller
 {
@@ -17,49 +21,114 @@ class TransactionController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.transactions.index');
+        $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->subDays(29)->startOfDay();
+        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now();
+
+        $data['paid_transactions'] = Transaction::whereStatus('paid')->whereBetween('checkIn_at', [$startDay, $endDay])->count();
+        $data['active_transactions'] = Transaction::whereStatus('active')->whereBetween('checkIn_at', [$startDay, $endDay])->count();
+        $data['pending_transactions'] = Transaction::whereStatus('pending')->whereBetween('checkIn_at', [$startDay, $endDay])->count();
+        $data['total_transactions'] = Transaction::whereBetween('checkIn_at', [$startDay, $endDay])->count();
+
+        return view('admin.transactions.index', $data);
     }
 
     public function create()
     {
-        $cottages = Cottage::all();
-        $rooms = Room::all();
-        return view('admin.transactions.create', compact('cottages', 'rooms'));
+        $data['cottages'] = Cottage::all();
+        $data['rooms'] = Room::all();
+        $data['entranceFees'] = Entrancefee::all();
+        $data['breakfasts'] = Breakfast::all();
+        return view('admin.transactions.create', $data);
     }
 
     public function store(Request $request)
     {
+        // return $request->all();
         $request->validate([
             'client' => 'required',
             'checkin' => 'required',
             'checkout' => 'nullable',
-            'adult' => 'nullable|numeric',
-            'kids' => 'nullable|numeric',
-            'senior' => 'nullable|numeric',
-            'types' => 'nullable',
-            'breakfast' => 'nullable',
-            'cottages' => 'nullable',
-            'rooms' => 'nullable',
+            'Adults' => 'nullable|numeric',
+            'Kids' => 'nullable|numeric',
+            'Senior_Citizen' => 'nullable|numeric',
+            'type' => 'required',
+            'isbreakfast' => 'required',
+            'cottage' => 'required_without:room',
+            'room' => 'required_without:cottage',
+            'notes' => 'nullable',
+            'is_reservation' => 'nullable'
         ]);
 
-        $auth = Auth::user();
+        $extraPerson = null;
+        $entranceFees = Entrancefee::all();
+        $adultfees = 0;
+        $kidfees = 0;
+        $seniorfees = 0;
+        foreach($entranceFees as $fee) {
+            if($fee->title == 'Adults') {
+                $adultfees = $request->Adults*($request->type != 'day' ? $fee->nightPrice : $fee->price);
+            } elseif ($fee->title == 'Kids') {
+                $kidfees = $request->Kids*($request->type != 'day' ? $fee->nightPrice : $fee->price);
+            } elseif ($fee->title == 'Senior Citizen') {
+                $seniorfees = $request->Senior_Citizen*($request->type != 'day' ? $fee->nightPrice : $fee->price);
+            }
+        }
+        $totalEntranceFee = $adultfees + $kidfees + $seniorfees;
+
+        $rentBill = 0;
+        $extraPersonTotal = 0;
+        if($request->room) {
+            $room = Room::findOrFail($request->room);
+            $extraPerson = $request->input('extraPerson'.$room->id);
+            $extraPersonTotal = $extraPerson*$room->extraPerson;
+            if($room->entrancefee == 'Inclusive') {
+                $totalEntranceFee = 0;
+            }
+            $rentBill = $room->price;
+        }
+
+        if($request->cottage) {
+            $cottage = Cottage::findOrFail($request->cottage);
+            $rentBill = ($request->type != 'day' ? $cottage->nightPrice : $cottage->price);
+        }
+
+        $breakfastfees = 0;
+        if($request->isbreakfast) {
+            $resort = Resort::findOrFail(1);
+            $breakfastfees = $resort->breakfastPrice;
+            foreach($request->breakfast as $breakfast_id) {
+                $breakfastP = Breakfast::findOrfail($breakfast_id);
+                $breakfastfees = $breakfastfees + $breakfastP->price;
+            }
+        }
+
+        $totalBill = $totalEntranceFee + $extraPersonTotal + $breakfastfees + $rentBill;
+
         $transaction = new Transaction();
         $transaction->client_id = $request->client;
-        $transaction->user_id = $auth->id;
+        $transaction->room_id = $request->room;
+        $transaction->cottage_id = $request->cottage;
         $transaction->checkIn_at = $request->checkin;
         $transaction->checkOut_at = $request->checkout;
-        $transaction->adult = $request->adult;
-        $transaction->kids = $request->kids;
-        $transaction->senior = $request->senior;
-        $transaction->type_id = $request->types;
-        $transaction->is_breakfast = $request->breakfast;
-        $transaction->status = 'active';
+        $transaction->adults = $request->Adults;
+        $transaction->kids = $request->Kids;
+        $transaction->senior = $request->Senior_Citizen;
+        $transaction->type = $request->type;
+        $transaction->is_breakfast = $request->isbreakfast;
+        $transaction->status = $request->is_reservation ? 'pending' : 'active';
+        $transaction->notes = $request->notes;
+        $transaction->is_reservation = $request->is_reservation ?? 0;
+        $transaction->extraPerson = $extraPerson;
+        $transaction->extraPersonTotal = $extraPersonTotal;
+        $transaction->totalEntranceFee = $totalEntranceFee;
+        $transaction->breakfastfees = $breakfastfees;
+        $transaction->rentBill = $rentBill;
+        $transaction->totalBill = $totalBill;
         $transaction->save();
 
-        $transaction->rooms()->sync($request->rooms);
-        $transaction->cottages()->sync($request->cottages);
+        $transaction->breakfasts()->sync($request->breakfast);
 
         session()->flash('notification', 'Successfully added!');
         session()->flash('type', 'success');
@@ -69,16 +138,18 @@ class TransactionController extends Controller
 
     public function show($id)
     {
-        $transaction = Transaction::find($id);
+        $transaction = Transaction::findOrFail($id);
         return view('admin.transactions.show', compact('transaction'));
     }
 
     public function edit($id)
     {
-        $transaction = Transaction::find($id);
-        $cottages = Cottage::all();
-        $rooms = Room::all();
-        return view('admin.transactions.edit', compact('transaction', 'cottages', 'rooms'));
+        $data['transaction'] = Transaction::findOrFail($id);
+        $data['cottages'] = Cottage::all();
+        $data['rooms'] = Room::all();
+        $data['entranceFees'] = Entrancefee::all();
+        $data['breakfasts'] = Breakfast::all();
+        return view('admin.transactions.edit', $data);
     }
 
     public function update(Request $request, $id)
@@ -86,43 +157,89 @@ class TransactionController extends Controller
         // return $request->all();
         $transaction = Transaction::findOrFail($id);
 
+        // return $request->all();
         $request->validate([
             'client' => 'required',
             'checkin' => 'required',
             'checkout' => 'nullable',
-            'adult' => 'nullable|numeric',
-            'kids' => 'nullable|numeric',
-            'senior' => 'nullable|numeric',
-            'types' => 'nullable',
-            'breakfast' => 'nullable',
-            'cottages' => 'nullable',
-            'rooms' => 'nullable',
+            'Adults' => 'nullable|numeric',
+            'Kids' => 'nullable|numeric',
+            'Senior_Citizen' => 'nullable|numeric',
+            'type' => 'required',
+            'isbreakfast' => 'required',
+            'cottage' => 'required_without:room',
+            'room' => 'required_without:cottage',
+            'notes' => 'nullable',
+            'is_reservation' => 'nullable',
         ]);
-        
-        $auth = Auth::user();
-        
+
+        $extraPerson = null;
+        $entranceFees = Entrancefee::all();
+        $adultfees = 0;
+        $kidfees = 0;
+        $seniorfees = 0;
+        foreach($entranceFees as $fee) {
+            if($fee->title == 'Adults') {
+                $adultfees = $request->Adults*($request->type != 'day' ? $fee->nightPrice : $fee->price);
+            } elseif ($fee->title == 'Kids') {
+                $kidfees = $request->Kids*($request->type != 'day' ? $fee->nightPrice : $fee->price);
+            } elseif ($fee->title == 'Senior Citizen') {
+                $seniorfees = $request->Senior_Citizen*($request->type != 'day' ? $fee->nightPrice : $fee->price);
+            }
+        }
+        $totalEntranceFee = $adultfees + $kidfees + $seniorfees;
+
+        $rentBill = 0;
+        $extraPersonTotal = 0;
+        if($request->room) {
+            $room = Room::findOrFail($request->room);
+            $extraPerson = $request->input('extraPerson'.$room->id);
+            $extraPersonTotal = $extraPerson*$room->extraPerson;
+            if($room->entrancefee == 'Inclusive') {
+                $totalEntranceFee = 0;
+            }
+            $rentBill = $room->price;
+        }
+
+        if($request->cottage) {
+            $cottage = Cottage::findOrFail($request->cottage);
+            $rentBill = ($request->type != 'day' ? $cottage->nightPrice : $cottage->price);
+        }
+
+        $breakfastfees = 0;
+        if($request->isbreakfast) {
+            $resort = Resort::findOrFail(1);
+            $breakfastfees = $resort->breakfastPrice;
+            foreach($request->breakfast as $breakfast_id) {
+                $breakfastP = Breakfast::findOrfail($breakfast_id);
+                $breakfastfees = $breakfastfees + $breakfastP->price;
+            }
+        }
+
+        $totalBill = $totalEntranceFee + $extraPersonTotal + $breakfastfees + $rentBill;
+
         $transaction->client_id = $request->client;
-        $transaction->user_id = $auth->id;
+        $transaction->room_id = $request->room;
+        $transaction->cottage_id = $request->cottage;
         $transaction->checkIn_at = $request->checkin;
         $transaction->checkOut_at = $request->checkout;
-        $transaction->adult = $request->adult;
-        $transaction->kids = $request->kids;
-        $transaction->senior = $request->senior;
-        $transaction->type_id = $request->types;
-        $transaction->is_breakfast = $request->breakfast;
+        $transaction->adults = $request->Adults;
+        $transaction->kids = $request->Kids;
+        $transaction->senior = $request->Senior_Citizen;
+        $transaction->type = $request->type;
+        $transaction->is_breakfast = $request->isbreakfast;
+        $transaction->status = $request->is_reservation ? 'pending' : 'active';
+        $transaction->notes = $request->notes;
+        $transaction->is_reservation = $request->is_reservation ?? 0;
+        $transaction->extraPerson = $extraPerson;
+        $transaction->extraPersonTotal = $extraPersonTotal;
+        $transaction->totalEntranceFee = $totalEntranceFee;
+        $transaction->breakfastfees = $breakfastfees;
+        $transaction->rentBill = $rentBill;
+        $transaction->totalBill = $totalBill;
         $transaction->save();
 
-        if (isset($request->rooms)) {
-            $transaction->rooms()->sync($request->rooms);
-        } else {
-            $transaction->rooms()->sync(array());
-        }
-
-        if (isset($request->cottages)) {
-            $transaction->cottages()->sync($request->cottages);
-        } else {
-            $transaction->cottages()->sync(array());
-        }
+        $transaction->breakfasts()->sync($request->breakfast);
 
         session()->flash('notification', 'Successfully updated!');
         session()->flash('type', 'success');
@@ -132,7 +249,7 @@ class TransactionController extends Controller
 
     public function destroy($id)
     {
-        $client = Client::find($id);
+        $client = Client::findOrFail($id);
         $client->delete();
         
         session()->flash('notification', 'Successfully deleted!');
@@ -140,9 +257,12 @@ class TransactionController extends Controller
         return response('success', 200);
     }
 
-    public function datatables()
+    public function datatables(Request $request)
     {
-        $transactions = Transaction::orderBy('created_at', 'desc')->get();
+        $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->subDays(29)->startOfDay();
+        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now();
+
+        $transactions = Transaction::orderBy('created_at', 'desc')->whereBetween('checkIn_at', [$startDay, $endDay])->get();
 
         return DataTables::of($transactions)
                 ->editColumn('id', function ($transaction) {
@@ -152,25 +272,27 @@ class TransactionController extends Controller
                     return '<a href="'.route('client.show', $transaction->client_id).'" class="btn btn-link">'.$transaction->client->firstName.' '.$transaction->client->lastName.'</a>';
                 })
                 ->addColumn('cottage', function ($transaction) {
-                    $cottages_array = [];
-                    foreach ($transaction->cottages as $cottage) {
-                        array_push($cottages_array, $cottage->name);
+                    if($transaction->cottage) {
+                        return $transaction->cottage->name;
+                    } else {
+                        return '-';
                     }
-                    return implode(', ', $cottages_array);
                 })
                 ->addColumn('room', function ($transaction) {
-                    $rooms_array = [];
-                    foreach ($transaction->rooms as $room) {
-                        array_push($rooms_array, $room->name);
+                    if($transaction->room) {
+                        return $transaction->room->name;
+                    } else {
+                        return '-';
                     }
-                    return implode(', ', $rooms_array);
                 })
                 ->addColumn('checkin', function ($transaction) {
+                    return $transaction->checkIn_at->format('M d, Y h:i a');
+                })
+                ->addColumn('checkout', function ($transaction) {
                     if($transaction->checkOut_at) {
-                        return $transaction->checkIn_at->format('M d, Y h:i a').' / '.$transaction->checkOut_at->format('M d, Y h:i a');
                         return $transaction->checkOut_at->format('M d, Y h:i a');
                     } else {
-                        return $transaction->checkIn_at->format('M d, Y h:i a').' / - ';
+                        return '-';
                     }
                 })
                 ->addColumn('reservation', function ($transaction) {
@@ -198,8 +320,9 @@ class TransactionController extends Controller
 
     public function invoice($id)
     {
-        $transaction = Transaction::find($id);
-        return view('admin.transactions.invoice', compact('transaction'));
+        $data['transaction'] = Transaction::find($id);
+        $data['entranceFees'] = Entrancefee::all();
+        return view('admin.transactions.invoice', $data);
     }
 
     public function pay($id)

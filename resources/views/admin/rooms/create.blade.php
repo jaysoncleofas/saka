@@ -29,9 +29,10 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-6">
                                     <label for="price">Price</label>
-                                    <input type="text" class="form-control digit_only2 @error('price') is-invalid @enderror"
+                                    <input type="text"
+                                        class="form-control digit_only2 @error('price') is-invalid @enderror"
                                         name="price" id="price" value="{{ old('price') }}">
                                     @error('price')
                                     <span class="invalid-feedback" role="alert">
@@ -40,32 +41,49 @@
                                     @enderror
                                 </div>
 
-                                {{-- <div class="form-group col-md-6">
-                                    <label for="overnightPrice">Overnight Price</label>
-                                    <input type="text" class="form-control @error('overnightPrice') is-invalid @enderror"
-                                        name="overnightPrice" id="overnightPrice" value="{{ old('overnightPrice') }}">
-                                    @error('overnightPrice')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div> --}}
-
-                                {{-- <div class="form-group col-md-12">
-                                    <label for="extraPerson">Extra Person Price</label>
-                                    <input type="text" class="form-control @error('extraPerson') is-invalid @enderror"
+                                <div class="form-group col-md-6">
+                                    <label for="extraPerson">Extra Person</label>
+                                    <input type="text"
+                                        class="form-control digit_only2 @error('extraPerson') is-invalid @enderror"
                                         name="extraPerson" id="extraPerson" value="{{ old('extraPerson') }}">
                                     @error('extraPerson')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
-                                </div> --}}
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="maxExtraPerson">Max Extra Person</label>
+                                    <input type="text"
+                                        class="form-control digit_only2 @error('maxExtraPerson') is-invalid @enderror"
+                                        name="maxExtraPerson" id="maxExtraPerson" value="{{ old('maxExtraPerson') }}">
+                                    @error('maxExtraPerson')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label class="form-label">Entrance fee</label>
+                                    <div class="selectgroup selectgroup-pills">
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="entrancefee" value="Inclusive" class="selectgroup-input">
+                                            <span class="selectgroup-button selectgroup-button-icon">Inclusive</span>
+                                        </label>
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="entrancefee" value="Exclusive" class="selectgroup-input">
+                                            <span class="selectgroup-button selectgroup-button-icon">Exclusive</span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="descriptions">Descriptions</label>
-                                <textarea class="form-control edited @error('descriptions') is-invalid @enderror" name="descriptions" id="descriptions"></textarea>
+                                <textarea class="form-control edited @error('descriptions') is-invalid @enderror"
+                                    name="descriptions" id="descriptions"></textarea>
                                 @error('descriptions')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -81,11 +99,11 @@
                                         <input type="file" name="image" onchange="previewFile()">
                                     </div>
                                 </div>
-        
+
                                 @if ($errors->has('image'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('image') }}</strong>
-                                    </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('image') }}</strong>
+                                </span>
                                 @endif
                             </div>
 
@@ -104,20 +122,21 @@
 @endsection
 
 @section('scripts')
-    <script>
-        function previewFile(){
-            var preview = document.querySelector('.img-preview'); //selects the query named img
-            var file    = document.querySelector('input[type=file]').files[0]; //sames as here
-            var reader  = new FileReader();
-            reader.onloadend = function () {
-                preview.src = reader.result;
-            }
-            if (file) {
-                reader.readAsDataURL(file); //reads the data as a URL
-            } else {
-                preview.src = "{{ asset('images/img07.jpg') }}";
-            }
+<script>
+    function previewFile() {
+        var preview = document.querySelector('.img-preview'); //selects the query named img
+        var file = document.querySelector('input[type=file]').files[0]; //sames as here
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            preview.src = reader.result;
         }
-        previewFile();  //calls the function named previewFile()
-    </script>
+        if (file) {
+            reader.readAsDataURL(file); //reads the data as a URL
+        } else {
+            preview.src = "{{ asset('images/img07.jpg') }}";
+        }
+    }
+    previewFile(); //calls the function named previewFile()
+
+</script>
 @endsection

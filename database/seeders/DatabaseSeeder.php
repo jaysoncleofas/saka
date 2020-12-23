@@ -17,6 +17,9 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             RoomSeeder::class,
             CottageSeeder::class,
+            BreakfastSeeder::class,
+            EntranceFeeSeeder::class,
+            ResortSeeder::class
         ]);
         \App\Models\User::factory(11)->create();
         \App\Models\Client::factory(11)->create();

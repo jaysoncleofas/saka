@@ -5,67 +5,53 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Transaction;
+use Carbon\Carbon;
 
 class ReportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.reports.index');
+        $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->subDays(29)->startOfDay();
+        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now();
+        $data['TotalEntrancefee'] = Transaction::where('status', 'paid')->whereBetween('checkIn_at', [$startDay, $endDay])->sum('totalEntrancefee');
+        $data['TotalBill'] = Transaction::where('status', 'paid')->whereBetween('checkIn_at', [$startDay, $endDay])->sum('totalBill');
+        return view('admin.reports.index', $data);
     }
 
-    public function datatables()
+    public function datatables(Request $request)
     {
-        $transactions = Transaction::orderBy('created_at', 'desc')->get();
-
+        $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->subDays(29)->startOfDay();
+        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now();
+        $transactions = Transaction::orderBy('checkIn_at', 'desc')->where('status', 'paid')->whereBetween('checkIn_at', [$startDay, $endDay])->get();
+        // return json_encode($startDay);
         return DataTables::of($transactions)
-                ->editColumn('id', function ($transaction) {
-                    return '<a href="'.route('transaction.invoice', $transaction->id).'">INV-'.$transaction->id.'</a>';
-                })
                 ->addColumn('client', function ($transaction) {
                     return '<a href="'.route('client.show', $transaction->client_id).'" class="btn btn-link">'.$transaction->client->firstName.' '.$transaction->client->lastName.'</a>';
                 })
                 ->addColumn('cottage', function ($transaction) {
-                    $cottages_array = [];
-                    foreach ($transaction->cottages as $cottage) {
-                        array_push($cottages_array, $cottage->name);
+                    if($transaction->cottage) {
+                        return $transaction->cottage->name;
+                    } else {
+                        return '-';
                     }
-                    return implode(', ', $cottages_array);
                 })
                 ->addColumn('room', function ($transaction) {
-                    $rooms_array = [];
-                    foreach ($transaction->rooms as $room) {
-                        array_push($rooms_array, $room->name);
-                    }
-                    return implode(', ', $rooms_array);
-                })
-                ->addColumn('checkin', function ($transaction) {
-                    if($transaction->checkOut_at) {
-                        return $transaction->checkIn_at->format('M d, Y h:i a').' / '.$transaction->checkOut_at->format('M d, Y h:i a');
-                        return $transaction->checkOut_at->format('M d, Y h:i a');
+                    if($transaction->room) {
+                        return $transaction->room->name;
                     } else {
-                        return $transaction->checkIn_at->format('M d, Y h:i a').' / - ';
+                        return '-';
                     }
                 })
-                ->addColumn('reservation', function ($transaction) {
-                    if($transaction->is_reservation) {
-                        // return '<span class="badge badge-warning">Reservation</span>';
-                        return 'Reservation';
-                    }
-                    return 'Walk-in';
+                ->editColumn('checkIn_at', function ($transaction) {
+                    return $transaction->checkIn_at->format('M d, Y h:i a');
                 })
-                ->editColumn('status', function ($transaction) {
-                    if($transaction->status == 'pending') {
-                        return '<span class="badge badge-secondary">Pending</span>';
-                    } elseif($transaction->status == 'active') {
-                        return '<span class="badge badge-primary">Active</span>';
-                    } elseif($transaction->status == 'paid') {
-                        return '<span class="badge badge-success">Paid</span>';
-                    }
+                ->editColumn('totalEntranceFee', function ($transaction) {
+                    return 'P'.number_format($transaction->totalEntranceFee, 2);
                 })
-                ->addColumn('actions', function ($transaction) {
-                    return '<a href="'.route('transaction.show', $transaction->id).'" class="btn btn-info btn-action mr-1" title="Show"><i class="fas fa-eye"></i></a><a href="'.route('transaction.edit', $transaction->id).'" class="btn btn-primary btn-action mr-1" title="Edit"><i class="fas fa-pencil-alt"></i></a><a class="btn btn-danger btn-action trigger-delete" title="Delete" data-action="'.route('transaction.destroy', $transaction->id).'" data-model="transaction"><i class="fas fa-trash"></i></a>';
+                ->editColumn('totalBill', function ($transaction) {
+                    return 'P'.number_format($transaction->totalBill, 2);
                 })
-                ->rawColumns(['actions', 'client', 'cottage', 'room', 'checkin', 'id', 'reservation', 'status'])
+                ->rawColumns(['client', 'cottage', 'room', 'checkIn_at', 'totalEntranceFee', 'totalBill'])
                 ->toJson();
     }
 }

@@ -1,7 +1,7 @@
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="index.html">Saka Resort</a>
+            <a href="index.html">{{ config('yourconfig.resort')->name }}</a>
         </div>
 
         <div class="sidebar-brand sidebar-brand-sm">
@@ -17,6 +17,10 @@
 
             <li class="{{ Nav::isRoute('reservation.index') }}">
                 <a class="nav-link" href="{{ route('reservation.index') }}"><i class="far fa-file-alt"></i> <span>Reservations</span></a>
+            </li>
+
+            <li class="{{ Nav::isRoute('report.index') }}">
+                <a class="nav-link" href="{{ route('report.index') }}"><i class="fas fa-file-invoice-dollar"></i> <span>Reports</span></a>
             </li>
 
             <li class="menu-header">Manage</li>
@@ -39,6 +43,10 @@
             
             <li class="{{ Nav::hasSegment('users') . Nav::hasSegment('user') }}">
                 <a class="nav-link" href="{{ route('user.index') }}"><i class="fas fa-users"></i> <span>Users</span></a>
+            </li>
+
+            <li class="{{ Nav::hasSegment('settings') }}">
+                <a class="nav-link" href="{{ route('setting.index') }}"><i class="fas fa-cogs"></i> <span>Settings</span></a>
             </li>
             @endif
 

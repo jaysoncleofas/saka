@@ -61,7 +61,7 @@
             style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;">
             <div class="dash-accent"></div>
             <h2 class="title cta">Visit our resort today</h2>
-            <p class="paragraph cta">We are open from 9am-5pm for day swim, 5pm-9pm for night swim, and we also accept overnight stay</p>
+            <p class="paragraph cta">We are open from {{ config('yourconfig.resort')->day }} for day swim, {{ config('yourconfig.resort')->night }} for night swim, and we also accept overnight stay {{ config('yourconfig.resort')->overnight }}</p>
             <a href="cottages" class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mr-2">Browse Cottages</a>
         </div>
     </div>
@@ -390,50 +390,11 @@
     <div class="container">
         <div data-w-id="826f6178-2f16-6e2c-de9c-95e5f3966b87" class="flex-vc"
             style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;">
-            <a href="https://www.facebook.com/SAKARESORT" target="_blank" class="btn btn-lg btn-outline-dark">Follow Us</a>
+            <a href="{{ config('yourconfig.resort')->facebook }}" target="_blank" class="btn btn-lg btn-outline-dark">Follow Us</a>
         </div>
     </div>
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <div class="footer-top">
-            <div data-w-id="3d154036-488d-0b14-8c77-ba597ddd1fc5" class="split-content footer-top-left"
-                style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;">
-                <a href="/" aria-current="page" class="footer-logo-container w-inline-block w--current">
-                    <img src="{{ asset('/pics/A.png') }}" alt="" class="footer-logo mr-3">
-                    <span class="h3">Saka Resort</span>
-                </a>
-                <p class="paragraph footer-paragraph mt-3">In the Tagalog vernacular, the word saka means "to farm". On the other hand, in the Ilocano vernacular, it means "foot".</p>
-            </div>
-
-            <div data-w-id="a849da38-4a0a-3a01-70a3-2e66b13808e5" class="split-content footer-top-right"
-                style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;">
-                <div class="title footer-follow-us">Follow Us</div>
-                <div class="w-layout-grid footer-follow-us-grid">
-                    <a href="https://www.facebook.com/SAKARESORT" target="_blank" class="footer-social-media-wrapper w-inline-block">
-                        <div> <i class="fab fa-facebook-f"></i> </div>
-                    </a>
-
-                    <a href="https://twitter.com/SAKARESORT" target="_blank" class="footer-social-media-wrapper w-inline-block">
-                        <div><i class="fab fa-instagram"></i></div>
-                    </a>
-
-                    <a href="https://www.instagram.com/SAKARESORT" target="_blank" class="footer-social-media-wrapper w-inline-block">
-                        <div> <i class="fab fa-twitter"></i> </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div data-w-id="fff77d10-89fc-c679-2009-4633885b94fd" class="divider footer-divider"
-            style="background-color:white; transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;">
-        </div>
-    </div>
-
-    <div class="small-print-wrapper">
-        <div data-w-id="ecfd8b3f-1721-7e98-2cdb-a93160490cd2" class="copyright" style="opacity: 1;">Copyright 2020 © Saka Resort</div>
-    </div>
-</footer>
+@include('landing.footer')
 
 @endsection

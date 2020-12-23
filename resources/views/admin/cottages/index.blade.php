@@ -24,7 +24,7 @@
                                         <th>Image</th>
                                         <th>Cottage</th>
                                         <th>Price</th>
-                                        {{-- <th>Overnight Price</th> --}}
+                                        <th>Night Price</th>
                                         <th>Descriptions</th>
                                         <th>Actions</th>
                                     </tr>
@@ -68,10 +68,10 @@
                     data: 'price',
                     name: 'price'
                 },
-                // {
-                //     data: 'overnightPrice',
-                //     name: 'overnightPrice'
-                // },
+                {
+                    data: 'nightPrice',
+                    name: 'nightPrice'
+                },
                 {
                     data: 'descriptions',
                     name: 'descriptions'

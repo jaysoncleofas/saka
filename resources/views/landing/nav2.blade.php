@@ -2,7 +2,7 @@
     <div class="container">
         <a class="navbar-brand" href="#">
             <img src="{{ asset('/pics/A.png') }}" width="50" height="50" class="d-inline-block align-top mr-2" alt="">
-            Saka Resort
+            {{ config('yourconfig.resort')->name }}
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

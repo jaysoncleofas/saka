@@ -18,7 +18,7 @@
                             @csrf @method('PUT')
 
                             <div class="row">
-                                <div class="form-group col-md-12 col-lg-6">
+                                <div class="form-group col-lg-12">
                                     <label for="room">Room</label>
                                     <input type="text" class="form-control @error('room') is-invalid @enderror"
                                         name="room" id="room" value="{{ $room->name }}">
@@ -29,7 +29,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-lg-6">
                                     <label for="price">Price</label>
                                     <input type="text" class="form-control digit_only2 @error('price') is-invalid @enderror"
                                         name="price" id="price" value="{{ number_format($room->price, 0) }}">
@@ -40,27 +40,42 @@
                                     @enderror
                                 </div>
 
-                                {{-- <div class="form-group col-md-6">
-                                    <label for="overnightPrice">Overnight Price</label>
-                                    <input type="text" class="form-control @error('overnightPrice') is-invalid @enderror"
-                                        name="overnightPrice" id="overnightPrice" value="{{ $room->overnightPrice }}">
-                                    @error('overnightPrice')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div> --}}
-
-                                {{-- <div class="form-group col-md-6">
-                                    <label for="extraPerson">Extra Person Price</label>
+                                <div class="form-group col-lg-6">
+                                    <label for="extraPerson">Extra Person</label>
                                     <input type="text" class="form-control @error('extraPerson') is-invalid @enderror"
-                                        name="extraPerson" id="extraPerson" value="{{ $room->extraPerson }}">
+                                        name="extraPerson" id="extraPerson" value="{{ number_format($room->extraPerson, 0) }}">
                                     @error('extraPerson')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
-                                </div> --}}
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="maxExtraPerson">Max Extra Person</label>
+                                    <input type="text"
+                                        class="form-control digit_only2 @error('maxExtraPerson') is-invalid @enderror"
+                                        name="maxExtraPerson" id="maxExtraPerson" value="{{ $room->extraPersonAvailable }}">
+                                    @error('maxExtraPerson')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label class="form-label">Entrance fee</label>
+                                    <div class="selectgroup selectgroup-pills">
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="entrancefee" value="Inclusive" class="selectgroup-input" {{ $room->entrancefee == 'Inclusive' ? 'checked' : '' }}>
+                                            <span class="selectgroup-button selectgroup-button-icon">Inclusive</span>
+                                        </label>
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="entrancefee" value="Exclusive" class="selectgroup-input" {{ $room->entrancefee == 'Exclusive' ? 'checked' : '' }}>
+                                            <span class="selectgroup-button selectgroup-button-icon">Exclusive</span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="form-group">

@@ -41,10 +41,10 @@
                                 </div>
 
                                 {{-- <div class="form-group col-md-6">
-                                    <label for="overnightPrice">Overnight Price</label>
-                                    <input type="text" class="form-control @error('overnightPrice') is-invalid @enderror"
-                                        name="overnightPrice" id="overnightPrice" value="{{ $cottage->overnightPrice }}">
-                                    @error('overnightPrice')
+                                    <label for="nightPrice">Overnight Price</label>
+                                    <input type="text" class="form-control @error('nightPrice') is-invalid @enderror"
+                                        name="nightPrice" id="nightPrice" value="{{ $cottage->nightPrice }}">
+                                    @error('nightPrice')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

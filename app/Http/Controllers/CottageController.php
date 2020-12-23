@@ -38,7 +38,7 @@ class CottageController extends Controller
         $request->validate([
             'cottage' => 'required|min:2',
             'price' => 'required',
-            'overnightPrice' => 'nullable',
+            'nightPrice' => 'nullable',
             'descriptions' => 'nullable|min:2',
         ]);
 
@@ -57,7 +57,7 @@ class CottageController extends Controller
 
         $cottage->name = $request->cottage;
         $cottage->price = $request->price;
-        $cottage->overnightPrice = $request->overnightPrice;
+        $cottage->nightPrice = $request->nightPrice;
         $cottage->descriptions = $request->descriptions;
         $cottage->save();
 
@@ -80,7 +80,7 @@ class CottageController extends Controller
         $request->validate([
             'cottage' => 'required|min:2',
             'price' => 'required',
-            'overnightPrice' => 'nullable',
+            'nightPrice' => 'nullable',
             'extraPerson' => 'nullable',
             'descriptions' => 'nullable|min:2',
         ]);
@@ -98,7 +98,7 @@ class CottageController extends Controller
 
         $cottage->name = $request->cottage;
         $cottage->price = $request->price;
-        $cottage->overnightPrice = $request->overnightPrice;
+        $cottage->nightPrice = $request->nightPrice;
         $cottage->descriptions = $request->descriptions;
         $cottage->save();
 

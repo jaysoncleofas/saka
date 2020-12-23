@@ -88,7 +88,7 @@
                 class="contact-wrapper"><img
                     src="https://assets.website-files.com/5f28567562c2bb7095a14f34/5f2b54168519efa87caa868d_icon-contact-01-hotel-template.svg"
                     alt="" class="contact-icon">
-                <div class="contact-address">Purok 2, San Juan De Valdez San Jose Tarlac</div>
+                <div class="contact-address">{{ config('yourconfig.resort')->address }}</div>
             </div>
             <div data-w-id="90f3ca9d-5215-19f8-bd2f-3d46b8d12bcb"
                 style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); opacity: 1; transform-style: preserve-3d;"
@@ -96,7 +96,7 @@
                     src="https://assets.website-files.com/5f28567562c2bb7095a14f34/5f2b5416f856c13479427c88_icon-contact-02-hotel-template.svg"
                     alt="" class="contact-icon">
                 <div class="contact-link-wrapper">
-                    <a href="tel:0921 812 8099" class="contact-link">0906 503 9647</a>
+                    <a href="tel:0921 812 8099" class="contact-link">{{ config('yourconfig.resort')->phone }}</a>
                 </div>
             </div>
             <div data-w-id="9eb1ef8b-c8b8-6a04-7bc0-145f4e9b3d76"
@@ -105,7 +105,7 @@
                     src="https://assets.website-files.com/5f28567562c2bb7095a14f34/5f2b54165a57dc778ea040db_icon-contact-03-hotel-template.svg"
                     alt="" class="contact-icon">
                 <div class="contact-link-wrapper">
-                    <a href="mailto:sakaresort@gmail.com"class="contact-link">sakaresort@yahoo.com</a>
+                    <a href="mailto:sakaresort@gmail.com"class="contact-link">{{ config('yourconfig.resort')->email }}</a>
                 </div>
             </div>
         </div>
@@ -131,13 +131,13 @@
                         <div>Reservation</div>
                     </div>
                     <h2 class="title request-info">Get a reservation today</h2>
-                    <p class="paragraph request-info">Day use (9am-5pm), Exclusive Rental (9am-5pm),<br> Entrance fee: 100PHP, 15,000PHP Good for 60 pax</p>
+                    <p class="paragraph request-info">Day use ({{ config('yourconfig.resort')->day }}), Night use ({{ config('yourconfig.resort')->night }}) <br> and Overnight ({{ config('yourconfig.resort')->overnight }})</p>
                 </div>
                 <div class="card request-info">
                     <div class="card-body">
-                        <form method="POST" action="{{ route('reservation.store') }}">
+                        <form method="POST" action="{{ route('landing.reservation-store') }}">
                             @csrf
-
+                            <input type="hidden" name="is_reservation" value="1">
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="firstName">First Name</label>
@@ -178,7 +178,7 @@
                                     <label for="checkin">Check In</label>
                                     <input type="datetime-local"
                                         class="form-control @error('checkin') is-invalid @enderror" name="checkin"
-                                        id="checkin" value="{{ old('checkin') }}">
+                                        id="checkin" value="{{ old('checkin') ?? date('Y-m-d\TH:i:s') }}">
                                     @error('checkin')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -201,10 +201,12 @@
 
                             <div class="row">
                                 <div class="form-group col-lg-4">
-                                    <label for="adult">Adult</label>
-                                    <input type="text" class="form-control digit_only @error('adult') is-invalid @enderror"
-                                        name="adult" id="adult" value="{{ old('adult') ?? 0 }}">
-                                    @error('adult')
+                                    <label for="Adults">Adults</label>
+                                    <input type="text"
+                                        class="form-control digit_only @error('Adults') is-invalid @enderror"
+                                        name="Adults" id="Adults"
+                                        value="{{ old('adults') ?? 0 }}">
+                                    @error('Adults')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -212,10 +214,12 @@
                                 </div>
 
                                 <div class="form-group col-lg-4">
-                                    <label for="kids">Kids</label>
-                                    <input type="text" class="form-control digit_only @error('kids') is-invalid @enderror"
-                                        name="kids" id="kids" value="{{ old('kids') ?? 0 }}">
-                                    @error('kids')
+                                    <label for="Kids">Kids</label>
+                                    <input type="text"
+                                        class="form-control digit_only @error('Kids') is-invalid @enderror"
+                                        name="Kids" id="Kids"
+                                        value="{{ old('kids') ?? 0 }}">
+                                    @error('Kids')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -223,121 +227,173 @@
                                 </div>
 
                                 <div class="form-group col-lg-4">
-                                    <label for="senior">Senior Citizen</label>
-                                    <input type="text" class="form-control digit_only @error('senior') is-invalid @enderror"
-                                        name="senior" id="senior" value="{{ old('senior') ?? 0 }}">
-                                    @error('senior')
+                                    <label for="Senior_Citizen">Senior Citizen</label>
+                                    <input type="text"
+                                        class="form-control digit_only @error('Senior_Citizen') is-invalid @enderror"
+                                        name="Senior_Citizen" id="Senior_Citizen"
+                                        value="{{ old('Senior_Citizen') ?? 0 }}">
+                                    @error('Senior_Citizen')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
                                 </div>
 
-                                <div class="form-group col-lg-6">
-                                    <label class="form-label">Select</label>
-                                    <div class="selectgroup selectgroup-pills">
+                                <div class="form-group col-lg-4">
+                                    <label class="form-label">Select Type</label>
+                                    <div class="selectgroup selectgroup-pills @error('type') is-invalid @enderror">
                                         <label class="selectgroup-item">
-                                            <input type="radio" name="types" value="1" class="selectgroup-input"
-                                                checked="">
+                                            <input type="radio" name="type" value="day" class="selectgroup-input"
+                                                {{ old('type') == 'day' ? 'checked' : '' }}>
                                             <span class="selectgroup-button selectgroup-button-icon"><i
                                                     class="fas fa-sun"></i> Day</span>
                                         </label>
                                         <label class="selectgroup-item">
-                                            <input type="radio" name="types" value="2" class="selectgroup-input">
+                                            <input type="radio" name="type" value="night" class="selectgroup-input"
+                                                {{ old('type') == 'night' ? 'checked' : '' }}>
                                             <span class="selectgroup-button selectgroup-button-icon"><i
                                                     class="fas fa-moon"></i> Night</span>
                                         </label>
                                         <label class="selectgroup-item">
-                                            <input type="radio" name="types" value="3" class="selectgroup-input">
+                                            <input type="radio" name="type" value="overnight" class="selectgroup-input"
+                                                {{ old('type') == 'overnight' ? 'checked' : '' }}>
                                             <span class="selectgroup-button selectgroup-button-icon"><i
                                                     class="fas fa-cloud-moon"></i> Overnight</span>
+                                        </label>
+                                    </div>
+                                    @error('type')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-lg-2">
+                                    <label class="form-label">Breakfast
+                                        ({{ config('yourconfig.resort')->breakfastPrice == 0 ? 'Free' : 'P'.number_format(config('yourconfig.resort')->breakfastPrice, 0) }})</label>
+                                    <div class="selectgroup selectgroup-pills">
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="isbreakfast" value="1" class="selectgroup-input"
+                                                {{ old('isbreakfast') == 1 ? 'checked' : '' }}>
+                                            <span class="selectgroup-button selectgroup-button-icon">Yes</span>
+                                        </label>
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="isbreakfast" value="0" class="selectgroup-input"
+                                                {{ old('isbreakfast') == 0 ? 'checked' : '' }}>
+                                            <span class="selectgroup-button selectgroup-button-icon">No</span>
                                         </label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-lg-6">
-                                    <label class="form-label">Breakfast</label>
+                                    <label class="form-label">Breakfast Add ons</label>
                                     <div class="selectgroup selectgroup-pills">
+                                        @foreach ($breakfasts as $breakfast)
                                         <label class="selectgroup-item">
-                                            <input type="radio" name="breakfast" value="1" class="selectgroup-input">
-                                            <span class="selectgroup-button selectgroup-button-icon">Yes</span>
+                                            <input type="checkbox" name="breakfast[]" value="{{ $breakfast->id }}"
+                                                class="selectgroup-input"
+                                                {{ old('breakfast') ? (in_array($breakfast->id, old('breakfast')) ? 'checked' : '') : '' }}>
+                                            <span
+                                                class="selectgroup-button">{{ $breakfast->title.' P'.number_format($breakfast->price, 0) }}</span>
                                         </label>
-                                        <label class="selectgroup-item">
-                                            <input type="radio" name="breakfast" value="0" class="selectgroup-input" checked="">
-                                            <span class="selectgroup-button selectgroup-button-icon">No</span>
-                                        </label>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label class="form-label">Cottages</label>
-                                <div class="selectgroup selectgroup-pills @error('cottages') is-invalid @enderror">
-                                    <div class="row">
-                                        @foreach ($cottages as $cottage)
-                                        <div class="col-lg-4">
-                                            <label class="selectgroup-item" style="width: inherit;">
-                                                <input type="checkbox" name="cottages[]" value="{{ $cottage->id }}"
-                                                    class="selectgroup-input">
-                                                <span class="selectgroup-button"
-                                                    style="height: 100%; border-radius: 0.25rem !important;">
-                                                    <b>{{ $cottage->name }}</b>
-                                                    <p style="white-space: pre-wrap;">P{{ number_format($cottage->price, 0) }}, {!! $cottage->descriptions !!}</p>
-                                                </span>
-                                            </label>
+                            <div id="accordion">
+                                <div class="accordion">
+                                    <div class="accordion-header" role="button" data-toggle="collapse"
+                                        data-target="#panel-body-1" aria-expanded="true">
+                                        <h4>Cottages</h4>
+                                    </div>
+                                    <div class="accordion-body collapse show" id="panel-body-1" data-parent="#accordion"
+                                        style="">
+                                        <div class="form-group mb-0 mt-4">
+                                            <div
+                                                class="selectgroup selectgroup-pills @error('cottage') is-invalid @enderror">
+                                                <div class="row">
+                                                    @foreach ($cottages as $cottage)
+                                                    <div class="col-lg-4">
+                                                        <label class="selectgroup-item mb-0 uncheck-room" style="width: inherit;">
+                                                            <input type="radio" name="cottage"
+                                                                value="{{ $cottage->id }}"
+                                                                class="selectgroup-input radio-cottage"
+                                                                {{ old('cottage') == $cottage->id ? 'checked' : '' }}>
+                                                            <span class="selectgroup-button"
+                                                                style="height: 100%; border-radius: 0.25rem !important;">
+                                                                <b>{{ $cottage->name }}</b>
+                                                                <p style="white-space: pre-wrap;">P{{ number_format($cottage->price, 0) }}, {!! $cottage->descriptions !!}</p>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                            @error('cottage')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
                                         </div>
-                                        @endforeach
                                     </div>
                                 </div>
-
-                                {{-- <div class="selectgroup selectgroup-pills @error('rooms') is-invalid @enderror">
-                                    @foreach ($cottages as $cottage)
-                                        <label class="selectgroup-item" style="width: inherit;">
-                                            <input type="checkbox" name="cottages[]" value="{{ $cottage->id }}" class="selectgroup-input">
-                                            <span class="selectgroup-button selectgroup-button-icon">{{ $cottage->name }}</span>
-                                        </label>
-                                    @endforeach
-                                </div> --}}
-                                @error('cottages')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Rooms</label>
-                                <div class="selectgroup selectgroup-pills @error('rooms') is-invalid @enderror">
-                                    <div class="row">
-                                        @foreach ($rooms as $room)
-                                        <div class="col-lg-4">
-                                            <label class="selectgroup-item" style="width: inherit;">
-                                                <input type="checkbox" name="rooms[]" value="{{ $room->id }}"
-                                                    class="selectgroup-input">
-                                                <span class="selectgroup-button"
-                                                    style="height: 100%; border-radius: 0.25rem !important;">
-                                                    <b>{{ $room->name }}</b>
-                                                    <p style="white-space: pre-wrap;">P{{ number_format($room->price, 0) }}, {!! $room->descriptions !!}</p>
-                                                </span>
-                                            </label>
-                                        </div>
-                                        @endforeach
+                                <div class="accordion">
+                                    <div class="accordion-header collapsed" role="button"
+                                        data-toggle="collapse" data-target="#panel-body-2" aria-expanded="false">
+                                        <h4>Rooms</h4>
                                     </div>
-                                </div>
+                                    <div class="accordion-body collapse" id="panel-body-2" data-parent="#accordion"
+                                        style="">
+                                        <div class="form-group mb-0 mt-4">
+                                            <div
+                                                class="selectgroup selectgroup-pills @error('room') is-invalid @enderror">
+                                                <div class="row">
+                                                    @foreach ($rooms as $room)
+                                                    <div class="col-lg-4">
+                                                        <label class="selectgroup-item mb-0 uncheck-cottage" style="width: inherit;">
+                                                            <input type="radio" name="room" value="{{ $room->id }}"
+                                                                class="selectgroup-input radio-room"
+                                                                {{ old('room') == $room->id ? 'checked' : '' }}>
+                                                            <span class="selectgroup-button"
+                                                                style="height: 100%; border-radius: 0.25rem !important;">
+                                                                <b>{{ $room->name }}</b>
+                                                                <p style="white-space: pre-wrap;">P{{ number_format($room->price, 0) }}, {!! $room->descriptions !!}</p>
+                                                                @if ($room->extraPerson != 0)
+                                                                <div class="form-group">
+                                                                    {{-- <label for="extraPerson">Extra Person</label> --}}
+                                                                    <input type="text"
+                                                                        placeholder="Max Extra Person({{ $room->extraPersonAvailable }})"
+                                                                        class="form-control digit_only" id="extraPerson"
+                                                                        name="extraPerson{{ $room->id }}"
+                                                                        value="{{ old('extraPerson'.$room->id) }}">
+                                                                </div>
+                                                                @endif
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                            @error('room')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
 
-                                {{-- <div class="selectgroup selectgroup-pills @error('rooms') is-invalid @enderror">
-                                    @foreach ($rooms as $room)
-                                        <label class="selectgroup-item" style="width: inherit;">
-                                            <input type="checkbox" name="rooms[]" value="{{ $room->id }}" class="selectgroup-input">
-                                            <span class="selectgroup-button selectgroup-button-icon">{{ $room->name }}</span>
-                                        </label>
-                                    @endforeach
-                                </div> --}}
-                                @error('rooms')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                                    {{-- <div class="form-group mt-4">
+                                        <label for="notes">Notes</label>
+                                        <textarea class="form-control edited @error('notes') is-invalid @enderror"
+                                            name="notes" id="notes"></textarea>
+                                        @error('notes')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div> --}}
+                                </div>
                             </div>
                             
                             <button type="submit" class="text-right btn btn-lg btn-outline-dark button-secondary large w-inline-block radius-zero mt-3">Submit</button>
@@ -349,49 +405,7 @@
     </div>
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <div class="footer-top">
-            <div data-w-id="3d154036-488d-0b14-8c77-ba597ddd1fc5" class="split-content footer-top-left"
-                style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;">
-                <a href="/" aria-current="page" class="footer-logo-container w-inline-block w--current">
-                    <img src="{{ asset('/pics/A.png') }}" alt="" class="footer-logo mr-3">
-                    <span class="h3">Saka Resort</span>
-                </a>
-                <p class="paragraph footer-paragraph mt-3">In the Tagalog vernacular, the word saka means "to farm". On the other hand, in the Ilocano vernacular, it means "foot".</p>
-            </div>
-
-            <div data-w-id="a849da38-4a0a-3a01-70a3-2e66b13808e5" class="split-content footer-top-right"
-                style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;">
-                <div class="title footer-follow-us">Follow Us</div>
-                <div class="w-layout-grid footer-follow-us-grid">
-                    <a href="https://www.facebook.com/" target="_blank"
-                        class="footer-social-media-wrapper w-inline-block">
-                        <div> <i class="fab fa-facebook-f"></i> </div>
-                    </a>
-
-                    <a href="https://twitter.com/" target="_blank" class="footer-social-media-wrapper w-inline-block">
-                        <div><i class="fab fa-instagram"></i></div>
-                    </a>
-
-                    <a href="https://www.instagram.com/" target="_blank"
-                        class="footer-social-media-wrapper w-inline-block">
-                        <div> <i class="fab fa-twitter"></i> </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div data-w-id="fff77d10-89fc-c679-2009-4633885b94fd" class="divider footer-divider"
-            style="background-color:white; transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;">
-        </div>
-    </div>
-
-    <div class="small-print-wrapper">
-        <div data-w-id="ecfd8b3f-1721-7e98-2cdb-a93160490cd2" class="copyright" style="opacity: 1;">Copyright 2020 ©
-            Saka Resort</div>
-    </div>
-</footer>
+@include('landing.footer')
 
 @endsection
 
@@ -406,4 +420,21 @@
     });
     </script>
     @endif
+    <script>
+        $(document).on('click', '.uncheck-cottage', function () {
+            $('.radio-cottage').each(function () {
+                $(this).removeAttr('checked');
+                $('.radio-cottage').prop('checked', false);
+            });
+            // console.log('encheck-cottage');
+        });
+
+        $(document).on('click', '.uncheck-room', function () {
+            $('.radio-room').each(function () {
+                $(this).removeAttr('checked');
+                $('.radio-room').prop('checked', false);
+            });
+            // console.log('encheck-room');
+        });
+    </script>
 @endsection

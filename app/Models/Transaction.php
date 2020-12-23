@@ -12,23 +12,23 @@ class Transaction extends Model
     protected $guarded = ['id'];
     protected $dates = ['checkIn_at', 'checkOut_at'];
 
-    public function cottages()
+    public function cottage()
     {
-    	return $this->belongsToMany('App\Models\Cottage');
+    	return $this->belongsTo('App\Models\Cottage');
     }
 
-    public function type()
+    public function room()
     {
-    	return $this->belongsTo('App\Models\Type');
-    }
-
-    public function rooms()
-    {
-    	return $this->belongsToMany('App\Models\Room');
+    	return $this->belongsTo('App\Models\Room');
     }
 
     public function client()
     {
     	return $this->belongsTo('App\Models\Client');
+    }
+
+    public function breakfasts()
+    {
+    	return $this->belongsToMany('App\Models\Breakfast');
     }
 }

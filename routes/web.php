@@ -18,6 +18,7 @@ Route::get('/about', [App\Http\Controllers\LandingPageController::class, 'about'
 Route::get('/rooms', [App\Http\Controllers\LandingPageController::class, 'rooms'])->name('landing.rooms');
 Route::get('/cottages', [App\Http\Controllers\LandingPageController::class, 'cottages'])->name('landing.cottages');
 Route::get('/contact', [App\Http\Controllers\LandingPageController::class, 'contact'])->name('landing.contact');
+Route::post('/reservation-store', [App\Http\Controllers\LandingPageController::class, 'reservation_store'])->name('landing.reservation-store');
 
 // Auth::routes();
 Auth::routes(['register' => false, 'reset' => false]);
@@ -57,10 +58,16 @@ Route::get('/transaction/invoice/{id}', [App\Http\Controllers\TransactionControl
 Route::post('/transaction/invoice/{id}/pay', [App\Http\Controllers\TransactionController::class, 'pay'])->name('transaction.pay');
 Route::post('/transaction/invoice/{id}/unpaid', [App\Http\Controllers\TransactionController::class, 'unpaid'])->name('transaction.unpaid');
 
-Route::resource('reservation', App\Http\Controllers\ReservationController::class)->except(['index', 'show', 'update']);
+Route::resource('reservation', App\Http\Controllers\ReservationController::class)->except(['index', 'show', 'update', 'store']);
 Route::get('/reservations', [App\Http\Controllers\ReservationController::class, 'index'])->name('reservation.index');
 Route::get('/reservations-datatables', [App\Http\Controllers\ReservationController::class, 'datatables'])->name('reservation.datatables');
 Route::put('/reservation-approve', [App\Http\Controllers\ReservationController::class, 'approve'])->name('reservation.approve');
 
-Route::get('/reports', [App\Http\Controllers\ReportController::class, 'index']);
+Route::get('/reports', [App\Http\Controllers\ReportController::class, 'index'])->name('report.index');
 Route::get('/reports-datatables', [App\Http\Controllers\ReportController::class, 'datatables'])->name('report.datatables');
+
+Route::get('/settings', [App\Http\Controllers\SettingController::class, 'index'])->name('setting.index');
+
+Route::resource('/settings/entrancefee', App\Http\Controllers\EntrancefeeController::class)->only(['edit', 'update']);
+Route::resource('/settings/breakfast', App\Http\Controllers\BreakfastController::class)->except(['index', 'show']);
+Route::resource('resort', App\Http\Controllers\ResortController::class)->only(['update']);

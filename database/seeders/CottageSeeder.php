@@ -19,13 +19,15 @@ class CottageSeeder extends Seeder
             [
                 'name' => 'Toraja',
                 'price' => '800',
+                'nightPrice' => '900',
                 'descriptions' => 'Good for up to 12pax, 2-storey cottage',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
                 'name' => 'Open Kubo',
-                'price' => '7000',
+                'price' => '700',
+                'nightPrice' => '800',
                 'descriptions' => 'Good for up to 12pax, Bungalow type',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
@@ -33,6 +35,7 @@ class CottageSeeder extends Seeder
             [
                 'name' => 'Toraja (Big)',
                 'price' => '1500',
+                'nightPrice' => '1600',
                 'descriptions' => 'Good for up to 20pax, Pool side, with own entrance, 2-storey cottage',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
@@ -40,6 +43,7 @@ class CottageSeeder extends Seeder
             [
                 'name' => 'Mini Pavilion',
                 'price' => '1000',
+                'nightPrice' => '1100',
                 'descriptions' => 'Good for up to 15pax',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
@@ -47,6 +51,7 @@ class CottageSeeder extends Seeder
             [
                 'name' => 'Small Pavilion',
                 'price' => '1500',
+                'nightPrice' => '1600',
                 'descriptions' => 'Good for up to 25pax',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
@@ -54,6 +59,7 @@ class CottageSeeder extends Seeder
             [
                 'name' => 'Grand Pavilion',
                 'price' => '3000',
+                'nightPrice' => '3100',
                 'descriptions' => 'Good for up to 40pax, Pool side, with own entrance',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()

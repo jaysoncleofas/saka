@@ -11,8 +11,8 @@ class Cottage extends Model
 
     protected $guarded = ['id'];
 
-    public function transactions()
+    public function transaction()
     {
-    	return $this->belongsToMany('App\Models\Transaction');
+    	return $this->hasOne('App\Models\Transaction');
     }
 }

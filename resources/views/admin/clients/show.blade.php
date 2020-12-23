@@ -17,12 +17,14 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <ul class="list-group">
+                        <strong>Client Information</strong>
+                        <ul class="list-group list-group-flush">
                             <li class="list-group-item"><strong>Name:</strong> {{ $client->firstName .' '.$client->middleName.' '.$client->lastName }}</li>
                             <li class="list-group-item"><strong>Contact:</strong> {{ $client->contact }}</li>
                             <li class="list-group-item"><strong>Age:</strong> {{ $client->age }}</li>
                             <li class="list-group-item"><strong>Address:</strong> {{ $client->address }}</li>
                         </ul>
+                        <hr class="mt-0">
                     </div>
                 </div>
             </div>

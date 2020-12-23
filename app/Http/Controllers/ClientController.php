@@ -116,7 +116,7 @@ class ClientController extends Controller
 
         return DataTables::of($clients)
                 ->addColumn('actions', function ($client) {
-                    return '<a href="'.route('client.edit', $client->id).'" class="btn btn-primary btn-action mr-1" title="Edit"><i class="fas fa-pencil-alt"></i></a><a class="btn btn-danger btn-action trigger-delete" title="Delete" data-action="'.route('client.destroy', $client->id).'" data-model="client"><i class="fas fa-trash"></i></a>';
+                    return '<a href="'.route('client.show', $client->id).'" class="btn btn-info btn-action mr-1" title="Show"><i class="fas fa-eye"></i></a><a href="'.route('client.edit', $client->id).'" class="btn btn-primary btn-action mr-1" title="Edit"><i class="fas fa-pencil-alt"></i></a><a class="btn btn-danger btn-action trigger-delete" title="Delete" data-action="'.route('client.destroy', $client->id).'" data-model="client"><i class="fas fa-trash"></i></a>';
                 })
                 ->rawColumns(['actions'])
                 ->toJson();
