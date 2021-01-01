@@ -103,7 +103,7 @@
                                     <div role="listitem" class="w-dyn-item">
                                         <div class="room-section-wrapper">
                                             <span class="image-wrapper w-inline-block">
-                                                <img src="{{ $room->image ? asset('storage/rooms/'.$room->image) : asset('images/img07.jpg') }}"
+                                                <img src="{{ $room->coverimage() ? asset('storage/rooms/'.$room->coverimage()->path) : asset('images/img07.jpg') }}"
                                                     alt=""
                                                     sizes="(max-width: 479px) 93vw, (max-width: 767px) 94vw, (max-width: 991px) 95vw, 100vw"
                                                     {{-- srcset="https://assets.website-files.com/5f28567562c2bb18b4a14f33/5f2a0675f3e8178256eb8a3f_image-room-thumbnail-02-hotel-template-p-500.jpeg 500w, https://assets.website-files.com/5f28567562c2bb18b4a14f33/5f2a0675f3e8178256eb8a3f_image-room-thumbnail-02-hotel-template-p-800.jpeg 800w, https://assets.website-files.com/5f28567562c2bb18b4a14f33/5f2a0675f3e8178256eb8a3f_image-room-thumbnail-02-hotel-template-p-1080.jpeg 1080w, https://assets.website-files.com/5f28567562c2bb18b4a14f33/5f2a0675f3e8178256eb8a3f_image-room-thumbnail-02-hotel-template.jpg 1152w" --}}
@@ -207,7 +207,7 @@
                                 <div role="listitem" class="w-dyn-item">
                                     <div class="room-section-wrapper">
                                         <span class="image-wrapper w-inline-block">
-                                            <img src="{{ $cottage->image ? asset('storage/cottages/'.$cottage->image) : asset('images/img07.jpg') }}"
+                                            <img src="{{ $cottage->coverimage() ? asset('storage/cottages/'.$cottage->coverimage()->path) : asset('images/img07.jpg') }}"
                                                 alt=""
                                                 sizes="(max-width: 479px) 93vw, (max-width: 767px) 94vw, (max-width: 991px) 95vw, 100vw"
                                                 {{-- srcset="https://assets.website-files.com/5f28567562c2bb18b4a14f33/5f2a0675f3e8178256eb8a3f_image-room-thumbnail-02-hotel-template-p-500.jpeg 500w, https://assets.website-files.com/5f28567562c2bb18b4a14f33/5f2a0675f3e8178256eb8a3f_image-room-thumbnail-02-hotel-template-p-800.jpeg 800w, https://assets.website-files.com/5f28567562c2bb18b4a14f33/5f2a0675f3e8178256eb8a3f_image-room-thumbnail-02-hotel-template-p-1080.jpeg 1080w, https://assets.website-files.com/5f28567562c2bb18b4a14f33/5f2a0675f3e8178256eb8a3f_image-room-thumbnail-02-hotel-template.jpg 1152w" --}}

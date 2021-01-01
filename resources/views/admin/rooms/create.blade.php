@@ -42,7 +42,7 @@
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label for="extraPerson">Extra Person</label>
+                                    <label for="extraPerson">Extra Person Price</label>
                                     <input type="text"
                                         class="form-control digit_only2 @error('extraPerson') is-invalid @enderror"
                                         name="extraPerson" id="extraPerson" value="{{ old('extraPerson') }}">
@@ -67,7 +67,7 @@
 
                                 <div class="form-group col-md-6">
                                     <label class="form-label">Entrance fee</label>
-                                    <div class="selectgroup selectgroup-pills">
+                                    <div class="selectgroup selectgroup-pills @error('entrancefee') is-invalid @enderror">
                                         <label class="selectgroup-item">
                                             <input type="radio" name="entrancefee" value="Inclusive" class="selectgroup-input">
                                             <span class="selectgroup-button selectgroup-button-icon">Inclusive</span>
@@ -77,6 +77,11 @@
                                             <span class="selectgroup-button selectgroup-button-icon">Exclusive</span>
                                         </label>
                                     </div>
+                                    @error('entrancefee')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -91,7 +96,7 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group" style="width:325px;">
+                            <div class="form-group d-none" style="width:325px;">
                                 <img class="img-fluid img-preview z-depth-1 profile-avatar mb-3">
                                 <div class="file-field">
                                     <div class="btn btn-primary btn-sm">
@@ -107,7 +112,18 @@
                                 @endif
                             </div>
 
-                            <div class="form-group text-right">
+                            <div class="form-group">
+                                <label for="images">Upload Images</label>
+                                <input type="file" multiple class="form-control @error('images') is-invalid @enderror"
+                                    name="images[]" id="images" value="{{ old('images') }}">
+                                @error('images')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
                                 <button type="submit" class="btn btn-primary">
                                     Submit
                                 </button>

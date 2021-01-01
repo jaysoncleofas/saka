@@ -62,17 +62,14 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group" style="width:325px;">
+                            <div class="form-group d-none" style="width:325px;">
+                                <label for="coverimage">Cover Image</label>
                                 <img class="img-fluid img-preview z-depth-1 profile-avatar mb-3">
-                                {{-- style="object-fit: cover;height:325px; width:325px;" --}}
                                 <div class="file-field">
                                     <div class="btn btn-primary btn-sm">
                                         <span><i class="fa fa-image"></i> Choose</span>
                                         <input type="file" name="image" onchange="previewFile()">
                                     </div>
-                                    {{-- <a href="javascript:void(0);" data-href="{{ route('profile.picture.remove') }}" class="btn btn-danger btn-sm remove_avatar" data-method="put" data-value="{{ $user->id }}">
-                                        <span><i class="fa fa-times"></i> Remove</span>
-                                    </a> --}}
                                 </div>
         
                                 @if ($errors->has('image'))
@@ -82,7 +79,18 @@
                                 @endif
                             </div>
 
-                            <div class="form-group text-right">
+                            <div class="form-group">
+                                <label for="images">Upload Images</label>
+                                <input type="file" multiple class="form-control @error('images') is-invalid @enderror"
+                                    name="images[]" id="images" value="{{ old('images') }}">
+                                @error('images')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
                                 <button type="submit" class="btn btn-primary">
                                     Submit
                                 </button>

@@ -40,11 +40,13 @@ Route::resource('room', App\Http\Controllers\RoomController::class)->except(['in
 Route::get('/all-rooms', [App\Http\Controllers\RoomController::class, 'index'])->name('room.index');
 Route::get('/rooms-datatables', [App\Http\Controllers\RoomController::class, 'datatables'])->name('room.datatables');
 Route::put('/room-image', [App\Http\Controllers\RoomController::class, 'image_remove'])->name('room.image.remove');
+Route::put('/room-coverimage', [App\Http\Controllers\RoomController::class, 'coverimage_remove'])->name('room.coverimage.remove');
 
 Route::resource('cottage', App\Http\Controllers\CottageController::class)->except(['index', 'show']);
 Route::get('/all-cottages', [App\Http\Controllers\CottageController::class, 'index'])->name('cottage.index');
 Route::get('/cottages-datatables', [App\Http\Controllers\CottageController::class, 'datatables'])->name('cottage.datatables');
 Route::put('/cottage-image', [App\Http\Controllers\CottageController::class, 'image_remove'])->name('cottage.image.remove');
+Route::put('/cottage-coverimage', [App\Http\Controllers\CottageController::class, 'coverimage_remove'])->name('cottage.coverimage.remove');
 
 Route::resource('client', App\Http\Controllers\ClientController::class)->except(['index']);
 Route::get('/clients', [App\Http\Controllers\ClientController::class, 'index'])->name('client.index');

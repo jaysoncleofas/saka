@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Room;
+use App\Models\RoomImage;
 
 class RoomController extends Controller
 {
@@ -65,6 +66,21 @@ class RoomController extends Controller
         $room->extraPersonAvailable = $request->maxExtraPerson;
         $room->save();
 
+        if ($request->hasFile('images')) {
+            foreach($request->images as $key => $image) {                
+                $name = time().'room-'.$key.'.'.$image->getClientOriginalExtension();
+                $image->storeAs('public/rooms', $name);
+
+                $roomimage = new RoomImage();
+                $roomimage->room_id = $room->id;
+                $roomimage->path = $name;
+                if($key == 0) {
+                    $roomimage->is_cover = 1;
+                }
+                $roomimage->save();
+            }
+        }
+
         session()->flash('notification', 'Successfully added!');
         session()->flash('type', 'success');
 
@@ -109,6 +125,38 @@ class RoomController extends Controller
         $room->extraPersonAvailable = $request->maxExtraPerson;
         $room->save();
 
+        
+        if($request->hasFile('images')) {
+            foreach($request->images as $key => $image) {                
+                $name = time().'room-'.$key.'.'.$image->getClientOriginalExtension();
+                $image->storeAs('public/rooms', $name);
+
+                $roomimage = new RoomImage();
+                $roomimage->room_id = $room->id;
+                $roomimage->path = $name;
+
+                $roomimages = RoomImage::where('room_id', $room->id)->where('is_cover', 1)->first();
+                if(!$roomimages) {
+                    $roomimage->is_cover = 1;
+                }
+                $roomimage->save();
+            }
+        }
+
+        if($request->coverimage) {
+            $oldcoverimage = RoomImage::where('room_id', $room->id)->where('is_cover', 1)->first();
+            if($oldcoverimage) {
+                $oldcoverimage->update([
+                    'is_cover' => 0
+                ]);
+            }
+
+            $coverimage = RoomImage::findOrFail($request->coverimage);
+            $coverimage->update([
+                'is_cover' => 1
+            ]);
+        }
+
         session()->flash('notification', 'Successfully updated!');
         session()->flash('type', 'success');
 
@@ -134,7 +182,7 @@ class RoomController extends Controller
                     return '<a href="'.route('room.edit', $room->id).'" class="btn btn-primary btn-action mr-1" title="Edit"><i class="fas fa-pencil-alt"></i></a><a class="btn btn-danger btn-action trigger-delete" title="Delete" data-action="'.route('room.destroy', $room->id).'" data-model="room"><i class="fas fa-trash"></i></a>';
                 })
                 ->addColumn('image', function ($room) {
-                    return '<img src="'.($room->image ? asset('storage/rooms/'.$room->image) : asset('images/img07.jpg')).'" class="img-fluid img-preview z-depth-1" style="object-fit: cover;height:90px; width:90px;">';
+                    return '<img src="'.($room->coverimage() ? asset('storage/rooms/'.$room->coverimage()->path) : asset('images/img07.jpg')).'" class="img-fluid img-preview z-depth-1" style="object-fit: cover;height:90px; width:90px;">';
                 })
                 ->editColumn('price', function ($room) {
                     return 'P'.number_format($room->price, 0);
@@ -160,6 +208,35 @@ class RoomController extends Controller
         $room = Room::findOrFail($request->id);
         $room->image = null;
         $room->save();
+
+        session()->flash('notification', 'Successfully removed!');
+        session()->flash('type', 'success');
+
+        return response('success', 200);
+    }
+
+    public function coverimage_remove(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+        ]);
+
+        $roomimage = RoomImage::findOrFail($request->id);
+        $is_cover = 0;
+        if($roomimage->is_cover) {
+            $is_cover = 1;
+            $room_id = $roomimage->room_id;
+        }
+        $roomimage->delete();
+
+        if($is_cover == 1) {
+            $firstroomimage = RoomImage::where('room_id', $room_id)->first();
+            if($firstroomimage) {
+                $firstroomimage->update([
+                    'is_cover' => 1
+                ]);
+            }
+        }
 
         session()->flash('notification', 'Successfully removed!');
         session()->flash('type', 'success');

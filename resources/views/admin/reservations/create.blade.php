@@ -89,9 +89,7 @@
                             <div class="row">
                                 @foreach ($entranceFees as $item)
                                 <div class="form-group col-lg-4">
-                                    <label for="{{ $item->title }}">{{ $item->title }}
-                                        (P{{ number_format($item->price) }} -
-                                        P{{ number_format($item->nightPrice) }})</label>
+                                    <label for="{{ $item->title }}">{{ $item->title }}</label>
                                     <input type="text"
                                         class="form-control digit_only @error($item->title) is-invalid @enderror"
                                         name="{{ $item->title }}" id="{{ $item->title }}"

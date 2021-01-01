@@ -15,4 +15,14 @@ class Cottage extends Model
     {
     	return $this->hasOne('App\Models\Transaction');
     }
+
+    public function images()
+    {
+        return $this->hasMany('App\Models\CottageImage');
+    }
+
+    public function coverimage()
+    {
+        return $this->images()->where('is_cover', 1)->first(); 
+    }
 }

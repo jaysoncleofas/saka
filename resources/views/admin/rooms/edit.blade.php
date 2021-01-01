@@ -88,7 +88,18 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group" style="width:325px;">
+                            <div class="form-group">
+                                <label for="images">Upload New Images</label>
+                                <input type="file" multiple class="form-control @error('images') is-invalid @enderror"
+                                    name="images[]" id="images" value="{{ old('images') }}">
+                                @error('images')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            
+                            <div class="form-group d-none" style="width:325px;">
                                 <img class="img-fluid img-preview z-depth-1 room-image mb-3">
                                 <div class="file-field">
                                     <div class="btn btn-primary btn-sm">
@@ -110,7 +121,30 @@
                                 @endif
                             </div>
 
-                            <div class="form-group text-right">
+                            @if ($room->images()->count() > 0)
+                                <div class="form-group">
+                                    <label class="form-label">Images (Check the cover image)</label>
+                                    <div class="row gutters-sm">
+                                        @foreach ($room->images as $image)
+                                            <div class="col-6 col-sm-4 mb-3">
+                                                <label class="imagecheck">
+                                                    <input name="coverimage" type="radio" value="{{ $image->id }}" class="imagecheck-input" {{ $image->is_cover ? 'checked' : '' }}>
+                                                    <figure class="imagecheck-figure">
+                                                        <img src="{{ asset('storage/rooms/'.$image->path) }}" alt="}" class="imagecheck-image">
+                                                    </figure>
+                                                </label>
+                                                <a href="javascript:void(0);" data-href="{{ route('room.coverimage.remove') }}"
+                                                    class="btn btn-danger btn-sm remove_coverimage mt-3" data-method="put"
+                                                    data-value="{{ $image->id }}">
+                                                    <span><i class="fa fa-times"></i> Remove</span>
+                                                </a>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                            <div class="form-group">
                                 <button type="submit" class="btn btn-primary">
                                     Submit
                                 </button>
@@ -170,6 +204,39 @@
                     swal('The image is safe!');
                 }
             });
+        });
+
+        $(document).on('click', '.remove_coverimage', function (e) {
+            e.preventDefault();
+            var $this = $(this);
+            swal({
+                    title: 'Are you sure?',
+                    text: 'Once deleted, you will not be able to recover!',
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            type: $this.data('method'),
+                            url: $this.data('href'),
+                            data: {
+                                id: $this.data('value')
+                            },
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function (result) {
+                                if (result == 'success') {
+                                    location.reload();
+                                }
+                            }
+                        });
+                    } else {
+                        swal('The image is safe!');
+                    }
+                });
         });
     </script>
 @endsection
