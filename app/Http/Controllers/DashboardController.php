@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Cottage;
 use App\Models\Room;
-use App\Models\Client;
+use App\Models\Guest;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Transaction;
 use Carbon\Carbon;
@@ -51,8 +51,8 @@ class DashboardController extends Controller
                 ->editColumn('id', function ($transaction) {
                     return '<a href="'.route('transaction.invoice', $transaction->id).'">INV-'.$transaction->id.'</a>';
                 })
-                ->addColumn('client', function ($transaction) {
-                    return '<a href="'.route('client.show', $transaction->client_id).'" class="btn btn-link">'.$transaction->client->firstName.' '.$transaction->client->lastName.'</a>';
+                ->addColumn('guest', function ($transaction) {
+                    return '<a href="'.route('guest.show', $transaction->guest_id).'" class="btn btn-link">'.$transaction->guest->firstName.' '.$transaction->guest->lastName.'</a>';
                 })
                 ->addColumn('cottage', function ($transaction) {
                     if($transaction->cottage) {
@@ -88,7 +88,7 @@ class DashboardController extends Controller
                     return '<a href="'.route('transaction.show', $transaction->id).'" class="btn btn-primary btn-action mr-1" title="Show">Details</a>';
                     // return '<a href="'.route('transaction.show', $transaction->id).'" class="btn btn-info btn-action mr-1" title="Show"><i class="fas fa-eye"></i></a><a href="'.route('transaction.edit', $transaction->id).'" class="btn btn-primary btn-action mr-1" title="Edit"><i class="fas fa-pencil-alt"></i></a><a class="btn btn-danger btn-action trigger-delete" title="Delete" data-action="'.route('transaction.destroy', $transaction->id).'" data-model="transaction"><i class="fas fa-trash"></i></a>';
                 })
-                ->rawColumns(['actions', 'client', 'cottage', 'checkin', 'checkout', 'reservation', 'id'])
+                ->rawColumns(['actions', 'guest', 'cottage', 'checkin', 'checkout', 'reservation', 'id'])
                 ->toJson();
     }
 }

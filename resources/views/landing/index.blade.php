@@ -127,7 +127,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <a href="contact" class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mr-2">Reserve Now</a>
+                                                <a href="{{ route('room.show', $room->id) }}" class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mr-2">More Information</a>
                                             </div>
                                         </div>
                                     </div>
@@ -231,7 +231,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <a href="contact" class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mr-2">Reserve Now</a>
+                                            <a href="{{ route('cottage.show', $cottage->id) }}" class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mr-2">More Information</a>
                                         </div>
                                     </div>
                                 </div>

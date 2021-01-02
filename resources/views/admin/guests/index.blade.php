@@ -4,16 +4,16 @@
 
 <section class="section">
     <div class="section-header">
-        <h1>Clients</h1>
+        <h1>Guests</h1>
     </div>
     <div class="section-body">
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>List of Clients</h4>
+                        <h4>Guest List</h4>
                         <div class="card-header-action">
-                            <a href="{{ route('client.create') }}" class="btn btn-primary">Add Client</a>
+                            <a href="{{ route('guest.create') }}" class="btn btn-primary">Add Guest</a>
                         </div>
                     </div>
                     <div class="card-body">
@@ -51,7 +51,7 @@
             serverSide: true,
             responsive: true,
             ajax: {
-                'url': '{!! route("client.datatables") !!}',
+                'url': '{!! route("guest.datatables") !!}',
                 'type': 'GET',
                 'headers': {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'

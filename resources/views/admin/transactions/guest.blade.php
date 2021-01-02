@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.guest')
 
 @section('style')
 <style>
@@ -12,54 +12,52 @@
 
 @section('content')
 <section class="section">
-    <div class="section-header">
-        <h1>Transactions</h1>
-    </div>
     <div class="section-body">
         <div class="row">
-            <div class="col-lg-8">
-                <div class="card">
+            <div class="col-lg-12">
+                <div class="card mt-5">
                     <div class="card-header">
-                        <h4>Add Transaction</h4>
+                        <h4>Add Guest Transaction</h4>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('transaction.store') }}">
+                        <form method="POST" action="{{ route('landing.reservation-store') }}">
                             @csrf
-                            <input type="hidden" name="is_reservation" id="is_reservation" value="0">
+                            <input type="hidden" name="is_reservation" value="0">
+                            <input type="hidden" name="is_guest" id="is_guest" value="1">
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label for="firstName">First Name</label>
+                                    <input type="text" class="form-control @error('firstName') is-invalid @enderror"
+                                        name="firstName" id="firstName" value="{{ old('firstName') }}">
+                                    @error('firstName')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
 
-                            <ul class="nav nav-pills mb-3" id="pills-tab">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="pills-existing-tab" data-toggle="pill"
-                                        href="#pills-existing" role="tab" aria-controls="pills-existing"
-                                        aria-selected="true">Existing Guest</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="pills-new-tab" href="{{ route('guest.create') }}">New
-                                        Guest</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content" id="pills-tabContent">
-                                <div class="tab-pane fade show active" id="pills-existing" role="tabpanel"
-                                    aria-labelledby="pills-existing-tab">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label>Guest</label>
-                                                <select class="form-control @error('guest') is-invalid @enderror"
-                                                    name="guest" id="guest" style="width: 100%">
-                                                </select>
-                                                @error('guest')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="form-group col-md-4">
+                                    <label for="lastName">Last Name</label>
+                                    <input type="text" class="form-control @error('lastName') is-invalid @enderror"
+                                        name="lastName" id="lastName" value="{{ old('lastName') }}">
+                                    @error('lastName')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label for="contactNumber">Contact Number</label>
+                                    <input type="text" class="form-control @error('contactNumber') is-invalid @enderror"
+                                            name="contactNumber" id="contactNumber" value="{{ old('contactNumber') }}">
+                                    @error('contactNumber')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                                 </div>
                             </div>
-
-                            <hr>
 
                             <div class="row">
                                 <div class="form-group col-lg-6">
@@ -88,20 +86,44 @@
                             </div>
 
                             <div class="row">
-                                @foreach ($entranceFees as $item)
                                 <div class="form-group col-lg-4">
-                                    <label for="{{ $item->title }}">{{ $item->title }}</label>
+                                    <label for="Adults">Adults</label>
                                     <input type="text"
-                                        class="form-control digit_only @error($item->title) is-invalid @enderror"
-                                        name="{{ $item->title }}" id="{{ $item->title }}"
-                                        value="{{ old(str_replace(' ', '_', $item->title)) ?? 0 }}">
-                                    @error($item->title)
+                                        class="form-control digit_only @error('Adults') is-invalid @enderror"
+                                        name="Adults" id="Adults"
+                                        value="{{ old('adults') ?? 0 }}">
+                                    @error('Adults')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
                                 </div>
-                                @endforeach
+
+                                <div class="form-group col-lg-4">
+                                    <label for="Kids">Kids</label>
+                                    <input type="text"
+                                        class="form-control digit_only @error('Kids') is-invalid @enderror"
+                                        name="Kids" id="Kids"
+                                        value="{{ old('kids') ?? 0 }}">
+                                    @error('Kids')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-lg-4">
+                                    <label for="Senior_Citizen">Senior Citizen</label>
+                                    <input type="text"
+                                        class="form-control digit_only @error('Senior_Citizen') is-invalid @enderror"
+                                        name="Senior_Citizen" id="Senior_Citizen"
+                                        value="{{ old('Senior_Citizen') ?? 0 }}">
+                                    @error('Senior_Citizen')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
 
                                 <div class="form-group col-lg-4">
                                     <label class="form-label">Select Type</label>
@@ -247,7 +269,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group mt-4">
+                                    {{-- <div class="form-group mt-4">
                                         <label for="notes">Notes</label>
                                         <textarea class="form-control edited @error('notes') is-invalid @enderror"
                                             name="notes" id="notes"></textarea>
@@ -256,15 +278,17 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
+                            
                             <div class="form-group mt-4">
                                 <button type="submit" class="btn btn-primary">
                                     Submit
                                 </button>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
@@ -274,34 +298,6 @@
 @section('scripts')
 <script>
     $(document).ready(function () {
-        $.ajax({
-            type: 'get',
-            url: "{{ route('guest.get_guests') }}",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function (result) {
-                var $element = $('#guest').select2({
-                    minimumInputLength: 3 // only start searching when the user has input 3 or more characters
-                });
-                for (var d = 0; d < result.guests.length; d++) {
-                    var item = result.guests[d];
-                    // console.log(item);
-                    // Create the DOM option that is pre-selected by default
-                    var option = new Option(result.guests[d].text, result.guests[d].id, true,
-                        true);
-
-                    // Append it to the select
-                    $element.append(option);
-                }
-
-                var option = new Option('', '', true, true);
-                $element.append(option);
-                $element.val(window.location.search.slice(1)); // Select the option with a value of '1'
-                $element.trigger('change');
-            }
-        });
-
         $(document).on('click', '.uncheck-cottage', function () {
             $('.radio-cottage').each(function () {
                 $(this).removeAttr('checked');

@@ -15,12 +15,14 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('client_id');
-            $table->foreign('client_id')->references('id')->on('clients');
+            $table->unsignedBigInteger('guest_id');
+            $table->foreign('guest_id')->references('id')->on('guests');
             $table->unsignedBigInteger('cottage_id')->nullable();
             $table->foreign('cottage_id')->references('id')->on('cottages');
             $table->unsignedBigInteger('room_id')->nullable();
             $table->foreign('room_id')->references('id')->on('rooms');
+            $table->unsignedBigInteger('receivedby_id')->nullable();
+            $table->foreign('receivedby_id')->references('id')->on('users');
             $table->dateTime('checkIn_at');
             $table->dateTime('checkOut_at')->nullable();
             $table->integer('adults')->default(0);
@@ -37,6 +39,7 @@ class CreateTransactionsTable extends Migration
             $table->decimal('breakfastfees', 10, 2)->nullable();
             $table->decimal('rentBill', 10, 2)->nullable();
             $table->decimal('totalBill', 10, 2)->nullable();
+            $table->timestamp('paid_at')->nullable();
             $table->timestamps();
         });
     }

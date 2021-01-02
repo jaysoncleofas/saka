@@ -15,11 +15,11 @@
                 </li>
 
                 <li class="nav-item {{ Nav::isRoute('landing.about') }}">
-                    <a class="nav-link" href="about">About</a>
+                    <a class="nav-link" href="{{ route('landing.about') }}">About</a>
                 </li>
 
-                <li class="nav-item {{ Nav::isRoute('landing.rooms') }}">
-                    <a class="nav-link" href="rooms">Rooms</a>
+                <li class="nav-item {{ Nav::isRoute('landing.rooms') }}{{ Nav::isRoute('room.show') }}">
+                    <a class="nav-link" href="{{ route('landing.rooms') }}">Rooms</a>
                 </li>
 
                 <li class="nav-item {{ Nav::isRoute('landing.cottages') }}">
@@ -27,7 +27,7 @@
                 </li>
 
                 <li class="nav-item {{ Nav::isRoute('landing.contact') }}">
-                    <a class="nav-link" href="contact">Contact</a>
+                    <a class="nav-link" href="{{ route('landing.contact') }}">Contact</a>
                 </li>
             </ul>
         </div>

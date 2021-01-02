@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             EntranceFeeSeeder::class,
             ResortSeeder::class
         ]);
-        \App\Models\User::factory(11)->create();
-        \App\Models\Client::factory(11)->create();
+        \App\Models\User::factory(3)->create();
+        \App\Models\Guest::factory(3)->create();
     }
 }

@@ -11,8 +11,8 @@ class ReportController extends Controller
 {
     public function index(Request $request)
     {
-        $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->subDays(29)->startOfDay();
-        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now();
+        $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfMonth();
+        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfMonth();
         $data['TotalEntrancefee'] = Transaction::where('status', 'paid')->whereBetween('checkIn_at', [$startDay, $endDay])->sum('totalEntrancefee');
         $data['TotalBill'] = Transaction::where('status', 'paid')->whereBetween('checkIn_at', [$startDay, $endDay])->sum('totalBill');
         return view('admin.reports.index', $data);
@@ -20,13 +20,13 @@ class ReportController extends Controller
 
     public function datatables(Request $request)
     {
-        $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->subDays(29)->startOfDay();
-        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now();
+        $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfMonth();
+        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfMonth();
         $transactions = Transaction::orderBy('checkIn_at', 'desc')->where('status', 'paid')->whereBetween('checkIn_at', [$startDay, $endDay])->get();
         // return json_encode($startDay);
         return DataTables::of($transactions)
-                ->addColumn('client', function ($transaction) {
-                    return '<a href="'.route('client.show', $transaction->client_id).'" class="btn btn-link">'.$transaction->client->firstName.' '.$transaction->client->lastName.'</a>';
+                ->addColumn('guest', function ($transaction) {
+                    return '<a href="'.route('guest.show', $transaction->guest_id).'" class="btn btn-link">'.$transaction->guest->firstName.' '.$transaction->guest->lastName.'</a>';
                 })
                 ->addColumn('cottage', function ($transaction) {
                     if($transaction->cottage) {
@@ -51,7 +51,7 @@ class ReportController extends Controller
                 ->editColumn('totalBill', function ($transaction) {
                     return 'P'.number_format($transaction->totalBill, 2);
                 })
-                ->rawColumns(['client', 'cottage', 'room', 'checkIn_at', 'totalEntranceFee', 'totalBill'])
+                ->rawColumns(['guest', 'cottage', 'room', 'checkIn_at', 'totalEntranceFee', 'totalBill'])
                 ->toJson();
     }
 }

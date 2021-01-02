@@ -72,7 +72,7 @@
                                 <thead>
                                     <tr>
                                         <th>Invoice Number</th>
-                                        <th>Client</th>
+                                        <th>Guest</th>
                                         <th>Cottage</th>
                                         <th>Room</th>
                                         <th>Check In</th>
@@ -98,8 +98,8 @@
 @section('scripts')
 <script>
     $(function () {
-        var start = moment("{!! isset($_GET['startdate']) ? Carbon\Carbon::parse($_GET['startdate'])->startOfDay() : Carbon\Carbon::now()->startOfWeek()->startOfDay() !!}");
-        var end = moment("{!! isset($_GET['enddate']) ? Carbon\Carbon::parse($_GET['enddate'])->endOfDay() : Carbon\Carbon::now()->endOfWeek()->endOfDay() !!}");
+        var start = moment("{!! isset($_GET['startdate']) ? Carbon\Carbon::parse($_GET['startdate'])->startOfDay() : Carbon\Carbon::now()->startOfMonth() !!}");
+        var end = moment("{!! isset($_GET['enddate']) ? Carbon\Carbon::parse($_GET['enddate'])->endOfDay() : Carbon\Carbon::now()->endOfMonth() !!}");
         console.log(start);
         console.log(end);
         function cb(start, end) {
@@ -144,8 +144,8 @@
                     name: 'id'
                 },
                 {
-                    data: 'client',
-                    name: 'client'
+                    data: 'guest',
+                    name: 'guest'
                 },
                 {
                     data: 'cottage',

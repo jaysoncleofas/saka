@@ -28,8 +28,8 @@
                 <a class="nav-link" href="{{ route('transaction.index') }}"><i class="fas fa-list"></i> <span>Transactions</span></a>
             </li>
             
-            <li class="{{ Nav::hasSegment('clients') . Nav::hasSegment('client') }}">
-                <a class="nav-link" href="{{ route('client.index') }}"><i class="fas fa-users"></i> <span>Clients</span></a>
+            <li class="{{ Nav::hasSegment('guests') . Nav::hasSegment('guest') }}">
+                <a class="nav-link" href="{{ route('guest.index') }}"><i class="fas fa-users"></i> <span>Guests</span></a>
             </li>
             
             @if (auth()->user()->role_id == 1)

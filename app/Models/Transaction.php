@@ -22,13 +22,18 @@ class Transaction extends Model
     	return $this->belongsTo('App\Models\Room');
     }
 
-    public function client()
+    public function guest()
     {
-    	return $this->belongsTo('App\Models\Client');
+    	return $this->belongsTo('App\Models\Guest');
     }
 
     public function breakfasts()
     {
     	return $this->belongsToMany('App\Models\Breakfast');
+    }
+
+    public function receivedby()
+    {
+    	return $this->belongsTo('App\Models\User', 'receivedby_id');
     }
 }

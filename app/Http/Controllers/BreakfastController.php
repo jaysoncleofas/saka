@@ -24,12 +24,14 @@ class BreakfastController extends Controller
             'title' => 'required|min:2',
             'price' => 'required',
             'status' => 'nullable',
+            'notes' => 'required',
         ]);
             
         $breakfast = new Breakfast;
         $breakfast->title = $request->title;
         $breakfast->price = $request->price;
         $breakfast->is_active = $request->status ? 1 : 0;
+        $breakfast->notes = $request->notes;
         $breakfast->save();
 
         session()->flash('notification', 'Successfully created!');
@@ -52,11 +54,13 @@ class BreakfastController extends Controller
             'title' => 'required|min:2',
             'price' => 'required',
             'status' => 'nullable',
+            'notes' => 'required',
         ]);
 
         $breakfast->title = $request->title;
         $breakfast->price = $request->price;
         $breakfast->is_active = $request->status ? 1 : 0;
+        $breakfast->notes = $request->notes;
         $breakfast->save();
 
         session()->flash('notification', 'Successfully updated!');

@@ -36,8 +36,8 @@
                             <div class="col-6 text-right">
                                 <h4 class="h4-responsive"><small>Invoice No.</small><strong> <span class="blue-text">#{{ $transaction->id }}</span></strong></h4>
                                 <p><small>To:</small></p>
-                                <p><strong>{{ $transaction->client->full_name }}</strong></p>
-                                <p>{{ $transaction->client->address }}</p>
+                                <p><strong>{{ $transaction->guest->full_name }}</strong></p>
+                                <p>{{ $transaction->guest->address }}</p>
                                 
                             </div>
                         </div>

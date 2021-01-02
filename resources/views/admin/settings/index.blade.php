@@ -76,6 +76,15 @@
                                 @enderror
                             </div>
 
+                            <div class="form-group">
+                                <div class="control-label">Breakfast Promo</div>
+                                <label for="promo" class="custom-switch mt-2 pl-0">
+                                    <input type="checkbox" name="promo" id="promo" value="1" class="custom-switch-input" {{ $resort->is_promo ? 'checked' : '' }}>
+                                    <span class="custom-switch-indicator"></span>
+                                    <span class="custom-switch-description">Free breakfast for online booking</span>
+                                </label>
+                            </div>
+
                             <span>Operational time:</span>
                             <div class="row">
                                 <div class="col-lg-4">
@@ -204,6 +213,7 @@
                                             <tr>
                                                 <th>Title</th>
                                                 <th>Price</th>
+                                                <th>Notes</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
@@ -213,6 +223,7 @@
                                             <tr>
                                                 <td>{{ $breakfast->title }}</td>
                                                 <td>P{{ number_format($breakfast->price, 0) }}</td>
+                                                <td>{{ $breakfast->notes }}</td>
                                                 <td>{{ $breakfast->is_active ? 'Active' : 'Inactive' }}</td>
                                                 <td><a href="{{ route('breakfast.edit', $breakfast->id) }}" class="btn btn-primary btn-action mr-1" title="Edit"><i class="fas fa-pencil-alt"></i></a> <a class="btn btn-danger btn-action trigger-delete" title="Delete" data-action="{{ route('breakfast.destroy', $breakfast->id) }}" data-model="breakfast"><i class="fas fa-trash"></i></a></td>
                                             </tr>

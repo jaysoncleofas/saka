@@ -7,8 +7,11 @@ use App\Models\Cottage;
 use App\Models\Room;
 use App\Models\Entrancefee;
 use App\Models\Breakfast;
-use App\Models\Client;
+use App\Models\Guest;
 use App\Models\Transaction;
+use App\Models\Resort;
+use DB;
+use Carbon\Carbon;
 
 class LandingPageController extends Controller
 {
@@ -64,9 +67,9 @@ class LandingPageController extends Controller
             'is_reservation' => 'nullable'
         ]);
 
-        $client = Client::whereContact($request->contactNumber)->first();
-        if(empty($client)) {
-            $client = Client::create([
+        $guest = Guest::whereContact($request->contactNumber)->first();
+        if(empty($guest)) {
+            $guest = Guest::create([
                 'firstName' => $request->firstName,
                 'lastName' => $request->lastName,
                 'contact' => $request->contactNumber,
@@ -119,7 +122,7 @@ class LandingPageController extends Controller
         $totalBill = $totalEntranceFee + $extraPersonTotal + $breakfastfees + $rentBill;
 
         $transaction = new Transaction();
-        $transaction->client_id = $client->id;
+        $transaction->guest_id = $guest->id;
         $transaction->room_id = $request->room;
         $transaction->cottage_id = $request->cottage;
         $transaction->checkIn_at = $request->checkin;
@@ -141,10 +144,84 @@ class LandingPageController extends Controller
         $transaction->save();
 
         $transaction->breakfasts()->sync($request->breakfast);
-
+        
         session()->flash('notification', 'Your reservation has been sent, expect a call to confirm your reservation.');
         session()->flash('type', 'success');
 
+        if($request->is_guest) {
+            session()->flash('notification', 'Successfully added!');
+            return redirect()->route('transaction.guest_show', $transaction->id);    
+        }
         return redirect()->back();
+    }
+
+    public function room_show($id)
+    {
+        $data['room'] = Room::findOrFail($id);
+        return view('landing.roomshow', $data);
+    }
+
+    public function cottage_show($id)
+    {
+        $data['cottage'] = Cottage::findOrFail($id);
+        return view('landing.cottageshow', $data);
+    }
+
+    public function room_book($id)
+    {
+        $data['room'] = Room::findOrFail($id);
+        $data['cottages'] = Cottage::all();
+        $data['rooms'] = Room::all();
+        $data['entranceFees'] = Entrancefee::all();
+        $data['breakfasts'] = Breakfast::where('is_active', 1)->get();
+        return view('landing.roombook', $data);
+    }
+
+    public function room_available(Request $request)
+    {
+  
+        $checkin = Carbon::parse($request->checkin); 
+        $checkout = Carbon::parse($request->checkout); 
+        $slot = Transaction::where('cottage_id', null)->whereBetween('checkIn_at', [$checkin, $checkout])->orWhereBetween('checkOut_at', [$checkin, $checkout])->pluck('id')->toArray();
+
+        if(!empty($slot)) {
+            $rooms = Room::whereNotIn('id', $slot)->get();
+            return response()->json(['rooms' => $rooms], 200);
+        }
+        $rooms = Room::all();
+        return response()->json(['rooms' => $rooms ], 200);
+    }
+
+    public function cottage_available(Request $request)
+    {
+  
+        $checkin = Carbon::parse($request->checkin); 
+        $checkout = Carbon::parse($request->checkout); 
+        $slot = Transaction::where('room_id', null)->whereBetween('checkIn_at', [$checkin, $checkout])->orWhereBetween('checkOut_at', [$checkin, $checkout])->pluck('id')->toArray();
+
+        if(!empty($slot)) {
+            $cottages = Cottage::whereNotIn('id', $slot)->get();
+            return response()->json(['cottages' => $cottages], 200);
+        }
+        $cottages = Cottage::all();
+        return response()->json(['cottages' => $cottages ], 200);
+    }
+
+    public function available_rooms(Request $request, $id)
+    {
+        $room = Room::findOrFail($id);
+
+        $checkin = Carbon::parse($request->checkin)->startOfDay(); 
+        $checkout = Carbon::parse($request->checkin)->endOfDay();
+
+        $checkout = Carbon::parse($request->checkout); 
+        $slot = Transaction::where('cottage_id', null)->whereBetween('checkIn_at', [$checkin, $checkout])->orWhereBetween('checkOut_at', [$checkin, $checkout])->pluck('id')->toArray();
+
+        if(!empty($slot)) {
+            $rooms = Room::whereNotIn('id', $slot)->get();
+            return response()->json(['rooms' => $rooms], 200);
+        }
+        $rooms = Room::all();
+        return response()->json(['rooms' => $rooms ], 200);
     }
 }

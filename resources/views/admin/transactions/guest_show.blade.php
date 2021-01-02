@@ -1,29 +1,22 @@
-@extends('layouts.app')
+@extends('layouts.guest')
 
 @section('content')
 
 <section class="section">
-    <div class="section-header">
-        <h1>Transactions</h1>
-    </div>
     <div class="section-body">
         <div class="row">
             <div class="col-lg-12">
-                <div class="card">
+                <div class="card mt-5">
                     <div class="card-header">
-                        <h4>Show Transaction 
-                            @if ($transaction->status == 'paid')
-                                <span class="badge badge-success">Paid</span>
-                            @endif
-                        </h4>
+                        <h4>Show Transaction</h4>
                         <div class="card-header-action">
-                            <a href="{{ route('transaction.edit', $transaction->id) }}" class="mr-2">Edit <i class="fa fa-edit"></i></a>
-                            <a href="{{ route('transaction.invoice', $transaction->id) }}" class="btn btn-primary">Show Invoice</a>
+                            {{-- <a href="{{ route('transaction.edit', $transaction->id) }}" class="mr-2">Edit <i class="fa fa-edit"></i></a> --}}
+                            <a href="{{ route('transaction.guest_create') }}" class="btn btn-primary">Add New</a>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <strong>Transaction</strong>
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item"><strong>Check In:</strong> {{ $transaction->checkIn_at->format('M d, Y h:i a') }}</li>
@@ -59,7 +52,7 @@
                                     <li class="list-group-item"><strong>Notes:</strong> {{ $transaction->notes }}</li>
                                 </ul>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <strong>Guest</strong>
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item"><strong>Name:</strong> {{ $transaction->guest->firstName .' '.$transaction->guest->middleName.' '.$transaction->guest->lastName }}</li>
@@ -68,20 +61,6 @@
                                     <li class="list-group-item"><strong>Address:</strong> {{ $transaction->guest->address }}</li>
                                     {{-- <li class="list-group-item"><strong>Check In:</strong> {{ $transaction->checkIn_at->format('M d, Y h:i a') }}</li>
                                     <li class="list-group-item"><strong>Check Out:</strong> {{ $transaction->checkOut_at ? $transaction->checkOut_at->format('M d, Y h:i a') : '-' }}</li> --}}
-                                </ul>
-                            </div>
-
-                            <div class="col-lg-4">
-                                <strong>Bills</strong>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item"><strong>Total Bills:</strong> P{{ number_format($transaction->totalBill, 2) }}</li>
-                                    {{-- <li class="list-group-item"><strong>Entrance Fees:</strong> P{{ number_format($transaction->totalEntranceFee, 2) }}</li> --}}
-                                    
-                                    <li class="list-group-item"><strong>Payment Received by:</strong> 
-                                        @if ($transaction->status == 'paid')
-                                            {{ $transaction->receivedby->firstName .' '.$transaction->receivedby->lastName }}
-                                        @endif
-                                    </li>
                                 </ul>
                             </div>
                         </div>

@@ -48,6 +48,17 @@
                                 </label>
                             </div>
 
+                            <div class="form-group mt-4">
+                                <label for="notes">Notes</label>
+                                <textarea class="form-control edited @error('notes') is-invalid @enderror"
+                                    name="notes" id="notes">{{ $breakfast->notes }}</textarea>
+                                @error('notes')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">
                                     Submit

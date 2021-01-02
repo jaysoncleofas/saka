@@ -23,8 +23,8 @@ class TransactionController extends Controller
 
     public function index(Request $request)
     {
-        $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->subDays(29)->startOfDay();
-        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now();
+        $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfMonth();
+        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfMonth();
 
         $data['paid_transactions'] = Transaction::whereStatus('paid')->whereBetween('checkIn_at', [$startDay, $endDay])->count();
         $data['active_transactions'] = Transaction::whereStatus('active')->whereBetween('checkIn_at', [$startDay, $endDay])->count();
@@ -39,15 +39,24 @@ class TransactionController extends Controller
         $data['cottages'] = Cottage::all();
         $data['rooms'] = Room::all();
         $data['entranceFees'] = Entrancefee::all();
-        $data['breakfasts'] = Breakfast::all();
+        $data['breakfasts'] = Breakfast::where('is_active', 1)->get();
         return view('admin.transactions.create', $data);
+    }
+
+    public function guest_create()
+    {
+        $data['cottages'] = Cottage::all();
+        $data['rooms'] = Room::all();
+        $data['entranceFees'] = Entrancefee::all();
+        $data['breakfasts'] = Breakfast::where('is_active', 1)->get();
+        return view('admin.transactions.guest', $data);
     }
 
     public function store(Request $request)
     {
         // return $request->all();
         $request->validate([
-            'client' => 'required',
+            'guest' => 'required',
             'checkin' => 'required',
             'checkout' => 'nullable',
             'Adults' => 'nullable|numeric',
@@ -107,7 +116,7 @@ class TransactionController extends Controller
         $totalBill = $totalEntranceFee + $extraPersonTotal + $breakfastfees + $rentBill;
 
         $transaction = new Transaction();
-        $transaction->client_id = $request->client;
+        $transaction->guest_id = $request->guest;
         $transaction->room_id = $request->room;
         $transaction->cottage_id = $request->cottage;
         $transaction->checkIn_at = $request->checkin;
@@ -138,8 +147,16 @@ class TransactionController extends Controller
 
     public function show($id)
     {
-        $transaction = Transaction::findOrFail($id);
-        return view('admin.transactions.show', compact('transaction'));
+        $data['transaction'] = Transaction::findOrFail($id);
+        $data['entranceFees'] = Entrancefee::all();
+        return view('admin.transactions.show', $data);
+    }
+
+    public function guest_show($id)
+    {
+        $data['transaction'] = Transaction::findOrFail($id);
+        $data['entranceFees'] = Entrancefee::all();
+        return view('admin.transactions.guest_show', $data);
     }
 
     public function edit($id)
@@ -159,7 +176,7 @@ class TransactionController extends Controller
 
         // return $request->all();
         $request->validate([
-            'client' => 'required',
+            'guest' => 'required',
             'checkin' => 'required',
             'checkout' => 'nullable',
             'Adults' => 'nullable|numeric',
@@ -218,7 +235,7 @@ class TransactionController extends Controller
 
         $totalBill = $totalEntranceFee + $extraPersonTotal + $breakfastfees + $rentBill;
 
-        $transaction->client_id = $request->client;
+        $transaction->guest_id = $request->guest;
         $transaction->room_id = $request->room;
         $transaction->cottage_id = $request->cottage;
         $transaction->checkIn_at = $request->checkin;
@@ -249,8 +266,8 @@ class TransactionController extends Controller
 
     public function destroy($id)
     {
-        $client = Client::findOrFail($id);
-        $client->delete();
+        $guest = Guest::findOrFail($id);
+        $guest->delete();
         
         session()->flash('notification', 'Successfully deleted!');
         session()->flash('type', 'success');
@@ -259,8 +276,8 @@ class TransactionController extends Controller
 
     public function datatables(Request $request)
     {
-        $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->subDays(29)->startOfDay();
-        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now();
+        $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfMonth();
+        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfMonth();
 
         $transactions = Transaction::orderBy('created_at', 'desc')->whereBetween('checkIn_at', [$startDay, $endDay])->get();
 
@@ -268,8 +285,8 @@ class TransactionController extends Controller
                 ->editColumn('id', function ($transaction) {
                     return '<a href="'.route('transaction.invoice', $transaction->id).'">INV-'.$transaction->id.'</a>';
                 })
-                ->addColumn('client', function ($transaction) {
-                    return '<a href="'.route('client.show', $transaction->client_id).'" class="btn btn-link">'.$transaction->client->firstName.' '.$transaction->client->lastName.'</a>';
+                ->addColumn('guest', function ($transaction) {
+                    return '<a href="'.route('guest.show', $transaction->guest_id).'" class="btn btn-link">'.$transaction->guest->firstName.' '.$transaction->guest->lastName.'</a>';
                 })
                 ->addColumn('cottage', function ($transaction) {
                     if($transaction->cottage) {
@@ -314,23 +331,26 @@ class TransactionController extends Controller
                 ->addColumn('actions', function ($transaction) {
                     return '<a href="'.route('transaction.show', $transaction->id).'" class="btn btn-info btn-action mr-1" title="Show"><i class="fas fa-eye"></i></a><a href="'.route('transaction.edit', $transaction->id).'" class="btn btn-primary btn-action mr-1" title="Edit"><i class="fas fa-pencil-alt"></i></a><a class="btn btn-danger btn-action trigger-delete" title="Delete" data-action="'.route('transaction.destroy', $transaction->id).'" data-model="transaction"><i class="fas fa-trash"></i></a>';
                 })
-                ->rawColumns(['actions', 'client', 'cottage', 'room', 'checkin', 'id', 'reservation', 'status'])
+                ->rawColumns(['actions', 'guest', 'cottage', 'room', 'checkin', 'id', 'reservation', 'status'])
                 ->toJson();
     }
 
     public function invoice($id)
     {
-        $data['transaction'] = Transaction::find($id);
+        $data['transaction'] = Transaction::findOrfail($id);
         $data['entranceFees'] = Entrancefee::all();
         return view('admin.transactions.invoice', $data);
     }
 
     public function pay($id)
     {
+        $user = Auth::user();
         $transaction = Transaction::findOrfail($id);
 
         $transaction->update([
-            'status' => 'paid'
+            'status' => 'paid',
+            'receivedby_id' => $user->id,
+            'paid_at' => Carbon::now()
         ]);
 
         return response('success', 200);
@@ -338,10 +358,13 @@ class TransactionController extends Controller
 
     public function unpaid($id)
     {
+        $user = Auth::user();
         $transaction = Transaction::findOrfail($id);
 
         $transaction->update([
-            'status' => 'active'
+            'status' => 'active',
+            'receivedby_id' => null,
+            'paid_at'=> null
         ]);
 
         return response('success', 200);

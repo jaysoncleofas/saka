@@ -30,11 +30,11 @@
                                 <li class="nav-item">
                                     <a class="nav-link active" id="pills-existing-tab" data-toggle="pill"
                                         href="#pills-existing" role="tab" aria-controls="pills-existing"
-                                        aria-selected="true">Existing Client</a>
+                                        aria-selected="true">Existing Guest</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="pills-new-tab" href="{{ route('client.create') }}">New
-                                        Client</a>
+                                    <a class="nav-link" id="pills-new-tab" href="{{ route('guest.create') }}">New
+                                        Guest</a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
@@ -43,11 +43,11 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label>Client</label>
-                                                <select class="form-control @error('client') is-invalid @enderror"
-                                                    name="client" id="client" style="width: 100%">
+                                                <label>Guest</label>
+                                                <select class="form-control @error('guest') is-invalid @enderror"
+                                                    name="guest" id="guest" style="width: 100%">
                                                 </select>
-                                                @error('client')
+                                                @error('guest')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -157,7 +157,7 @@
                                                 class="selectgroup-input"
                                                 {{ old('breakfast') ? (in_array($breakfast->id, old('breakfast')) ? 'checked' : '') : '' }}>
                                             <span
-                                                class="selectgroup-button">{{ $breakfast->title.' P'.number_format($breakfast->price, 0) }}</span>
+                                                class="selectgroup-button">{{ $breakfast->title.' P'.number_format($breakfast->price, 0).' ('.$breakfast->notes.')' }}</span>
                                         </label>
                                         @endforeach
                                     </div>
@@ -275,17 +275,19 @@
     $(document).ready(function () {
         $.ajax({
             type: 'get',
-            url: "{{ route('client.get_clients') }}",
+            url: "{{ route('guest.get_guests') }}",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (result) {
-                var $element = $('#client').select2();
-                for (var d = 0; d < result.clients.length; d++) {
-                    var item = result.clients[d];
+                var $element = $('#guest').select2({
+                    minimumInputLength: 3 // only start searching when the user has input 3 or more characters
+                });
+                for (var d = 0; d < result.guests.length; d++) {
+                    var item = result.guests[d];
                     // console.log(item);
                     // Create the DOM option that is pre-selected by default
-                    var option = new Option(result.clients[d].text, result.clients[d].id, true,
+                    var option = new Option(result.guests[d].text, result.guests[d].id, true,
                         true);
 
                     // Append it to the select

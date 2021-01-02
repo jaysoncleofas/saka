@@ -92,6 +92,7 @@
                     <div class="card-header">
                         <h4>List of Transactions</h4>
                         <div class="card-header-action">
+                            <a href="{{ route('transaction.guest_create') }}" class="btn btn-info mr-2">Add Guest Transaction</a>
                             <a href="{{ route('transaction.create') }}" class="btn btn-primary">Add Transaction</a>
                         </div>
                     </div>
@@ -101,7 +102,7 @@
                                 <thead>
                                     <tr>
                                         <th>Invoice Number</th>
-                                        <th>Client</th>
+                                        <th>Guest</th>
                                         <th>Cottage</th>
                                         <th>Room</th>
                                         <th>Check In</th>
@@ -127,10 +128,8 @@
 @section('scripts')
 <script>
     $(function () {
-        var start = moment("{!! isset($_GET['startdate']) ? Carbon\Carbon::parse($_GET['startdate'])->startOfDay() : Carbon\Carbon::now()->subDays(29)->startOfDay() !!}");
-        var end = moment("{!! isset($_GET['enddate']) ? Carbon\Carbon::parse($_GET['enddate'])->endOfDay() : Carbon\Carbon::now() !!}");
-        console.log(start);
-        console.log(end);
+        var start = moment("{!! isset($_GET['startdate']) ? Carbon\Carbon::parse($_GET['startdate'])->startOfDay() : Carbon\Carbon::now()->startOfMonth() !!}");
+        var end = moment("{!! isset($_GET['enddate']) ? Carbon\Carbon::parse($_GET['enddate'])->endOfDay() : Carbon\Carbon::now()->endOfMonth() !!}");
         function cb(start, end) {
             $('.daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
             $('.startdate').val(start.format('Y-M-D'));
@@ -173,8 +172,8 @@
                     name: 'id'
                 },
                 {
-                    data: 'client',
-                    name: 'client'
+                    data: 'guest',
+                    name: 'guest'
                 },
                 {
                     data: 'cottage',

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Client;
+use App\Models\Guest;
 use App\Models\Transaction;
 use Yajra\DataTables\Facades\DataTables;
 use Carbon\Carbon;
@@ -22,8 +22,8 @@ class ReservationController extends Controller
 
     public function index(Request $request)
     {
-        $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfWeek()->startOfDay();
-        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfWeek()->endOfDay();
+        $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfMonth();
+        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfMonth();
         $data['pending'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('pending')->count();
         $data['approved'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('active')->count();
         return view('admin.reservations.index', $data);
@@ -41,7 +41,7 @@ class ReservationController extends Controller
     public function datatables(Request $request)
     {
         $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfWeek()->startOfDay();
-        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfWeek()->endOfDay();
+        $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfMonth();
         // $data['pending'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('pending')->count();
         // $data['approved'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('active')->count();
 
@@ -51,8 +51,8 @@ class ReservationController extends Controller
                 ->editColumn('id', function ($transaction) {
                     return '<a href="'.route('transaction.invoice', $transaction->id).'">INV-'.$transaction->id.'</a>';
                 })
-                ->addColumn('client', function ($transaction) {
-                    return '<a href="'.route('client.show', $transaction->client_id).'" class="btn btn-link">'.$transaction->client->firstName.' '.$transaction->client->lastName.'</a>';
+                ->addColumn('guest', function ($transaction) {
+                    return '<a href="'.route('guest.show', $transaction->guest_id).'" class="btn btn-link">'.$transaction->guest->firstName.' '.$transaction->guest->lastName.'</a>';
                 })
                 ->addColumn('cottage', function ($transaction) {
                     if($transaction->cottage) {
@@ -97,7 +97,7 @@ class ReservationController extends Controller
                 ->addColumn('actions', function ($transaction) {
                     return '<a href="'.route('transaction.show', $transaction->id).'" class="btn btn-info btn-action mr-1" title="Show"><i class="fas fa-eye"></i></a><a href="'.route('transaction.edit', $transaction->id).'" class="btn btn-primary btn-action mr-1" title="Edit"><i class="fas fa-pencil-alt"></i></a><a class="btn btn-danger btn-action trigger-delete" title="Delete" data-action="'.route('transaction.destroy', $transaction->id).'" data-model="transaction"><i class="fas fa-trash"></i></a>';
                 })
-                ->rawColumns(['actions', 'client', 'cottage', 'checkin', 'checkout', 'id', 'approve','status'])
+                ->rawColumns(['actions', 'guest', 'cottage', 'checkin', 'checkout', 'id', 'approve','status'])
                 ->toJson();
     }
 

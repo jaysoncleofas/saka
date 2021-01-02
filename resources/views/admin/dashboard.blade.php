@@ -100,7 +100,7 @@
                             <thead>
                                 <tr>
                                     <th>Invoice Number</th>
-                                    <th>Client</th>
+                                    <th>Guest</th>
                                     <th>Cottage</th>
                                     <th>Room</th>
                                     <th>Check In</th>
@@ -169,8 +169,8 @@
                     name: 'id'
                 },
                 {
-                    data: 'client',
-                    name: 'client'
+                    data: 'guest',
+                    name: 'guest'
                 },
                 {
                     data: 'cottage',

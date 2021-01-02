@@ -23,6 +23,7 @@ class CreateResortsTable extends Migration
             $table->string('night');
             $table->string('overnight');
             $table->decimal('breakfastPrice', 10, 2);
+            $table->boolean('is_promo')->default(1);
             $table->text('facebook');
             $table->text('instagram');
             $table->text('twitter');

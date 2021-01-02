@@ -18,6 +18,7 @@ class CreateBreakfastsTable extends Migration
             $table->string('title');
             $table->decimal('price', 10, 2);
             $table->boolean('is_active')->default(1);
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

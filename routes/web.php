@@ -16,7 +16,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [App\Http\Controllers\LandingPageController::class, 'index'])->name('landing.index');
 Route::get('/about', [App\Http\Controllers\LandingPageController::class, 'about'])->name('landing.about');
 Route::get('/rooms', [App\Http\Controllers\LandingPageController::class, 'rooms'])->name('landing.rooms');
+Route::get('/room/{id}', [App\Http\Controllers\LandingPageController::class, 'room_show'])->name('room.show');
+Route::get('/room/{id}/book', [App\Http\Controllers\LandingPageController::class, 'room_book'])->name('room.book');
+Route::post('room/{id}/available', [App\Http\Controllers\LandingPageController::class, 'available_rooms'])->name('landing.available_rooms');
+
+Route::post('room/available', [App\Http\Controllers\LandingPageController::class, 'room_available'])->name('landing.room_available');
+Route::post('cottage/available', [App\Http\Controllers\LandingPageController::class, 'cottage_available'])->name('landing.cottage_available');
+
 Route::get('/cottages', [App\Http\Controllers\LandingPageController::class, 'cottages'])->name('landing.cottages');
+Route::get('/cottage/{id}', [App\Http\Controllers\LandingPageController::class, 'cottage_show'])->name('cottage.show');
+
 Route::get('/contact', [App\Http\Controllers\LandingPageController::class, 'contact'])->name('landing.contact');
 Route::post('/reservation-store', [App\Http\Controllers\LandingPageController::class, 'reservation_store'])->name('landing.reservation-store');
 
@@ -48,10 +57,10 @@ Route::get('/cottages-datatables', [App\Http\Controllers\CottageController::clas
 Route::put('/cottage-image', [App\Http\Controllers\CottageController::class, 'image_remove'])->name('cottage.image.remove');
 Route::put('/cottage-coverimage', [App\Http\Controllers\CottageController::class, 'coverimage_remove'])->name('cottage.coverimage.remove');
 
-Route::resource('client', App\Http\Controllers\ClientController::class)->except(['index']);
-Route::get('/clients', [App\Http\Controllers\ClientController::class, 'index'])->name('client.index');
-Route::get('/clients-datatables', [App\Http\Controllers\ClientController::class, 'datatables'])->name('client.datatables');
-Route::get('/get_clients', [App\Http\Controllers\ClientController::class, 'get_clients'])->name('client.get_clients');
+Route::resource('guest', App\Http\Controllers\GuestController::class)->except(['index']);
+Route::get('/guests', [App\Http\Controllers\GuestController::class, 'index'])->name('guest.index');
+Route::get('/guests-datatables', [App\Http\Controllers\GuestController::class, 'datatables'])->name('guest.datatables');
+Route::get('/get_guests', [App\Http\Controllers\GuestController::class, 'get_guests'])->name('guest.get_guests');
 
 Route::resource('transaction', App\Http\Controllers\TransactionController::class)->except(['index']);
 Route::get('/transactions', [App\Http\Controllers\TransactionController::class, 'index'])->name('transaction.index');
@@ -59,6 +68,8 @@ Route::get('/transactions-datatables', [App\Http\Controllers\TransactionControll
 Route::get('/transaction/invoice/{id}', [App\Http\Controllers\TransactionController::class, 'invoice'])->name('transaction.invoice');
 Route::post('/transaction/invoice/{id}/pay', [App\Http\Controllers\TransactionController::class, 'pay'])->name('transaction.pay');
 Route::post('/transaction/invoice/{id}/unpaid', [App\Http\Controllers\TransactionController::class, 'unpaid'])->name('transaction.unpaid');
+Route::get('/transaction/guest/create', [App\Http\Controllers\TransactionController::class, 'guest_create'])->name('transaction.guest_create');
+Route::get('/transaction/guest/{id}', [App\Http\Controllers\TransactionController::class, 'guest_show'])->name('transaction.guest_show');
 
 Route::resource('reservation', App\Http\Controllers\ReservationController::class)->except(['index', 'show', 'update', 'store']);
 Route::get('/reservations', [App\Http\Controllers\ReservationController::class, 'index'])->name('reservation.index');

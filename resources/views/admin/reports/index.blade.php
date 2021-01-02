@@ -57,7 +57,7 @@
                                 <thead>
                                     <tr>
                                         <th>Check-In Date</th>
-                                        <th>Client</th>
+                                        <th>Guest</th>
                                         <th>Room</th>
                                         <th>Cottage</th>
                                         <th>Total Entrance fees</th>
@@ -80,8 +80,8 @@
 @section('scripts')
 <script>
     $(function () {
-        var start = moment("{!! isset($_GET['startdate']) ? Carbon\Carbon::parse($_GET['startdate'])->startOfDay() : Carbon\Carbon::now()->subDays(29)->startOfDay() !!}");
-        var end = moment("{!! isset($_GET['enddate']) ? Carbon\Carbon::parse($_GET['enddate'])->endOfDay() : Carbon\Carbon::now() !!}");
+        var start = moment("{!! isset($_GET['startdate']) ? Carbon\Carbon::parse($_GET['startdate'])->startOfDay() : Carbon\Carbon::now()->startOfMonth() !!}");
+        var end = moment("{!! isset($_GET['enddate']) ? Carbon\Carbon::parse($_GET['enddate'])->endOfDay() : Carbon\Carbon::now()->endOfMonth() !!}");
         console.log(start);
         console.log(end);
         function cb(start, end) {
@@ -125,8 +125,8 @@
                     data: 'checkIn_at',
                     name: 'checkIn_at'
                 }, {
-                    data: 'client',
-                    name: 'client'
+                    data: 'guest',
+                    name: 'guest'
                 },
                 {
                     data: 'room',
