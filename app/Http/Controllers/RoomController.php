@@ -42,7 +42,8 @@ class RoomController extends Controller
             'extraPerson' => 'nullable',
             'entrancefee' => 'required',
             'descriptions' => 'nullable|min:2',
-            'maxExtraPerson' => 'nullable',
+            'min' => 'nullable',
+            'max' => 'required',
         ]);
 
         $room = new Room();
@@ -63,7 +64,8 @@ class RoomController extends Controller
         $room->extraPerson = $request->extraPerson;
         $room->entrancefee = $request->entrancefee;
         $room->descriptions = $request->descriptions;
-        $room->extraPersonAvailable = $request->maxExtraPerson;
+        $room->max = $request->max;
+        $room->min = $request->min;
         $room->save();
 
         if ($request->hasFile('images')) {
@@ -103,7 +105,8 @@ class RoomController extends Controller
             'extraPerson' => 'nullable',
             'entrancefee' => 'required',
             'descriptions' => 'nullable|min:2',
-            'maxExtraPerson' => 'nullable',
+            'min' => 'nullable',
+            'max' => 'required',
         ]);
 
         if ($request->hasFile('image')) {
@@ -122,7 +125,8 @@ class RoomController extends Controller
         $room->extraPerson = $request->extraPerson;
         $room->entrancefee = $request->entrancefee;
         $room->descriptions = $request->descriptions;
-        $room->extraPersonAvailable = $request->maxExtraPerson;
+        $room->max = $request->max;
+        $room->min = $request->min;
         $room->save();
 
         
@@ -191,11 +195,11 @@ class RoomController extends Controller
                     return ($room->extraPerson !=0 ? 'P'.number_format($room->extraPerson, 0) : '-');
                     // return 'P'.number_format($room->price, 0);
                 })
-                ->editColumn('extraPersonAvailable', function ($room) {
-                    return ($room->extraPersonAvailable ? $room->extraPersonAvailable : '-');
+                ->addColumn('capacity', function ($room) {
+                    return ($room->min ? $room->min.'-'.$room->max : $room->max);
                     // return 'P'.number_format($room->price, 0);
                 })
-                ->rawColumns(['actions', 'image', 'price', 'extraPerson', 'extraPersonAvailable'])
+                ->rawColumns(['actions', 'image', 'price', 'extraPerson', 'capacity'])
                 ->toJson();
     }
 

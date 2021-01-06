@@ -12,6 +12,7 @@ use App\Models\Transaction;
 use App\Models\Resort;
 use DB;
 use Carbon\Carbon;
+use App\Notifications\ReservationSent;
 
 class LandingPageController extends Controller
 {
@@ -157,8 +158,155 @@ class LandingPageController extends Controller
 
     public function room_show($id)
     {
+        $data['entranceFees'] = Entrancefee::all();
+        $data['breakfasts'] = Breakfast::all();
         $data['room'] = Room::findOrFail($id);
         return view('landing.roomshow', $data);
+    }
+
+    public function room_reservation_store(Request $request, $id)
+    {
+        $request->validate([
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'contactNumber' => 'required',
+            'email' => 'required',
+            'checkin' => 'required',
+            'adults' => 'required|numeric',
+            'kids' => 'required|numeric',
+            'senior_citizen' => 'required|numeric',
+            'type' => 'required',
+        ]);
+
+        $room = Room::findOrFail($id);
+        $totalpax = $request->adults + $request->kids + $request->senior_citizen;
+        if($room->max < $totalpax) {
+            session()->flash('notification', 'The Maximum capacity for this room is '.$room->max.'pax');
+            session()->flash('type', 'error');
+            return redirect()->back()->withInput($request->input());
+        }
+        $checkIn_at = Carbon::parse($request->checkin);
+        if($request->type == 'night') {
+            $checkin = Carbon::parse($request->checkin)->setHour(17);  
+            $checkout = Carbon::parse($request->checkin)->setHour(21);  
+        } else {
+            $checkin = Carbon::parse($request->checkin)->setHour(14);  
+            $checkout = Carbon::parse($request->checkin)->addDay(1)->setHour(11);  
+        }
+
+        $is_reserved = Transaction::where('room_id', $room->id)->whereDate('checkIn_at', '=', $checkIn_at)->first();
+        if($is_reserved) {
+            session()->flash('notification', 'Sorry, the room was already reserved.');
+            session()->flash('type', 'error');
+            return redirect()->back()->withInput($request->input());
+        }
+
+        $guest = Guest::whereContact($request->contactNumber)->first();
+        if(empty($guest)) {
+            $guest = Guest::create([
+                'firstName' => $request->firstName,
+                'lastName' => $request->lastName,
+                'contact' => $request->contactNumber,
+                'email' => $request->email,
+            ]);
+        }
+
+        $extraPerson = null;
+        $entranceFees = Entrancefee::all();
+        $adultfees = 0;
+        $kidfees = 0;
+        $seniorfees = 0;
+        foreach($entranceFees as $fee) {
+            if($fee->title == 'Adults') {
+                $adultfees = $request->adults * $fee->nightPrice;
+            } elseif ($fee->title == 'Kids') {
+                $kidfees = $request->kids * $fee->nightPrice;
+            } elseif ($fee->title == 'Senior Citizen') {
+                $seniorfees = $request->senior_citizen * $fee->nightPrice;
+            }
+        }
+        $totalEntranceFee = $adultfees + $kidfees + $seniorfees;
+
+        $rentBill = 0;
+        $extraPersonTotal = 0;
+        if($room->extraPerson != 0) {
+            $extraPersonTotal = $request->extraPerson * $room->extraPerson;
+        }
+        if($room->entrancefee == 'Inclusive') {
+            $totalEntranceFee = 0;
+        }
+        $rentBill = $room->price;
+
+        $breakfastfees = 0;
+        if($request->isbreakfast) {
+            $resort = Resort::findOrFail(1);
+            $breakfastfees = $resort->is_promo ? 0 : $resort->breakfastPrice;
+            if($request->breakfast) {
+                foreach($request->breakfast as $breakfast_id) {
+                    $breakfastP = Breakfast::findOrfail($breakfast_id);
+                    $breakfastfees = $breakfastfees + $breakfastP->price;
+                }
+            }
+        }
+
+        $totalBill = $totalEntranceFee + $extraPersonTotal + $breakfastfees + $rentBill;
+
+        do {
+            $length = 64;
+            $keyspace = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
+            $controlCode = '';
+            $max = mb_strlen($keyspace, '8bit') - 1;
+            for ($i = 0; $i < $length; ++$i) {
+                $controlCode .= $keyspace[random_int(0, $max)];
+            }
+            $check_controlCode = Transaction::where('controlCode', $controlCode)->first();
+        } while($check_controlCode = false);
+
+        $transaction = new Transaction();
+        $transaction->guest_id = $guest->id;
+        $transaction->room_id = $room->id;
+        $transaction->cottage_id = null;
+        $transaction->checkIn_at = $checkin;
+        $transaction->checkOut_at = $checkout;
+        $transaction->adults = $request->adults;
+        $transaction->kids = $request->kids;
+        $transaction->senior = $request->senior_citizen;
+        $transaction->type = $request->type;
+        $transaction->is_breakfast = $request->type == 'night' ? 0 : 1;
+        $transaction->status = 'pending';
+        $transaction->notes = null;
+        $transaction->is_reservation = 1;
+        $transaction->extraPerson = $extraPerson;
+        $transaction->extraPersonTotal = $extraPersonTotal;
+        $transaction->totalEntranceFee = $totalEntranceFee;
+        $transaction->breakfastfees = $breakfastfees;
+        $transaction->rentBill = $rentBill;
+        $transaction->totalBill = $totalBill;
+        $transaction->controlCode = $controlCode;
+        $transaction->save();
+
+        $transaction->breakfasts()->sync($request->breakfast);
+    
+
+        $guest->notify(new ReservationSent($transaction));
+
+        session()->flash('type', 'success');
+        session()->flash('notification', 'Resevation was sent successfully. Please wait for the approval of your reservation.');
+        return redirect()->route('landing.transaction_show', $controlCode);    
+        // }
+        // return redirect()->back();
+    }
+
+
+
+    public function transaction_show($code) 
+    {
+        $data['transaction'] = Transaction::where('controlCode', $code)->first();
+        if($data['transaction']) {
+            $data['entranceFees'] = Entrancefee::all();
+            return view('landing.transaction_show', $data);
+        }
+        return abort(404);
     }
 
     public function cottage_show($id)
@@ -191,6 +339,24 @@ class LandingPageController extends Controller
         $rooms = Room::all();
         return response()->json(['rooms' => $rooms ], 200);
     }
+
+    public function getrooms_available($id)
+    {
+        $room = Room::findOrFail($id);
+        // $checkin = Carbon::parse($request->checkin); 
+        // $checkout = Carbon::parse($request->checkout); 
+        // ->whereDate('date', '>=', Carbon::now('Europe/Stockholm'))
+        $day3 = Carbon::now()->addDays(3);
+        $slot = Transaction::where('room_id', $room->id)->whereDate('checkIn_at', '>=', $day3)->pluck('checkIn_at')->toArray();
+
+        // if(!empty($slot)) {
+        //     $rooms = Room::whereNotIn('id', $slot)->get();
+        //     return response()->json(['rooms' => $rooms], 200);
+        // }
+        // $rooms = Room::all();
+        return response()->json(['dates' => $slot ], 200);
+    }
+    
 
     public function cottage_available(Request $request)
     {

@@ -44,7 +44,7 @@
                                 </div>
                             </div>
                             <div class="w-inline-block">
-                                <a href="room/{{ $room->id }}" class="btn btn-lg btn-outline-dark button-secondary large radius-zero">More Information</a>
+                                <a href="{{ route('room.show', $room->id) }}" class="btn btn-lg btn-outline-dark button-secondary large radius-zero">More Information</a>
                             </div>
                         </div>
                     </div>

@@ -25,6 +25,7 @@
                                         <th>Cottage</th>
                                         <th>Price</th>
                                         <th>Night Price</th>
+                                        <th>Quantity</th>
                                         <th>Descriptions</th>
                                         <th>Actions</th>
                                     </tr>
@@ -71,6 +72,10 @@
                 {
                     data: 'nightPrice',
                     name: 'nightPrice'
+                },
+                {
+                    data: 'quantity',
+                    name: 'quantity'
                 },
                 {
                     data: 'descriptions',

@@ -29,7 +29,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-4">
                                     <label for="price">Price</label>
                                     <input type="text" class="form-control digit_only2 @error('price') is-invalid @enderror"
                                         name="price" id="price" value="{{ old('price') }}">
@@ -40,17 +40,29 @@
                                     @enderror
                                 </div>
 
-                                {{-- <div class="form-group col-md-6">
-                                    <label for="nightPrice">Overnight Price</label>
-                                    <input type="text" class="form-control @error('nightPrice') is-invalid @enderror"
+                                <div class="form-group col-md-4">
+                                    <label for="nightPrice">Night Price</label>
+                                    <input type="text" class="form-control digit_only2 @error('nightPrice') is-invalid @enderror"
                                         name="nightPrice" id="nightPrice" value="{{ old('nightPrice') }}">
                                     @error('nightPrice')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
-                                </div> --}}
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label for="quantity">Quantity</label>
+                                    <input type="text" class="form-control digit_only2 @error('quantity') is-invalid @enderror"
+                                        name="quantity" id="quantity" value="{{ old('quantity') }}">
+                                    @error('quantity')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
                             </div>
+
 
                             <div class="form-group">
                                 <label for="descriptions">Descriptions</label>

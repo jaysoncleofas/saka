@@ -52,11 +52,23 @@
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label for="maxExtraPerson">Max Extra Person</label>
+                                    <label for="min">Min Capacity</label>
                                     <input type="text"
-                                        class="form-control digit_only2 @error('maxExtraPerson') is-invalid @enderror"
-                                        name="maxExtraPerson" id="maxExtraPerson" value="{{ $room->extraPersonAvailable }}">
-                                    @error('maxExtraPerson')
+                                        class="form-control digit_only2 @error('min') is-invalid @enderror"
+                                        name="min" id="min" value="{{ $room->min }}">
+                                    @error('min')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="max">Max Capacity</label>
+                                    <input type="text"
+                                        class="form-control digit_only2 @error('max') is-invalid @enderror"
+                                        name="max" id="max" value="{{ $room->max }}">
+                                    @error('max')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

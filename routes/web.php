@@ -15,16 +15,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [App\Http\Controllers\LandingPageController::class, 'index'])->name('landing.index');
 Route::get('/about', [App\Http\Controllers\LandingPageController::class, 'about'])->name('landing.about');
+
 Route::get('/rooms', [App\Http\Controllers\LandingPageController::class, 'rooms'])->name('landing.rooms');
-Route::get('/room/{id}', [App\Http\Controllers\LandingPageController::class, 'room_show'])->name('room.show');
-Route::get('/room/{id}/book', [App\Http\Controllers\LandingPageController::class, 'room_book'])->name('room.book');
-Route::post('room/{id}/available', [App\Http\Controllers\LandingPageController::class, 'available_rooms'])->name('landing.available_rooms');
+Route::get('/room/{id}/show', [App\Http\Controllers\LandingPageController::class, 'room_show'])->name('room.show');
+// Route::post('room/{id}/available', [App\Http\Controllers\LandingPageController::class, 'available_rooms'])->name('landing.available_rooms');
+Route::post('room/{id}/reservation', [App\Http\Controllers\LandingPageController::class, 'room_reservation_store'])->name('landing.room_reservation_store');
+Route::get('guest-transaction/{code}', [App\Http\Controllers\LandingPageController::class, 'transaction_show'])->name('landing.transaction_show');
+// Route::get('/room/{id}/book', [App\Http\Controllers\LandingPageController::class, 'room_book'])->name('room.book');
+Route::post('room/{id}/getrooms_available', [App\Http\Controllers\LandingPageController::class, 'getrooms_available'])->name('landing.getrooms_available');
 
 Route::post('room/available', [App\Http\Controllers\LandingPageController::class, 'room_available'])->name('landing.room_available');
 Route::post('cottage/available', [App\Http\Controllers\LandingPageController::class, 'cottage_available'])->name('landing.cottage_available');
 
 Route::get('/cottages', [App\Http\Controllers\LandingPageController::class, 'cottages'])->name('landing.cottages');
-Route::get('/cottage/{id}', [App\Http\Controllers\LandingPageController::class, 'cottage_show'])->name('cottage.show');
+Route::get('/cottage/{id}/show', [App\Http\Controllers\LandingPageController::class, 'cottage_show'])->name('cottage.show');
 
 Route::get('/contact', [App\Http\Controllers\LandingPageController::class, 'contact'])->name('landing.contact');
 Route::post('/reservation-store', [App\Http\Controllers\LandingPageController::class, 'reservation_store'])->name('landing.reservation-store');

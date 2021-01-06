@@ -1,0 +1,217 @@
+@extends('layouts.resort')
+
+@section('content')
+@include('landing.nav2')
+
+<div class="section rooms">
+    <div class="container-small-616px text-center w-container">
+        <h2 class="title request-info mb-5">Reservation</h2>
+        {{-- <p>Find and reserve your selected room and get the lowest prices.</p> --}}
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <strong>Transaction# {{ $transaction->id }}</strong>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <strong>Status:</strong> {{ ucfirst($transaction->status) }} <br>
+                                        @if ($transaction->cottage_id)
+                                       <strong>Cottage:</strong> {{ $transaction->cottage->name }} <br>
+                                        @endif
+                                        @if ($transaction->room_id)
+                                        <strong>Room:</strong> {{ $transaction->room->name }} <br>
+                                        {{-- <strong>Entrance Fee:</strong> {{ $transaction->room->entrancefee }} <br> --}}
+                                        @endif
+                                        <strong>Check In:</strong> {{ $transaction->checkIn_at->format('M d, Y h:i a') }} <br>
+                                        <strong>Check Out:</strong> {{ $transaction->checkOut_at ? $transaction->checkOut_at->format('M d, Y h:i a') : '-' }} <br>
+                                        <strong>Type:</strong> {{ ucfirst($transaction->type) }} Use <br>
+                                    </div>
+
+
+                                    <div class="col-lg-6">
+                                        @if ($transaction->room_id)
+                                        <strong>Entrance Fee:</strong> {{ $transaction->room->entrancefee }} <br>
+                                        @endif
+                                        <strong>Adults:</strong> {{ $transaction->adults }} <br>
+                                        <strong>Kids:</strong> {{ $transaction->kids }} <br>
+                                        <strong>Senior Citizens:</strong> {{ $transaction->senior }} <br>
+                                        <strong>Breakfast:</strong> {{ $transaction->is_breakfast == 1 ? 'Yes' : 'No' }}
+                                        <span class="ml-5">
+                                            <strong>Add ons:</strong>
+                                            @php
+                                                $breakfasts_array = [];
+                                                foreach ($transaction->breakfasts as $breakfast) {
+                                                    array_push($breakfasts_array, $breakfast->title);
+                                                }
+                                                echo implode(', ', $breakfasts_array);
+                                            @endphp
+                                        </span>
+                                    </div>
+                                    
+                                </div>
+                                {{-- <ul class="list-group list-group-flush">
+                                    
+                                    <li class="list-group-item"></li>
+                                    <li class="list-group-item"></li>
+                                    <li class="list-group-item"></li>
+                                    <li class="list-group-item"></li>
+                                    <li class="list-group-item"></li>
+                                    <li class="list-group-item"></li>
+                                    <li class="list-group-item"><strong>Breakfast:</strong> {{ $transaction->is_breakfast == 1 ? 'Yes' : 'No' }}
+                                        <span class="ml-5">
+                                            <strong>Add ons:</strong>
+                                            @php
+                                                $breakfasts_array = [];
+                                                foreach ($transaction->breakfasts as $breakfast) {
+                                                    array_push($breakfasts_array, $breakfast->title);
+                                                }
+                                                echo implode(', ', $breakfasts_array);
+                                            @endphp
+                                        </span>
+                                    </li>
+                                </ul> --}}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 mt-5">
+                                <strong>Bills Summary</strong>
+                                <div class="table-responsive mt-2">
+                                    <!-- Item list -->
+                                    <table class="table table-bordered table-md">
+                                        <thead>
+                                            <tr>
+                                                <th>Item list</th>
+                                                <th>Quantity</th>
+                                                <th>Unit Price</th>
+                                                <th>Total price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if ($transaction->cottage || $transaction->room->entrancefee != 'Inclusive')
+                                                @if ($transaction->adults)
+                                                <tr>
+                                                    <td>Adults</td>
+                                                    <td>{{ $transaction->adults }}</td>
+                                                    @foreach ($entranceFees as $entrancefee)
+                                                        @if ($entrancefee->title == 'Adults')
+                                                            <td>P{{ number_format($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price, 2) }}</td>
+                                                            <td>P<span class="totalprice">{{ number_format($transaction->adults * ($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price), 2) }}</span></td>
+                                                        @endif
+                                                    @endforeach
+                                                </tr>
+                                                @endif
+
+                                                @if ($transaction->kids)
+                                                <tr>
+                                                    <td>Kids</td>
+                                                    <td>{{ $transaction->kids }}</td>
+                                                    @foreach ($entranceFees as $entrancefee)
+                                                        @if ($entrancefee->title == 'Kids')
+                                                            <td>P{{ number_format($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price, 2) }}</td>
+                                                            <td>P<span class="totalprice">{{ number_format($transaction->kids * ($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price), 2) }}</span></td>
+                                                        @endif
+                                                    @endforeach
+                                                </tr>
+                                                @endif
+
+                                                @if ($transaction->senior)
+                                                <tr>
+                                                    <td>Senior Citizen</td>
+                                                    <td>{{ $transaction->senior }}</td>
+                                                    @foreach ($entranceFees as $entrancefee)
+                                                        @if ($entrancefee->title == 'Senior Citizen')
+                                                            <td>P{{ number_format($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price, 2) }}</td>
+                                                            <td>P<span class="totalprice">{{ number_format($transaction->senior * ($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price), 2) }}</span></td>
+                                                        @endif
+                                                    @endforeach
+                                                </tr>
+                                                @endif
+                                            @endif
+
+                                            @if ($transaction->cottage)
+                                            <tr>
+                                                <td>Cottage: {{ $transaction->cottage->name }}</td>
+                                                <td>1</td>
+                                                <td>P{{ number_format($transaction->type != 'day' ? $transaction->cottage->nightPrice : $transaction->cottage->price, 2) }}</td>
+                                                <td>P<span class="totalprice">{{  number_format($transaction->type != 'day' ? $transaction->cottage->nightPrice : $transaction->cottage->price, 2) }}</span></td>
+                                            </tr>
+                                            @endif
+
+                                            @if ($transaction->room)
+                                                <tr>
+                                                    <td>Room: {{ $transaction->room->name }}</td>
+                                                    <td>1</td>
+                                                    <td>P{{ number_format($transaction->room->price, 2) }}</td>
+                                                    <td>P<span class="totalprice">{{  number_format($transaction->room->price, 2) }}</span></td>
+                                                </tr>
+                                            @endif
+
+                                            @if ($transaction->extraPerson)
+                                                <tr>
+                                                    <td>Extra Person</td>
+                                                    <td>{{ $transaction->extraPerson }}</td>
+                                                    <td>P{{ number_format($transaction->room->extraPerson, 2) }}</td>
+                                                    <td>P<span class="totalprice">{{  number_format($transaction->room->extraPerson*$transaction->extraPerson, 2) }}</span></td>
+                                                </tr>
+                                            @endif
+
+                                            @if ($transaction->is_breakfast)
+                                                <tr>
+                                                    <td>Breakfast</td>
+                                                    <td>1</td>
+                                                    <td>P{{ ($transaction->breakfastfees != 0 && empty($transaction->breakfasts)) ? number_format(config('yourconfig.resort')->breakfastPrice, 2) : 0 }}</td>
+                                                    <td>P<span class="totalprice">{{ ($transaction->breakfastfees != 0 && empty($transaction->breakfasts)) ? number_format(config('yourconfig.resort')->breakfastPrice, 2) : 0 }}</span></td>
+                                                </tr>
+
+                                                @foreach ($transaction->breakfasts as $breakfast)
+                                                <tr>
+                                                    <td>{{ $breakfast->title }}</td>
+                                                    <td>1</td>
+                                                    <td>P{{ number_format($breakfast->price, 2) }}</td>
+                                                    <td>P<span class="totalprice">{{ number_format($breakfast->price, 2) }}</span></td>
+                                                </tr>
+                                                @endforeach
+                                            @endif
+    
+                                        </tbody>
+                                    </table>
+                                    <!-- /.Item list -->
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-3 float-md-right ml-auto">
+                                <ul class="striped list-unstyled">
+                                    <li><strong>TOTAL:</strong><span class="float-right">P<span id="total_invoice">{{ number_format($transaction->totalBill, 2) }}</span></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@include('landing.footer')
+
+@endsection
+
+@section('script')
+@if (session('notification'))
+<script>
+swal({
+    title: 'Success!',
+    text: '{{ session('notification') }}',
+    icon: "success",
+    button: true,
+});
+</script>
+@endif
+@endsection

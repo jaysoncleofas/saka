@@ -24,8 +24,8 @@
                                         <th>Image</th>
                                         <th>Room</th>
                                         <th>Price</th>
+                                        <th>Capacity</th>
                                         <th>Extra Person</th>
-                                        <th>Max Extra Person</th>
                                         <th>Entrance fee</th>
                                         <th>Descriptions</th>
                                         <th>Actions</th>
@@ -71,12 +71,12 @@
                     name: 'price'
                 },
                 {
-                    data: 'extraPerson',
-                    name: 'extraPerson'
+                    data: 'capacity',
+                    name: 'capacity'
                 },
                 {
-                    data: 'extraPersonAvailable',
-                    name: 'extraPersonAvailable'
+                    data: 'extraPerson',
+                    name: 'extraPerson'
                 },
                 {
                     data: 'entrancefee',

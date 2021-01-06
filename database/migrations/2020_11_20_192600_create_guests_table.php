@@ -19,6 +19,7 @@ class CreateGuestsTable extends Migration
             $table->string('lastName');
             $table->string('middleName')->nullable();
             $table->string('contact')->unique()->nullable();
+            $table->string('email')->nullable();
             $table->integer('age')->nullable();
             $table->string('address')->nullable();
             $table->timestamps();

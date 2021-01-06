@@ -18,6 +18,7 @@ class CreateCottagesTable extends Migration
             $table->string('name');
             $table->decimal('price', 10, 2);
             $table->decimal('nightPrice', 10, 2)->nullable();
+            $table->integer('quantity');
             $table->text('descriptions')->nullable();
             $table->text('image')->nullable();
             $table->timestamps();

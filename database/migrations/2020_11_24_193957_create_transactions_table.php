@@ -15,6 +15,7 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->string('controlCode');
             $table->unsignedBigInteger('guest_id');
             $table->foreign('guest_id')->references('id')->on('guests');
             $table->unsignedBigInteger('cottage_id')->nullable();

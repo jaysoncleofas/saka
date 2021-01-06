@@ -103,15 +103,23 @@
                                         class="img-fluid" alt="">
                                 </div>
                                 <div class="col-lg-8">
-                                    <h3 class="title room">P{{ number_format($room->price, 2) }}</h3>
                                     <h3 class="title room">{{ $room->name }}</h3>
+                                    <h3 class="title room">P{{ number_format($room->price, 2) }}</h3>
                                     <p class="paragraph room">{{ $room->descriptions }}</p>
                                 </div>
                             </div>
 
                             <div class="row">
+                                <div class="col-lg-4">
+                                    <label>Select Your Booking Date: </label>
+                                    <div id="datepicker"></div>
+                                    <input type="hidden" id="my_hidden_input">
+                                </div>
+
                                 <div class="form-group col-lg-4">
-                                    <label for="checkin">Select Date</label>
+                                    {{-- <div class="card"> --}}
+                                    {{-- </div> --}}
+                                    {{-- <label for="checkin">Select Date</label>
                                     <input type="date" class="form-control @error('checkin') is-invalid @enderror"
                                         name="checkin" id="checkin"
                                         value="{{ old('checkin') ?? date('Y-m-d\TH:i:s') }}">
@@ -119,7 +127,7 @@
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                    @enderror
+                                    @enderror --}}
                                 </div>
                             </div>
 
@@ -283,28 +291,36 @@
 </script>
 @endif
 <script>
-    // var today = new Date().toISOString().split('T')[0];
+    var today = new Date().toISOString().split('T')[0];
     // console.log(today);
-    var new_date = moment().add(3, 'days').format('YYYY-MM-DD');
+    var new_date = moment().add(3, 'days').format('MM-DD-YYYY');
     console.log(new_date);
-    $('#checkin').attr("min", new_date);
+    // $('#checkin').attr("min", new_date);
 
-    $(document).on('change', '#checkin', function () {
-        var _this = $(this);
+    // $(document).on('change', '#checkin', function () {
+    //     var _this = $(this);
         $.ajax({
-            type: 'post',
-            url: "{{ route('landing.available_rooms', $room->id) }}",
+            type: 'get',
+            url: "{{ route('landing.getrooms_available', $room->id) }}",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: {
-                checkin: _this.val()
             },
             success: function (result) {
                 console.log(result);
             }
         });
+    // });
+
+    var disabledDates = ['01/11/2021','01/13/2021'];
+    $('#datepicker').datepicker({
+        datesDisabled: disabledDates,
+        startDate: new_date
     });
+    // $('#datepicker').on('changeDate', function() {
+    //     $('#my_hidden_input').val(
+    //         $('#datepicker').datepicker('getFormattedDate')
+    //     );
+    // });
 
 </script>
 @endsection

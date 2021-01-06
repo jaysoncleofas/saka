@@ -40,7 +40,8 @@ class CottageController extends Controller
         $request->validate([
             'cottage' => 'required|min:2',
             'price' => 'required',
-            'nightPrice' => 'nullable',
+            'nightPrice' => 'required',
+            'quantity' => 'required',
             'descriptions' => 'nullable|min:2',
             'images.*' => 'bail|nullable|image|mimes:jpg,png,jpeg,gif,svg|max:10000',
         ]);
@@ -61,6 +62,7 @@ class CottageController extends Controller
         $cottage->name = $request->cottage;
         $cottage->price = $request->price;
         $cottage->nightPrice = $request->nightPrice;
+        $cottage->quantity = $request->quantity;
         $cottage->descriptions = $request->descriptions;
         $cottage->save();
 
@@ -98,7 +100,8 @@ class CottageController extends Controller
         $request->validate([
             'cottage' => 'required|min:2',
             'price' => 'required',
-            'nightPrice' => 'nullable',
+            'nightPrice' => 'required',
+            'quantity' => 'required',
             'extraPerson' => 'nullable',
             'descriptions' => 'nullable|min:2',
         ]);
@@ -117,6 +120,7 @@ class CottageController extends Controller
         $cottage->name = $request->cottage;
         $cottage->price = $request->price;
         $cottage->nightPrice = $request->nightPrice;
+        $cottage->quantity = $request->quantity;
         $cottage->descriptions = $request->descriptions;
         $cottage->save();
 
@@ -181,7 +185,10 @@ class CottageController extends Controller
                 ->editColumn('price', function ($cottage) {
                     return 'P'.number_format($cottage->price, 0);
                 })
-                ->rawColumns(['actions', 'image', 'price'])
+                ->editColumn('nightPrice', function ($cottage) {
+                    return 'P'.number_format($cottage->nightPrice, 0);
+                })
+                ->rawColumns(['actions', 'image', 'price', 'nightPrice'])
                 ->toJson();
     }
 
