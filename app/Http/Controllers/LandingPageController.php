@@ -229,19 +229,21 @@ class LandingPageController extends Controller
 
         $rentBill = 0;
         $extraPersonTotal = 0;
-        if($room->extraPerson != 0) {
-            $extraPersonTotal = $request->extraPerson * $room->extraPerson;
+        if(!empty($room->min) && $totalpax > $room->min) {
+            $extraPerson = $totalpax - $room->min;
+            $extraPersonTotal = $extraPerson * $room->extraPerson;
         }
         if($room->entrancefee == 'Inclusive') {
             $totalEntranceFee = 0;
         }
         $rentBill = $room->price;
 
+        $resort = Resort::findOrFail(1);
         $breakfastfees = 0;
+        $isbreakfast = $request->type == 'night' ? 0 : $request->isbreakfast;
         if($request->isbreakfast) {
-            $resort = Resort::findOrFail(1);
             $breakfastfees = $resort->is_promo ? 0 : $resort->breakfastPrice;
-            if($request->breakfast) {
+            if($isbreakfast) {
                 foreach($request->breakfast as $breakfast_id) {
                     $breakfastP = Breakfast::findOrfail($breakfast_id);
                     $breakfastfees = $breakfastfees + $breakfastP->price;
@@ -272,7 +274,8 @@ class LandingPageController extends Controller
         $transaction->kids = $request->kids;
         $transaction->senior = $request->senior_citizen;
         $transaction->type = $request->type;
-        $transaction->is_breakfast = $request->type == 'night' ? 0 : 1;
+        $transaction->is_breakfast = $isbreakfast;
+        $transaction->is_freebreakfast = $resort->is_promo == 1 ? 1 : 0;
         $transaction->status = 'pending';
         $transaction->notes = null;
         $transaction->is_reservation = 1;
@@ -285,10 +288,12 @@ class LandingPageController extends Controller
         $transaction->controlCode = $controlCode;
         $transaction->save();
 
-        $transaction->breakfasts()->sync($request->breakfast);
+        if($isbreakfast == 1) {
+            $transaction->breakfasts()->sync($request->breakfast);
+        }
     
 
-        $guest->notify(new ReservationSent($transaction));
+        // $guest->notify(new ReservationSent($transaction));
 
         session()->flash('type', 'success');
         session()->flash('notification', 'Resevation was sent successfully. Please wait for the approval of your reservation.');

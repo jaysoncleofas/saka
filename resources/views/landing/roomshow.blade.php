@@ -120,12 +120,12 @@
                         </div>
                         <div class="reservate-room-content">
                             <div>
-                                <form action="{{ route('landing.room_reservation_store', $room->id) }}" method="POST">
+                                <form action="{{ route('landing.room_reservation_store', $room->id) }}" method="POST" autocomplete="off">
                                     @csrf
 
                                     <div class="form-group">
                                         <label for="datepicker">Check-in Date:</label>
-                                        <input type="text" name="checkin" class="form-control @error('checkin') is-invalid @enderror" id="datepicker">
+                                        <input type="text" name="checkin" class="form-control @error('checkin') is-invalid @enderror" id="datepicker" value="{{ old('checkin') }}">
                                         @error('checkin')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -134,9 +134,28 @@
                                     </div>
 
                                     <div class="row">
+                                        <div class="col-lg-12 mb-2">
+                                            <span>{{ $room->entrancefee }} Entrance fee</span>
+                                            @if ($room->entrancefee == 'Exclusive')
+                                            :
+                                            @foreach ($entranceFees as $item)
+                                            {{ $item->title }} P{{ number_format($item->nightPrice, 0) }}
+                                            @if(!($loop->last))
+                                            ,
+                                            @endif
+                                            @endforeach
+                                            @endif
+                                            <br>
+                                            @if ($room->extraPerson != 0)
+                                            <span>Good for {{ $room->min }}pax, {{ number_format($room->extraPerson, 0) }}php for extra person(max of {{ $room->max - $room->min }})</span>
+                                            @else
+                                            <span>Room max capacity is {{ $room->max }}pax</span>
+                                            @endif
+                                        </div>
+                                        
                                         <div class="form-group col-lg-4">
                                             <select name="adults" id="adults" class="form-control">
-                                                @for ($i = 2; $i <= $room->max; $i++) 
+                                                @for ($i = 1; $i <= $room->max; $i++) 
                                                 <option {{ old('adults') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $i }} {{ $i > 1 ? 'Adults' : 'Adult' }}</option>
                                                 @endfor
                                             </select>
@@ -175,7 +194,7 @@
                                             @enderror
                                         </div>
 
-                                        @if ($room->extraPerson != 0)
+                                        {{-- @if ($room->extraPerson != 0)
                                         <div class="form-group col-lg-4">
                                             <select name="extraPerson" id="extraPerson" class="form-control">
                                                 <option value="0">No Extra Person</option>
@@ -189,7 +208,7 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        @endif
+                                        @endif --}}
 
                                         <div class="form-group col-lg-12 mb-0">
                                             {{-- <label class="form-label">Select Type</label> --}}
@@ -219,47 +238,49 @@
                                             @enderror
                                         </div>
 
-                                        <div class="breakfast-container d-none">
-                                            @if (config('yourconfig.resort')->is_promo)
-                                            <div class="form-group col-lg-12 mb-0">
-                                                <label class="form-label">Free Breakfast</label>
-                                                <input type="hidden" name="isbreakfast" value="1">
-                                            </div>
-                                            @else
-                                            <div class="form-group col-lg-12">
-                                                <label class="form-label">Breakfast
-                                                    ({{ config('yourconfig.resort')->breakfastPrice == 0 ? 'Free' : 'P'.number_format(config('yourconfig.resort')->breakfastPrice, 0) }})</label>
-                                                <div class="selectgroup selectgroup-pills">
-                                                    <label class="selectgroup-item">
-                                                        <input type="radio" name="isbreakfast" value="1"
-                                                            class="selectgroup-input"
-                                                            {{ old('isbreakfast') == 1 ? 'checked' : '' }}>
-                                                        <span
-                                                            class="selectgroup-button selectgroup-button-icon">Yes</span>
-                                                    </label>
-                                                    <label class="selectgroup-item">
-                                                        <input type="radio" name="isbreakfast" value="0"
-                                                            class="selectgroup-input"
-                                                            {{ old('isbreakfast') == 0 ? 'checked' : '' }}>
-                                                        <span
-                                                            class="selectgroup-button selectgroup-button-icon">No</span>
-                                                    </label>
+                                        <div class="col-lg-12 breakfast-container d-none">
+                                            <div class="row">
+                                                @if (config('yourconfig.resort')->is_promo)
+                                                <div class="form-group col-lg-12 mb-0">
+                                                    <label class="form-label">Free Breakfast</label>
+                                                    <input type="hidden" name="isbreakfast" value="1">
                                                 </div>
-                                            </div>
-                                            @endif
-
-                                            <div class="form-group col-lg-12">
-                                                <label class="form-label">Breakfast Add ons:</label>
-                                                <div class="selectgroup selectgroup-pills">
-                                                    @foreach ($breakfasts as $breakfast)
-                                                    <label class="selectgroup-item mb-0">
-                                                        <input type="checkbox" name="breakfast[]"
-                                                            value="{{ $breakfast->id }}" class="selectgroup-input"
-                                                            {{ old('breakfast') ? (in_array($breakfast->id, old('breakfast')) ? 'checked' : '') : '' }}>
-                                                        <span
-                                                            class="selectgroup-button">{{ $breakfast->title.' P'.number_format($breakfast->price, 0).' ('.$breakfast->notes.')' }}</span>
-                                                    </label>
-                                                    @endforeach
+                                                @else
+                                                <div class="form-group col-lg-12 mb-0">
+                                                    <label class="form-label">Breakfast
+                                                        (P{{ number_format(config('yourconfig.resort')->breakfastPrice, 0) }})</label>
+                                                    <div class="selectgroup selectgroup-pills">
+                                                        <label class="selectgroup-item">
+                                                            <input type="radio" name="isbreakfast" value="1"
+                                                                class="selectgroup-input yes-breakfast"
+                                                                {{ old('isbreakfast') == 1 ? 'checked' : '' }}>
+                                                            <span
+                                                                class="selectgroup-button selectgroup-button-icon">Yes</span>
+                                                        </label>
+                                                        <label class="selectgroup-item">
+                                                            <input type="radio" name="isbreakfast" value="0"
+                                                                class="selectgroup-input"
+                                                                {{ old('isbreakfast') == 0 ? 'checked' : '' }}>
+                                                            <span
+                                                                class="selectgroup-button selectgroup-button-icon">No</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                @endif
+    
+                                                <div class="form-group col-lg-12 breakfastaddons-container d-none">
+                                                    <label class="form-label">Breakfast Add ons:</label>
+                                                    <div class="selectgroup selectgroup-pills">
+                                                        @foreach ($breakfasts as $breakfast)
+                                                        <label class="selectgroup-item mb-0">
+                                                            <input type="checkbox" name="breakfast[]"
+                                                                value="{{ $breakfast->id }}" class="selectgroup-input"
+                                                                {{ old('breakfast') ? (in_array($breakfast->id, old('breakfast')) ? 'checked' : '') : '' }}>
+                                                            <span
+                                                                class="selectgroup-button">{{ $breakfast->title.' P'.number_format($breakfast->price, 0).' ('.$breakfast->notes.')' }}</span>
+                                                        </label>
+                                                        @endforeach
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -420,6 +441,16 @@
                 // append goes here
             } else {
                 $('.breakfast-container').addClass('d-none');
+            }
+        });
+
+        $(document).on('change', 'input:radio[name="isbreakfast"]', function () {
+            if ($(this).is(':checked') && $(this).val() == '1') {
+                $('.breakfastaddons-container').removeClass('d-none');
+                console.log('test');
+                // append goes here
+            } else {
+                $('.breakfastaddons-container').addClass('d-none');
             }
         });
 

@@ -164,8 +164,8 @@
                                                 <tr>
                                                     <td>Breakfast</td>
                                                     <td>1</td>
-                                                    <td>P{{ ($transaction->breakfastfees != 0 && empty($transaction->breakfasts)) ? number_format(config('yourconfig.resort')->breakfastPrice, 2) : 0 }}</td>
-                                                    <td>P<span class="totalprice">{{ ($transaction->breakfastfees != 0 && empty($transaction->breakfasts)) ? number_format(config('yourconfig.resort')->breakfastPrice, 2) : 0 }}</span></td>
+                                                    <td>P{{ ($transaction->is_freebreakfast == 0 ) ? number_format(config('yourconfig.resort')->breakfastPrice, 2) : 0 }}</td>
+                                                    <td>P<span class="totalprice">{{ ($transaction->is_freebreakfast == 0 ) ? number_format(config('yourconfig.resort')->breakfastPrice, 2) : 0 }}</span></td>
                                                 </tr>
 
                                                 @foreach ($transaction->breakfasts as $breakfast)

@@ -31,6 +31,7 @@ class CreateTransactionsTable extends Migration
             $table->integer('senior')->default(0);
             $table->enum('type', ['day', 'night', 'overnight']);
             $table->boolean('is_breakfast')->default(false);
+            $table->boolean('is_freebreakfast')->default(false);
             $table->boolean('is_reservation')->default(false);
             $table->enum('status', ['pending', 'active', 'paid']);
             $table->text('notes')->nullable();

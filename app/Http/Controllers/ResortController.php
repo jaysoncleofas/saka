@@ -42,6 +42,7 @@ class ResortController extends Controller
         $resort->facebook = $request->facebook;
         $resort->instagram = $request->instagram;
         $resort->twitter = $request->twitter;
+        $resort->is_promo = $request->promo ?? 0;
         $resort->save();
 
         session()->flash('notification', 'Successfully updated!');
