@@ -54,10 +54,10 @@
                                 </div>
 
                                 <div class="form-group col-md-4">
-                                    <label for="quantity">Quantity</label>
-                                    <input type="text" class="form-control digit_only2 @error('quantity') is-invalid @enderror"
-                                        name="quantity" id="quantity" value="{{ $cottage->quantity }}">
-                                    @error('quantity')
+                                    <label for="units">Units</label>
+                                    <input type="text" class="form-control digit_only2 @error('units') is-invalid @enderror"
+                                        name="units" id="units" value="{{ $cottage->units }}">
+                                    @error('units')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

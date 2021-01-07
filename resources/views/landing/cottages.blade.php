@@ -46,7 +46,7 @@
                             </div>
                             
                             <div class="w-inline-block">
-                                <a href="contact" class="btn btn-lg btn-outline-dark button-secondary large radius-zero">Reserve Now</a>
+                                <a href="{{ route('cottage.show', $cottage->id) }}" class="btn btn-lg btn-outline-dark button-secondary large radius-zero">More Information</a>
                             </div>
                         </div>
                     </div>

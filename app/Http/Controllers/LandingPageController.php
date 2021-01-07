@@ -312,6 +312,8 @@ class LandingPageController extends Controller
     public function cottage_show($id)
     {
         $data['cottage'] = Cottage::findOrFail($id);
+        $data['entranceFees'] = Entrancefee::all();
+        $data['breakfasts'] = Breakfast::all();
         return view('landing.cottageshow', $data);
     }
 

@@ -41,7 +41,7 @@ class CottageController extends Controller
             'cottage' => 'required|min:2',
             'price' => 'required',
             'nightPrice' => 'required',
-            'quantity' => 'required',
+            'units' => 'required',
             'descriptions' => 'nullable|min:2',
             'images.*' => 'bail|nullable|image|mimes:jpg,png,jpeg,gif,svg|max:10000',
         ]);
@@ -62,7 +62,7 @@ class CottageController extends Controller
         $cottage->name = $request->cottage;
         $cottage->price = $request->price;
         $cottage->nightPrice = $request->nightPrice;
-        $cottage->quantity = $request->quantity;
+        $cottage->units = $request->units;
         $cottage->descriptions = $request->descriptions;
         $cottage->save();
 
@@ -101,7 +101,7 @@ class CottageController extends Controller
             'cottage' => 'required|min:2',
             'price' => 'required',
             'nightPrice' => 'required',
-            'quantity' => 'required',
+            'units' => 'required',
             'extraPerson' => 'nullable',
             'descriptions' => 'nullable|min:2',
         ]);
@@ -120,7 +120,7 @@ class CottageController extends Controller
         $cottage->name = $request->cottage;
         $cottage->price = $request->price;
         $cottage->nightPrice = $request->nightPrice;
-        $cottage->quantity = $request->quantity;
+        $cottage->units = $request->units;
         $cottage->descriptions = $request->descriptions;
         $cottage->save();
 
