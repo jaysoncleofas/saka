@@ -245,6 +245,21 @@
                                                     <label class="form-label">Free Breakfast</label>
                                                     <input type="hidden" name="isbreakfast" value="1">
                                                 </div>
+
+                                                <div class="form-group col-lg-12 breakfastaddons-container">
+                                                    <label class="form-label">Breakfast Add ons:</label>
+                                                    <div class="selectgroup selectgroup-pills">
+                                                        @foreach ($breakfasts as $breakfast)
+                                                        <label class="selectgroup-item mb-0">
+                                                            <input type="checkbox" name="breakfast[]"
+                                                                value="{{ $breakfast->id }}" class="selectgroup-input"
+                                                                {{ old('breakfast') ? (in_array($breakfast->id, old('breakfast')) ? 'checked' : '') : '' }}>
+                                                            <span
+                                                                class="selectgroup-button">{{ $breakfast->title.' P'.number_format($breakfast->price, 0).' ('.$breakfast->notes.')' }}</span>
+                                                        </label>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
                                                 @else
                                                 <div class="form-group col-lg-12 mb-0">
                                                     <label class="form-label">Breakfast
@@ -266,8 +281,7 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                                @endif
-    
+
                                                 <div class="form-group col-lg-12 breakfastaddons-container d-none">
                                                     <label class="form-label">Breakfast Add ons:</label>
                                                     <div class="selectgroup selectgroup-pills">
@@ -282,6 +296,8 @@
                                                         @endforeach
                                                     </div>
                                                 </div>
+                                                @endif
+    
                                             </div>
 
                                         </div>

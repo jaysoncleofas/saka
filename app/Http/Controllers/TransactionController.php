@@ -266,8 +266,8 @@ class TransactionController extends Controller
 
     public function destroy($id)
     {
-        $guest = Guest::findOrFail($id);
-        $guest->delete();
+        $transaction = Transaction::findOrFail($id);
+        $transaction->delete();
         
         session()->flash('notification', 'Successfully deleted!');
         session()->flash('type', 'success');
@@ -342,15 +342,15 @@ class TransactionController extends Controller
         return view('admin.transactions.invoice', $data);
     }
 
-    public function pay($id)
+    public function complete($id)
     {
         $user = Auth::user();
         $transaction = Transaction::findOrfail($id);
 
         $transaction->update([
-            'status' => 'paid',
+            'status' => 'completed',
             'receivedby_id' => $user->id,
-            'paid_at' => Carbon::now()
+            'completed_at' => Carbon::now()
         ]);
 
         return response('success', 200);

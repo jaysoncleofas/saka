@@ -337,7 +337,7 @@
     <script>
         swal({
             title: 'Error!',
-            text: "bakit wala",
+            text: "Invalid date",
             icon: "error",
             button: true,
         });

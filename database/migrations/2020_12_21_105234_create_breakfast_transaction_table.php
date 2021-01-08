@@ -18,7 +18,7 @@ class CreateBreakfastTransactionTable extends Migration
             $table->unsignedBigInteger('breakfast_id');
             $table->foreign('breakfast_id')->references('id')->on('breakfasts');
             $table->unsignedBigInteger('transaction_id');
-            $table->foreign('transaction_id')->references('id')->on('transactions');
+            $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
         });
     }
 

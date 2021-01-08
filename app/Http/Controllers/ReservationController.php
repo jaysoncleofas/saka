@@ -12,6 +12,7 @@ use App\Models\Cottage;
 use App\Models\Room;
 use App\Models\Entrancefee;
 use App\Models\Breakfast;
+use App\Models\Resort;
 
 class ReservationController extends Controller
 {
@@ -25,7 +26,9 @@ class ReservationController extends Controller
         $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfMonth();
         $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfMonth();
         $data['pending'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('pending')->count();
-        $data['approved'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('active')->count();
+        $data['approved'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('approved')->count();
+        $data['completed'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('completed')->count();
+        $data['cancelled'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('cancelled')->count();
         return view('admin.reservations.index', $data);
     }
 
@@ -40,75 +43,97 @@ class ReservationController extends Controller
 
     public function datatables(Request $request)
     {
+        $resort = Resort::findOrfail(1);
         $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfWeek()->startOfDay();
         $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfMonth();
-        // $data['pending'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('pending')->count();
-        // $data['approved'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('active')->count();
-
-        $transactions = Transaction::where('is_reservation', 1)->whereBetween('checkIn_at', [$startDay, $endDay])->orderBy('created_at', 'asc')->get();
+        $transactions = Transaction::where('is_reservation', 1)->whereBetween('checkIn_at', [$startDay, $endDay])->orderBy('created_at', 'desc')->get();
 
         return DataTables::of($transactions)
-                ->editColumn('id', function ($transaction) {
-                    return '<a href="'.route('transaction.invoice', $transaction->id).'">INV-'.$transaction->id.'</a>';
-                })
                 ->addColumn('guest', function ($transaction) {
                     return '<a href="'.route('guest.show', $transaction->guest_id).'" class="btn btn-link">'.$transaction->guest->firstName.' '.$transaction->guest->lastName.'</a>';
                 })
-                ->addColumn('cottage', function ($transaction) {
+                ->addColumn('service', function ($transaction) {
                     if($transaction->cottage) {
-                        return $transaction->cottage->name;
-                    } else {
-                        return '-';
-                    }
+                        return 'Cottage: '.$transaction->cottage->name;
+                    } elseif($transaction->room) {
+                        return 'Room: '.$transaction->room->name;
+                    } elseif($transaction->is_exclusive) {
+                        return 'Exclusive Rental';
+                    } 
                 })
-                ->addColumn('room', function ($transaction) {
-                    if($transaction->room) {
-                        return $transaction->room->name;
-                    } else {
-                        return '-';
+                ->addColumn('type', function ($transaction) use($resort) {
+                    $sched = '';
+                    if($transaction->type == 'day') {
+                        $sched = $resort->day;
+                    } elseif ($transaction->type == 'night') {
+                        $sched = $resort->day;
+                    } elseif ($transaction->type == 'overnight') {
+                        $sched = $resort->overnight;
                     }
+                    return ucfirst($transaction->type).' '.$sched;
                 })
                 ->addColumn('checkin', function ($transaction) {
-                    return $transaction->checkIn_at->format('M d, Y h:i a');
+                    return $transaction->checkIn_at->format('M d, Y');
                 })
-                ->addColumn('checkout', function ($transaction) {
-                    if($transaction->checkOut_at) {
-                        return $transaction->checkOut_at->format('M d, Y h:i a');
-                    } else {
-                        return '-';
-                    }
-                })
-                ->addColumn('approve', function ($transaction) {
-                    if($transaction->status == 'paid') {
-                        return '-';
-                    } else {
-                        return '<label class="custom-switch mt-2 pl-0"><input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input active-mode-switch" '.( $transaction->status == 'active' ? 'checked' : '') .' data-id="'. $transaction->id .'" data-action="'.route('reservation.approve').'" data-model="reservation"><span class="custom-switch-indicator"></span><span class="custom-switch-description">Approve</span></label>';
-                    }
-                })
+
                 ->editColumn('status', function ($transaction) {
                     if($transaction->status == 'pending') {
                         return '<span class="badge badge-secondary">Pending</span>';
+                    } elseif($transaction->status == 'approved') {
+                        return '<span class="badge badge-warning">Approved</span>';
                     } elseif($transaction->status == 'active') {
                         return '<span class="badge badge-primary">Active</span>';
-                    } elseif($transaction->status == 'paid') {
-                        return '<span class="badge badge-success">Paid</span>';
+                    } elseif($transaction->status == 'completed') {
+                        return '<span class="badge badge-success">Completed</span>';
+                    } elseif($transaction->status == 'cancelled') {
+                        return '<span class="badge badge-danger">Cancelled</span>';
                     }
                 })
                 ->addColumn('actions', function ($transaction) {
-                    return '<a href="'.route('transaction.show', $transaction->id).'" class="btn btn-info btn-action mr-1" title="Show"><i class="fas fa-eye"></i></a><a href="'.route('transaction.edit', $transaction->id).'" class="btn btn-primary btn-action mr-1" title="Edit"><i class="fas fa-pencil-alt"></i></a><a class="btn btn-danger btn-action trigger-delete" title="Delete" data-action="'.route('transaction.destroy', $transaction->id).'" data-model="transaction"><i class="fas fa-trash"></i></a>';
+                    $html = '';
+                    $html .= '<div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-cog"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="'.route('transaction.show', $transaction->id).'">View</a>
+                      <a class="dropdown-item" href="'.route('transaction.edit', $transaction->id).'">Edit</a>
+                      <a class="dropdown-item trigger-delete2" data-action="'.route('transaction.destroy', $transaction->id).'" data-model="reservation" href="#">Delete</a>
+                      <div class="dropdown-divider"></div>';
+        
+                    if($transaction->status == 'pending') {
+                        $html .='<a class="dropdown-item trigger-approve" data-id="'. $transaction->id .'" data-action="'.route('reservation.approve', $transaction->id).'" data-model="reservation" href="#">Approve</a>';
+                    }
+
+                    if($transaction->status != 'cancelled' && $transaction->status != 'completed') {
+                        $html .= '<a class="dropdown-item trigger-cancel" data-action="'.route('reservation.cancel', $transaction->id).'" data-model="reservation" href="#">Cancel</a>
+                        </div>
+                    </div>';
+                    }
+                  return $html;
                 })
-                ->rawColumns(['actions', 'guest', 'cottage', 'checkin', 'checkout', 'id', 'approve','status'])
+
+                ->rawColumns(['actions', 'guest', 'service', 'checkin', 'type','status'])
                 ->toJson();
     }
 
-    public function approve(Request $request)
+    public function approve($id)
     {
-        $transaction = Transaction::findOrfail($request->id);
+        $transaction = Transaction::findOrfail($id);
 
         $transaction->update([
-            'status' => $request->status
+            'status' => 'approved'
         ]);
-        $status = $request->status == 'active' ? 'Reservation Approved' : 'Reservation Disapproved';
-        return json_encode(['text' => 'success', 'return' => '1', 'status' => $status]);
+        return response('success', 200);
+    }
+
+    public function cancel($id)
+    {
+        $transaction = Transaction::findOrfail($id);
+
+        $transaction->update([
+            'status' => 'cancelled'
+        ]);
+        return response('success', 200);
     }
 }

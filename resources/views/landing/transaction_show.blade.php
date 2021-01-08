@@ -73,52 +73,54 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @if ($transaction->is_exclusive != 1 || ($transaction->cottage ))
-                                                @if ($transaction->adults)
+                                            @if ($transaction->is_exclusive == 1)
                                                 <tr>
-                                                    <td>Adults</td>
-                                                    <td>{{ $transaction->adults }}</td>
-                                                    @foreach ($entranceFees as $entrancefee)
-                                                        @if ($entrancefee->title == 'Adults')
-                                                            <td>P{{ number_format($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price, 2) }}</td>
-                                                            <td>P<span class="totalprice">{{ number_format($transaction->adults * ($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price), 2) }}</span></td>
-                                                        @endif
-                                                    @endforeach
+                                                    <td>Exclusive Rental</td>
+                                                    <td>1</td>
+                                                    <td>P{{ number_format($transaction->rentBill, 2) }}</td>
+                                                    <td>P<span class="totalprice">{{ number_format($transaction->rentBill, 2) }}</span></td>
                                                 </tr>
-                                                @endif
-
-                                                @if ($transaction->kids)
-                                                <tr>
-                                                    <td>Kids</td>
-                                                    <td>{{ $transaction->kids }}</td>
-                                                    @foreach ($entranceFees as $entrancefee)
-                                                        @if ($entrancefee->title == 'Kids')
-                                                            <td>P{{ number_format($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price, 2) }}</td>
-                                                            <td>P<span class="totalprice">{{ number_format($transaction->kids * ($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price), 2) }}</span></td>
-                                                        @endif
-                                                    @endforeach
-                                                </tr>
-                                                @endif
-
-                                                @if ($transaction->senior)
-                                                <tr>
-                                                    <td>Senior Citizen</td>
-                                                    <td>{{ $transaction->senior }}</td>
-                                                    @foreach ($entranceFees as $entrancefee)
-                                                        @if ($entrancefee->title == 'Senior Citizen')
-                                                            <td>P{{ number_format($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price, 2) }}</td>
-                                                            <td>P<span class="totalprice">{{ number_format($transaction->senior * ($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price), 2) }}</span></td>
-                                                        @endif
-                                                    @endforeach
-                                                </tr>
-                                                @endif
                                             @else
-                                            <tr>
-                                                <td>Exclusive Rental</td>
-                                                <td>1</td>
-                                                <td>P{{ number_format($transaction->rentBill, 2) }}</td>
-                                                <td>P<span class="totalprice">{{ number_format($transaction->rentBill, 2) }}</span></td>
-                                            </tr>
+                                                @if ($transaction->cottage || $transaction->room->entrancefee == 'Exclusive')
+                                                    @if ($transaction->adults)
+                                                    <tr>
+                                                        <td>Adults</td>
+                                                        <td>{{ $transaction->adults }}</td>
+                                                        @foreach ($entranceFees as $entrancefee)
+                                                            @if ($entrancefee->title == 'Adults')
+                                                                <td>P{{ number_format($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price, 2) }}</td>
+                                                                <td>P<span class="totalprice">{{ number_format($transaction->adults * ($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price), 2) }}</span></td>
+                                                            @endif
+                                                        @endforeach
+                                                    </tr>
+                                                    @endif
+
+                                                    @if ($transaction->kids)
+                                                    <tr>
+                                                        <td>Kids</td>
+                                                        <td>{{ $transaction->kids }}</td>
+                                                        @foreach ($entranceFees as $entrancefee)
+                                                            @if ($entrancefee->title == 'Kids')
+                                                                <td>P{{ number_format($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price, 2) }}</td>
+                                                                <td>P<span class="totalprice">{{ number_format($transaction->kids * ($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price), 2) }}</span></td>
+                                                            @endif
+                                                        @endforeach
+                                                    </tr>
+                                                    @endif
+
+                                                    @if ($transaction->senior)
+                                                    <tr>
+                                                        <td>Senior Citizen</td>
+                                                        <td>{{ $transaction->senior }}</td>
+                                                        @foreach ($entranceFees as $entrancefee)
+                                                            @if ($entrancefee->title == 'Senior Citizen')
+                                                                <td>P{{ number_format($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price, 2) }}</td>
+                                                                <td>P<span class="totalprice">{{ number_format($transaction->senior * ($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price), 2) }}</span></td>
+                                                            @endif
+                                                        @endforeach
+                                                    </tr>
+                                                    @endif
+                                                @endif
                                             @endif
 
                                             @if ($transaction->cottage)
@@ -177,7 +179,6 @@
                                     </table>
                                     <!-- /.Item list -->
                                 </div>
-
                             </div>
                         </div>
                         <div class="row mt-2">

@@ -77,7 +77,9 @@ Route::resource('transaction', App\Http\Controllers\TransactionController::class
 Route::get('/transactions', [App\Http\Controllers\TransactionController::class, 'index'])->name('transaction.index');
 Route::get('/transactions-datatables', [App\Http\Controllers\TransactionController::class, 'datatables'])->name('transaction.datatables');
 Route::get('/transaction/invoice/{id}', [App\Http\Controllers\TransactionController::class, 'invoice'])->name('transaction.invoice');
-Route::post('/transaction/invoice/{id}/pay', [App\Http\Controllers\TransactionController::class, 'pay'])->name('transaction.pay');
+// Route::post('/transaction/invoice/{id}/pay', [App\Http\Controllers\TransactionController::class, 'pay'])->name('transaction.pay');
+Route::put('/transaction/invoice/{id}/complete', [App\Http\Controllers\TransactionController::class, 'complete'])->name('transaction.complete');
+
 Route::post('/transaction/invoice/{id}/unpaid', [App\Http\Controllers\TransactionController::class, 'unpaid'])->name('transaction.unpaid');
 Route::get('/transaction/guest/create', [App\Http\Controllers\TransactionController::class, 'guest_create'])->name('transaction.guest_create');
 Route::get('/transaction/guest/{id}', [App\Http\Controllers\TransactionController::class, 'guest_show'])->name('transaction.guest_show');
@@ -85,7 +87,8 @@ Route::get('/transaction/guest/{id}', [App\Http\Controllers\TransactionControlle
 Route::resource('reservation', App\Http\Controllers\ReservationController::class)->except(['index', 'show', 'update', 'store']);
 Route::get('/reservations', [App\Http\Controllers\ReservationController::class, 'index'])->name('reservation.index');
 Route::get('/reservations-datatables', [App\Http\Controllers\ReservationController::class, 'datatables'])->name('reservation.datatables');
-Route::put('/reservation-approve', [App\Http\Controllers\ReservationController::class, 'approve'])->name('reservation.approve');
+Route::put('/reservation-approve/{id}', [App\Http\Controllers\ReservationController::class, 'approve'])->name('reservation.approve');
+Route::put('/reservation-cancel/{id}', [App\Http\Controllers\ReservationController::class, 'cancel'])->name('reservation.cancel');
 
 Route::get('/reports', [App\Http\Controllers\ReportController::class, 'index'])->name('report.index');
 Route::get('/reports-datatables', [App\Http\Controllers\ReportController::class, 'datatables'])->name('report.datatables');

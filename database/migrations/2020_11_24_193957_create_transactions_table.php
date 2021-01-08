@@ -34,7 +34,7 @@ class CreateTransactionsTable extends Migration
             $table->boolean('is_breakfast')->default(false);
             $table->boolean('is_freebreakfast')->default(false);
             $table->boolean('is_reservation')->default(false);
-            $table->enum('status', ['pending', 'active', 'paid']);
+            $table->enum('status', ['pending', 'approved', 'active', 'completed', 'cancelled']);
             $table->text('notes')->nullable();
             $table->integer('extraPerson')->nullable();
             $table->decimal('extraPersonTotal', 10, 2)->nullable();
@@ -42,7 +42,8 @@ class CreateTransactionsTable extends Migration
             $table->decimal('breakfastfees', 10, 2)->nullable();
             $table->decimal('rentBill', 10, 2)->nullable();
             $table->decimal('totalBill', 10, 2)->nullable();
-            $table->timestamp('paid_at')->nullable();
+            $table->timestamp('completed_at')->nullable();
+            $table->timestamp('cancelled_at')->nullable();
             $table->timestamps();
         });
     }

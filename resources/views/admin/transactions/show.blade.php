@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-lg-4">
                                 <strong>Transaction</strong>
                                 <ul class="list-group list-group-flush">
@@ -66,23 +66,66 @@
                                     <li class="list-group-item"><strong>Contact:</strong> {{ $transaction->guest->contact }}</li>
                                     <li class="list-group-item"><strong>Age:</strong> {{ $transaction->guest->age }}</li>
                                     <li class="list-group-item"><strong>Address:</strong> {{ $transaction->guest->address }}</li>
-                                    {{-- <li class="list-group-item"><strong>Check In:</strong> {{ $transaction->checkIn_at->format('M d, Y h:i a') }}</li>
-                                    <li class="list-group-item"><strong>Check Out:</strong> {{ $transaction->checkOut_at ? $transaction->checkOut_at->format('M d, Y h:i a') : '-' }}</li> --}}
                                 </ul>
                             </div>
 
                             <div class="col-lg-4">
                                 <strong>Bills</strong>
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item"><strong>Total Bills:</strong> P{{ number_format($transaction->totalBill, 2) }}</li>
-                                    {{-- <li class="list-group-item"><strong>Entrance Fees:</strong> P{{ number_format($transaction->totalEntranceFee, 2) }}</li> --}}
-                                    
+                                    <li class="list-group-item"><strong>Total Bills:</strong> P{{ number_format($transaction->totalBill, 2) }}</li>                                    
                                     <li class="list-group-item"><strong>Payment Received by:</strong> 
                                         @if ($transaction->status == 'paid')
                                             {{ $transaction->receivedby->firstName .' '.$transaction->receivedby->lastName }}
                                         @endif
                                     </li>
                                 </ul>
+                            </div>
+                        </div> --}}
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <strong>Transaction# {{ $transaction->id }}</strong>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <strong>Status:</strong> {{ ucfirst($transaction->status) }} <br>
+                                        @if ($transaction->cottage_id)
+                                       <strong>Cottage:</strong> {{ $transaction->cottage->name }} <br>
+                                        @endif
+                                        @if ($transaction->room_id)
+                                        <strong>Room:</strong> {{ $transaction->room->name }} <br>
+                                        {{-- <strong>Entrance Fee:</strong> {{ $transaction->room->entrancefee }} <br> --}}
+                                        @endif
+                                        @if ($transaction->is_exclusive)
+                                       <strong>Exclusive Rental:</strong> P{{ number_format($transaction->rentBill, 0) }} <br>
+                                        @endif
+                                        <strong>Check In:</strong> {{ $transaction->checkIn_at->format('M d, Y h:i a') }} <br>
+                                        <strong>Check Out:</strong> {{ $transaction->checkOut_at ? $transaction->checkOut_at->format('M d, Y h:i a') : '-' }} <br>
+                                        <strong>Type:</strong> {{ ucfirst($transaction->type) }} Use <br>
+                                    </div>
+
+
+                                    <div class="col-lg-6">
+                                        @if ($transaction->room_id)
+                                        <strong>Entrance Fee:</strong> {{ $transaction->room->entrancefee }} <br>
+                                        @endif
+                                        <strong>Adults:</strong> {{ $transaction->adults }} <br>
+                                        <strong>Kids:</strong> {{ $transaction->kids }} <br>
+                                        <strong>Senior Citizens:</strong> {{ $transaction->senior }} <br>
+                                        @if ($transaction->is_breakfast)
+                                        <strong>Breakfast:</strong> {{ $transaction->is_breakfast == 1 ? 'Yes' : 'No' }}
+                                        <span class="ml-5">
+                                            <strong>Add ons:</strong>
+                                            @php
+                                                $breakfasts_array = [];
+                                                foreach ($transaction->breakfasts as $breakfast) {
+                                                    array_push($breakfasts_array, $breakfast->title);
+                                                }
+                                                echo implode(', ', $breakfasts_array);
+                                            @endphp
+                                        </span>
+                                        @endif
+                                    </div>
+                                    
+                                </div>
                             </div>
                         </div>
 
@@ -101,44 +144,53 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @if ($transaction->cottage || $transaction->room->entrancefee != 'Inclusive')
-                                                @if ($transaction->adults)
+                                            @if ($transaction->is_exclusive == 1)
                                                 <tr>
-                                                    <td>Adults</td>
-                                                    <td>{{ $transaction->adults }}</td>
-                                                    @foreach ($entranceFees as $entrancefee)
-                                                        @if ($entrancefee->title == 'Adults')
-                                                            <td>P{{ number_format($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price, 2) }}</td>
-                                                            <td>P<span class="totalprice">{{ number_format($transaction->adults * ($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price), 2) }}</span></td>
-                                                        @endif
-                                                    @endforeach
+                                                    <td>Exclusive Rental</td>
+                                                    <td>1</td>
+                                                    <td>P{{ number_format($transaction->rentBill, 2) }}</td>
+                                                    <td>P<span class="totalprice">{{ number_format($transaction->rentBill, 2) }}</span></td>
                                                 </tr>
-                                                @endif
+                                            @else
+                                                @if ($transaction->cottage || $transaction->room->entrancefee == 'Exclusive')
+                                                    @if ($transaction->adults)
+                                                    <tr>
+                                                        <td>Adults</td>
+                                                        <td>{{ $transaction->adults }}</td>
+                                                        @foreach ($entranceFees as $entrancefee)
+                                                            @if ($entrancefee->title == 'Adults')
+                                                                <td>P{{ number_format($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price, 2) }}</td>
+                                                                <td>P<span class="totalprice">{{ number_format($transaction->adults * ($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price), 2) }}</span></td>
+                                                            @endif
+                                                        @endforeach
+                                                    </tr>
+                                                    @endif
 
-                                                @if ($transaction->kids)
-                                                <tr>
-                                                    <td>Kids</td>
-                                                    <td>{{ $transaction->kids }}</td>
-                                                    @foreach ($entranceFees as $entrancefee)
-                                                        @if ($entrancefee->title == 'Kids')
-                                                            <td>P{{ number_format($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price, 2) }}</td>
-                                                            <td>P<span class="totalprice">{{ number_format($transaction->kids * ($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price), 2) }}</span></td>
-                                                        @endif
-                                                    @endforeach
-                                                </tr>
-                                                @endif
+                                                    @if ($transaction->kids)
+                                                    <tr>
+                                                        <td>Kids</td>
+                                                        <td>{{ $transaction->kids }}</td>
+                                                        @foreach ($entranceFees as $entrancefee)
+                                                            @if ($entrancefee->title == 'Kids')
+                                                                <td>P{{ number_format($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price, 2) }}</td>
+                                                                <td>P<span class="totalprice">{{ number_format($transaction->kids * ($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price), 2) }}</span></td>
+                                                            @endif
+                                                        @endforeach
+                                                    </tr>
+                                                    @endif
 
-                                                @if ($transaction->senior)
-                                                <tr>
-                                                    <td>Senior Citizen</td>
-                                                    <td>{{ $transaction->senior }}</td>
-                                                    @foreach ($entranceFees as $entrancefee)
-                                                        @if ($entrancefee->title == 'Senior Citizen')
-                                                            <td>P{{ number_format($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price, 2) }}</td>
-                                                            <td>P<span class="totalprice">{{ number_format($transaction->senior * ($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price), 2) }}</span></td>
-                                                        @endif
-                                                    @endforeach
-                                                </tr>
+                                                    @if ($transaction->senior)
+                                                    <tr>
+                                                        <td>Senior Citizen</td>
+                                                        <td>{{ $transaction->senior }}</td>
+                                                        @foreach ($entranceFees as $entrancefee)
+                                                            @if ($entrancefee->title == 'Senior Citizen')
+                                                                <td>P{{ number_format($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price, 2) }}</td>
+                                                                <td>P<span class="totalprice">{{ number_format($transaction->senior * ($transaction->type != 'day' ? $entrancefee->nightPrice : $entrancefee->price), 2) }}</span></td>
+                                                            @endif
+                                                        @endforeach
+                                                    </tr>
+                                                    @endif
                                                 @endif
                                             @endif
 
@@ -160,12 +212,19 @@
                                                 </tr>
                                             @endif
 
-                                            @if ($transaction->extraPerson)
+                                            @if ($transaction->extraPerson && $transaction->room)
                                                 <tr>
                                                     <td>Extra Person</td>
                                                     <td>{{ $transaction->extraPerson }}</td>
                                                     <td>P{{ number_format($transaction->room->extraPerson, 2) }}</td>
                                                     <td>P<span class="totalprice">{{  number_format($transaction->room->extraPerson*$transaction->extraPerson, 2) }}</span></td>
+                                                </tr>
+                                            @elseif($transaction->extraPerson && $transaction->is_exclusive)
+                                                <tr>
+                                                    <td>Extra Person</td>
+                                                    <td>{{ $transaction->extraPerson }}</td>
+                                                    <td>P{{ number_format(($transaction->type == 'day' ? 200 : 250), 2) }}</td>
+                                                    <td>P<span class="totalprice">{{  number_format($transaction->extraPersonTotal, 2) }}</span></td>
                                                 </tr>
                                             @endif
 
@@ -173,8 +232,8 @@
                                                 <tr>
                                                     <td>Breakfast</td>
                                                     <td>1</td>
-                                                    <td>P{{ number_format(config('yourconfig.resort')->breakfastPrice, 2) }}</td>
-                                                    <td>P<span class="totalprice">{{ number_format(config('yourconfig.resort')->breakfastPrice, 2) }}</span></td>
+                                                    <td>P{{ ($transaction->is_freebreakfast == 0 ) ? number_format(config('yourconfig.resort')->breakfastPrice, 2) : 0 }}</td>
+                                                    <td>P<span class="totalprice">{{ ($transaction->is_freebreakfast == 0 ) ? number_format(config('yourconfig.resort')->breakfastPrice, 2) : 0 }}</span></td>
                                                 </tr>
 
                                                 @foreach ($transaction->breakfasts as $breakfast)
@@ -191,7 +250,6 @@
                                     </table>
                                     <!-- /.Item list -->
                                 </div>
-
                             </div>
                         </div>
                         <div class="row mt-2">

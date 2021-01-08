@@ -26,8 +26,24 @@
     <div class="row">
         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
             <div class="card card-statistic-1">
-                <div class="card-icon bg-primary">
-                    <i class="fas fa-check"></i>
+                <div class="card-icon bg-secondary">
+                    <i class="fas fa-calendar-day"></i>
+                </div>
+                <div class="card-wrap">
+                    <div class="card-header">
+                        <h4>Pending</h4>
+                    </div>
+                    <div class="card-body">
+                        {{ number_format($pending) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+            <div class="card card-statistic-1">
+                <div class="card-icon bg-warning">
+                    <i class="fas fa-tasks"></i>
                 </div>
                 <div class="card-wrap">
                     <div class="card-header">
@@ -42,15 +58,31 @@
 
         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
             <div class="card card-statistic-1">
-                <div class="card-icon bg-secondary">
-                    <i class="fas fa-calendar-day"></i>
+                <div class="card-icon bg-success">
+                    <i class="fas fa-check"></i>
                 </div>
                 <div class="card-wrap">
                     <div class="card-header">
-                        <h4>Pending</h4>
+                        <h4>Completed</h4>
                     </div>
                     <div class="card-body">
-                        {{ number_format($pending) }}
+                        {{ number_format($completed) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+            <div class="card card-statistic-1">
+                <div class="card-icon bg-danger">
+                    <i class="fas fa-window-close"></i>
+                </div>
+                <div class="card-wrap">
+                    <div class="card-header">
+                        <h4>Cancelled</h4>
+                    </div>
+                    <div class="card-body">
+                        {{ number_format($cancelled) }}
                     </div>
                 </div>
             </div>
@@ -71,14 +103,13 @@
                             <table class="table table-striped" width="100%" id="datatables">
                                 <thead>
                                     <tr>
-                                        <th>Invoice Number</th>
-                                        <th>Guest</th>
-                                        <th>Cottage</th>
-                                        <th>Room</th>
+                                        {{-- <th>Invoice Number</th> --}}
+                                        <th>Date</th>
                                         <th>Check In</th>
-                                        <th>Check Out</th>
+                                        <th>Guest</th>
+                                        <th>Cottage, Room, Exclusive Rental</th>
                                         <th>Status</th>
-                                        <th>Approve</th>
+                                        {{-- <th>Approve</th> --}}
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -140,36 +171,24 @@
             },
             aaSorting: [],
             columns: [{
-                    data: 'id',
-                    name: 'id'
+                    data: 'checkin',
+                    name: 'checkin'
+                },
+                {
+                    data: 'type',
+                    name: 'type'
                 },
                 {
                     data: 'guest',
                     name: 'guest'
                 },
                 {
-                    data: 'cottage',
-                    name: 'cottage'
-                },
-                {
-                    data: 'room',
-                    name: 'room'
-                },
-                {
-                    data: 'checkin',
-                    name: 'checkin'
-                },
-                {
-                    data: 'checkout',
-                    name: 'checkout'
+                    data: 'service',
+                    name: 'service'
                 },
                 {
                     data: 'status',
                     name: 'status'
-                },
-                {
-                    data: 'approve',
-                    name: 'approve'
                 },
                 {
                     data: 'actions',
@@ -180,30 +199,98 @@
             ]
         });
 
-        $(document).on('change', '.active-mode-switch', function () {
+        $(document).on('click', '.trigger-approve', function () {
             var _this = $(this);
             var _url = _this.data('action');
-            var id = _this.data('id');
-            var status = 'pending';
-            if (_this.is(':checked')) {
-                status = 'active';
-            }
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: _url,
-                type : 'PUT',
-                data: { id: id, status : status },
-                success: function(result) {
-                    var newResult = JSON.parse(result);
-                    swal(newResult.status, {
-                        icon: 'success',
+            var _model = _this.data('model');
+            swal({
+                title: 'Are you sure?',
+                text: 'Once approved, you will not be able to disapprove this ' +_model+ '!',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: 'put',
+                        url: _url,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (result) {
+                            if (result == 'success') {
+                                swal('The '+_model+' has been approved!', {
+                                    icon: 'success',
+                                });
+                                datatables2.ajax.reload();
+                            }
+                        }
                     });
-                    datatables2.ajax.reload();
-                },
-                error : function(error) {
-                    console.log('error');
+                }
+            });
+        });
+
+        $(document).on('click', '.trigger-delete2', function () {
+            var _this = $(this);
+            var _url = _this.data('action');
+            var _model = _this.data('model');
+            swal({
+                title: 'Are you sure?',
+                text: 'Once deleted, you will not be able to recover this ' +_model+ '!',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: 'delete',
+                        url: _url,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (result) {
+                            if (result == 'success') {
+                                swal('The '+_model+' has been deleted!', {
+                                    icon: 'success',
+                                });
+                                datatables2.ajax.reload();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        $(document).on('click', '.trigger-cancel', function () {
+            var _this = $(this);
+            var _url = _this.data('action');
+            var _model = _this.data('model');
+            swal({
+                title: 'Are you sure?',
+                text: 'Once cancelled, you will not be able to revert this ' +_model+ '!',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: 'put',
+                        url: _url,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (result) {
+                            if (result == 'success') {
+                                swal('The '+_model+' has been cancelled!', {
+                                    icon: 'success',
+                                });
+                                datatables2.ajax.reload();
+                            }
+                        }
+                    });
                 }
             });
         });
