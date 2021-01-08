@@ -89,20 +89,25 @@
 <div class="section room">
     <div class="image-wrapper room">
         <img style="opacity: 1; transform: translate3d(0px, 0px, 0px) scale3d(1.1, 1.1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;"
-            src="{{ $cottage->coverimage() ? asset('storage/rooms/'.$cottage->coverimage()->path) : asset('images/img07.jpg') }}"
+            src="{{ asset('pics/pic2.jpeg') }}"
             alt="" sizes="100vw" class="image room">
     </div>
     <div class="container">
         <div id="Book-Now" class="room-wrapper">
             <div class="row">
                 <div class="col-lg-4">
-                    <h1 class="title room">{{ $cottage->name }}</h1>
-                    <div class="price">{{ number_format($cottage->price) }}&nbsp;PHP</div>
+                    <h1 class="title room">Exclusive Rental</h1>
+                    <div class="price">15,000&nbsp;PHP - 25,000&nbsp;PHP</div>
                     <div class="divider room-page"></div>
-                    <p class="paragraph room">{{ $cottage->descriptions }}</p>
-                    <a href="#Gallery"
+                    <p class="paragraph room">Exclusive rental is 15,000php good for 60pax(all cottages for day tour included) <br>
+                        200php per head for extra person <br>
+                        Check in is 9am and Check out is 5pm<br> <br>
+                        For overnight 25,000php for 30pax(all a/c rooms and non a/c rooms are included except A-house). <br>
+                        250php per head for extra person  <br>
+                        Check in is 9am and Check out is 11am</p>
+                    {{-- <a href="#Gallery"
                         class="btn btn-lg btn-outline-dark button-secondary large w-inline-block radius-zero view-gallery">View
-                        Gallery</a>
+                        Gallery</a> --}}
                     {{-- <div class="about-room-page">
                         <div class="split-content card-about-room-left">
                             <div class="from-text">From</div>
@@ -119,11 +124,11 @@
                 <div class="col-lg-8">
                     <div class="card reservate-room">
                         <div class="reservate-room-title-wrapper">
-                            <h3>Reservate Cottage</h3>
+                            <h3>Reservate Cottage/Room</h3>
                         </div>
                         <div class="reservate-room-content">
                             <div>
-                                <form action="{{ route('landing.cottage_reservation_store', $cottage->id) }}"
+                                <form action="{{ route('landing.exclusive_rental_store') }}"
                                     method="POST" autocomplete="off">
                                     @csrf
 
@@ -138,28 +143,10 @@
                                         @enderror
                                     </div>
 
-                                    
                                     <div class="row">
-                                        <div class="col-lg-12 mb-2 entrance-day">
-                                            Cottage: {{ number_format($cottage->price, 0) }}php <br>
-                                            Entrance Fees:
-                                            @foreach ($entranceFees as $item)
-                                            {{ $item->title }} {{ number_format($item->price, 0) }}php
-                                            @if(!($loop->last))
-                                            ,
-                                            @endif
-                                            @endforeach
-                                        </div>
-
-                                        <div class="col-lg-12 mb-2 entrance-night d-none">
-                                            Cottage: {{ number_format($cottage->nightPrice, 0) }}php <br>
-                                            Entrance Fees:
-                                            @foreach ($entranceFees as $item)
-                                            {{ $item->title }} {{ number_format($item->nightPrice, 0) }}php
-                                            @if(!($loop->last))
-                                            ,
-                                            @endif
-                                            @endforeach
+                                        <div class="col-lg-12 mb-2">
+                                            <span class="day-tour">Good for 60pax, 200php for extra person</span>
+                                            <span class="overnight-tour d-none">Good for 30pax, 250php for extra person</span>
                                         </div>
 
                                         <div class="col-lg-12 mb-0">
@@ -170,17 +157,15 @@
                                                         <input type="radio" name="type" value="day"
                                                             class="selectgroup-input day" disabled
                                                             {{ old('type') == 'day' ? 'checked' : '' }}>
-                                                        <span class="selectgroup-button selectgroup-button-icon"><i
-                                                                class="fas fa-sun"></i> Day
-                                                            {{ config('yourconfig.resort')->day }}</span>
+                                                        <span class="selectgroup-button selectgroup-button-icon span-day disabled"><i
+                                                                class="fas fa-sun"></i> Day 9am - 5pm</span>
                                                     </label>
                                                     <label class="selectgroup-item pb-0">
-                                                        <input type="radio" name="type" value="night"
-                                                            class="selectgroup-input night" disabled
-                                                            {{ old('type') == 'night' ? 'checked' : '' }}>
-                                                        <span class="selectgroup-button selectgroup-button-icon"><i
-                                                                class="fas fa-moon"></i> Night
-                                                            {{ config('yourconfig.resort')->night }}</span>
+                                                        <input type="radio" name="type" value="overnight"
+                                                            class="selectgroup-input overnight" disabled
+                                                            {{ old('type') == 'overnight' ? 'checked' : '' }}>
+                                                        <span class="selectgroup-button selectgroup-button-icon span-overnight disabled"><i
+                                                                class="fas fa-moon"></i> Overnight 9am - 11am</span>
                                                     </label>
                                                 </div>
                                                 @error('type')
@@ -191,19 +176,9 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-12">
-                                            <div class="mb-3 available-container">
-                                                <span class="aunit">{{ $cottage->units }}</span>
-                                                unit available
-                                            </div>
-                                            <div class="mb-3 notavailable-container d-none text-danger">
-                                                no available units
-                                            </div>
-                                        </div>
-
                                         <div class="form-group col-lg-4">
                                             <select name="adults" id="adults" class="form-control">
-                                                @for ($i = 2; $i <= 50; $i++) <option
+                                                @for ($i = 2; $i <= 100; $i++) <option
                                                     {{ old('adults') == $i ? 'selected' : '' }} value="{{ $i }}">
                                                     {{ $i }} {{ $i > 1 ? 'Adults' : 'Adult' }}</option>
                                                     @endfor
@@ -218,7 +193,7 @@
                                         <div class="form-group col-lg-4">
                                             <select name="kids" id="kids" class="form-control">
                                                 <option value="0">No Kids</option>
-                                                @for ($i = 1; $i <= 50; $i++) <option
+                                                @for ($i = 1; $i <= 100; $i++) <option
                                                     {{ old('kids') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $i }}
                                                     {{ $i > 1 ? 'Kids' : 'Kid' }}</option>
                                                     @endfor
@@ -233,7 +208,7 @@
                                         <div class="form-group col-lg-4">
                                             <select name="senior_citizen" id="senior_citizen" class="form-control">
                                                 <option value="0">No Senior Citizen</option>
-                                                @for ($i = 1; $i <= 50; $i++) <option
+                                                @for ($i = 1; $i <= 100; $i++) <option
                                                     {{ old('senior_citizen') == $i ? 'selected' : '' }}
                                                     value="{{ $i }}">{{ $i }}
                                                     {{ $i > 1 ? 'Senior Citizens' : 'Senior Citizen' }}</option>
@@ -310,8 +285,9 @@
             </div>
         </div>
     </div>
+</div>
 
-    <div id="Gallery" class="section room-gallery">
+    {{-- <div id="Gallery" class="section room-gallery">
         <div data-w-id="994faaf5-2600-70ed-ac03-5b5e6c485f48"
             style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); opacity: 1; transform-style: preserve-3d;"
             class="container-small-658px text-center w-container">
@@ -321,8 +297,8 @@
                 <div>Gallery</div>
             </div>
             <h2 class="title room-gallery">A carefully designed room just for you</h2>
-            {{-- <p class="paragraph room-gallery">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et sapien tempus duis
-            facilisis pretium massa pellentesque.</p> --}}
+            <p class="paragraph room-gallery">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et sapien tempus duis
+            facilisis pretium massa pellentesque.</p>
         </div>
         <div class="container">
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -350,7 +326,7 @@
                 </a>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     @include('landing.footer')
 
@@ -361,8 +337,7 @@
     <script>
         swal({
             title: 'Error!',
-            text: '{{ session('
-            notification ') }}',
+            text: "bakit wala",
             icon: "error",
             button: true,
         });
@@ -408,7 +383,7 @@
             var _this = $(this);
             $.ajax({
                 type: 'post',
-                url: "{{ route('landing.getcottages_available', $cottage->id) }}",
+                url: "{{ route('landing.getexclusive_available') }}",
                 data: {
                     checkin: _this.val(),
                 },
@@ -416,74 +391,36 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (result) {
-                    $('.night').removeAttr('disabled');
-                    $('.day').removeAttr('disabled');
-                    $('.night').prop('checked', false);
-                    $('.day').prop('checked', false);
-                    if(result.status == 'not available') {
-                        $('.available-container').addClass('d-none');
-                        $('.notavailable-container').removeClass('d-none');
+                    console.log(result);
+                    if(result.status.includes('overnight')) {
+                        $('.overnight').removeAttr('disabled');
+                        $('.span-overnight').removeClass('disabled');
                     } else {
-                        $('.available-container').removeClass('d-none');
-                        $('.notavailable-container').addClass('d-none');
+                        $('.overnight').attr('disabled', true);
+                        $('.span-overnight').addClass('disabled');
                     }
+                    if(result.status.includes('day')) {
+                        $('.day').removeAttr('disabled');
+                        $('.span-day').removeClass('disabled');
+                    } else {
+                        $('.day').attr('disabled', true);
+                        $('.span-day').addClass('disabled');
+                    }
+                    $('.overnight').prop('checked', false);
+                    $('.day').prop('checked', false);
                 }
             });
         });
 
         $(document).on('change', 'input:radio[name="type"]', function () {
             var _this = $(this);
-            $.ajax({
-                type: 'post',
-                url: "{{ route('landing.check_cottage_available', $cottage->id) }}",
-                data: {
-                    checkin: $('#datepicker').val(),
-                    usetype: _this.val()
-                },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function (result) {
-                    if(result.status == 'not available') {
-                        $('.available-container').addClass('d-none');
-                        $('.notavailable-container').removeClass('d-none');
-                        $('.aunit').text(result.unit);
-                    } else {
-                        $('.available-container').removeClass('d-none');
-                        $('.notavailable-container').addClass('d-none');
-                        $('.aunit').text(result.unit);
-                    }
-                }
-            });
-
             if (_this.is(':checked') && _this.val() == 'day') {
-                $('.entrance-day').removeClass('d-none');
-                $('.entrance-night').addClass('d-none');
+                $('.day-tour').removeClass('d-none');
+                $('.overnight-tour').addClass('d-none');
             } else {
-                $('.entrance-day').addClass('d-none');
-                $('.entrance-night').removeClass('d-none');
+                $('.day-tour').addClass('d-none');
+                $('.overnight-tour').removeClass('d-none');
             }
-
-        });
-
-        $(document).on('click', '.add-unit', function () {
-            var total_units = $('#total_units').val();
-            var unit = $('#unit').val();
-            var total = Number(unit);
-            if(total < total_units) {
-                total = total + 1;
-            }
-            $('#unit').val(total);
-        });
-
-        $(document).on('click', '.sub-unit', function () {
-            var total_units = $('#total_units').val();
-            var unit = $('#unit').val();
-            var total = Number(unit);
-            if(total > 1) {
-                total = total - 1;
-            }
-            $('#unit').val(total);
         });
     </script>
     @endsection

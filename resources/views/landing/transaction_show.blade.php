@@ -39,6 +39,7 @@
                                         <strong>Adults:</strong> {{ $transaction->adults }} <br>
                                         <strong>Kids:</strong> {{ $transaction->kids }} <br>
                                         <strong>Senior Citizens:</strong> {{ $transaction->senior }} <br>
+                                        @if ($transaction->is_breakfast)
                                         <strong>Breakfast:</strong> {{ $transaction->is_breakfast == 1 ? 'Yes' : 'No' }}
                                         <span class="ml-5">
                                             <strong>Add ons:</strong>
@@ -50,30 +51,10 @@
                                                 echo implode(', ', $breakfasts_array);
                                             @endphp
                                         </span>
+                                        @endif
                                     </div>
                                     
                                 </div>
-                                {{-- <ul class="list-group list-group-flush">
-                                    
-                                    <li class="list-group-item"></li>
-                                    <li class="list-group-item"></li>
-                                    <li class="list-group-item"></li>
-                                    <li class="list-group-item"></li>
-                                    <li class="list-group-item"></li>
-                                    <li class="list-group-item"></li>
-                                    <li class="list-group-item"><strong>Breakfast:</strong> {{ $transaction->is_breakfast == 1 ? 'Yes' : 'No' }}
-                                        <span class="ml-5">
-                                            <strong>Add ons:</strong>
-                                            @php
-                                                $breakfasts_array = [];
-                                                foreach ($transaction->breakfasts as $breakfast) {
-                                                    array_push($breakfasts_array, $breakfast->title);
-                                                }
-                                                echo implode(', ', $breakfasts_array);
-                                            @endphp
-                                        </span>
-                                    </li>
-                                </ul> --}}
                             </div>
                         </div>
 
@@ -92,7 +73,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @if ($transaction->cottage || $transaction->room->entrancefee != 'Inclusive')
+                                            @if ($transaction->is_exclusive != 1 || ($transaction->cottage ))
                                                 @if ($transaction->adults)
                                                 <tr>
                                                     <td>Adults</td>
@@ -131,6 +112,13 @@
                                                     @endforeach
                                                 </tr>
                                                 @endif
+                                            @else
+                                            <tr>
+                                                <td>Exclusive Rental</td>
+                                                <td>1</td>
+                                                <td>P{{ number_format($transaction->rentBill, 2) }}</td>
+                                                <td>P<span class="totalprice">{{ number_format($transaction->rentBill, 2) }}</span></td>
+                                            </tr>
                                             @endif
 
                                             @if ($transaction->cottage)
@@ -151,12 +139,19 @@
                                                 </tr>
                                             @endif
 
-                                            @if ($transaction->extraPerson)
+                                            @if ($transaction->extraPerson && $transaction->room)
                                                 <tr>
                                                     <td>Extra Person</td>
                                                     <td>{{ $transaction->extraPerson }}</td>
                                                     <td>P{{ number_format($transaction->room->extraPerson, 2) }}</td>
                                                     <td>P<span class="totalprice">{{  number_format($transaction->room->extraPerson*$transaction->extraPerson, 2) }}</span></td>
+                                                </tr>
+                                            @elseif($transaction->extraPerson && $transaction->is_exclusive)
+                                                <tr>
+                                                    <td>Extra Person</td>
+                                                    <td>{{ $transaction->extraPerson }}</td>
+                                                    <td>P{{ number_format(($transaction->type == 'day' ? 200 : 250), 2) }}</td>
+                                                    <td>P<span class="totalprice">{{  number_format($transaction->extraPersonTotal, 2) }}</span></td>
                                                 </tr>
                                             @endif
 

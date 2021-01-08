@@ -31,7 +31,7 @@
 
     .selectgroup-button {
         background-color: #fdfdff;
-        border-color: #e4e6fc;
+        border-color: #ced4da;
         border-width: 1px;
         border-style: solid;
         display: block;

@@ -29,6 +29,9 @@
                 <li class="nav-item {{ Nav::isRoute('landing.contact') }}">
                     <a class="nav-link" href="{{ route('landing.contact') }}">Contact</a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('landing.exclusive_rental') }}" class="nav-link btn btn-dark button-primary radius-zero text-white">Exclusive Rental</a>
+                </li>
             </ul>
         </div>
 

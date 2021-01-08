@@ -24,6 +24,7 @@ class CreateTransactionsTable extends Migration
             $table->foreign('room_id')->references('id')->on('rooms');
             $table->unsignedBigInteger('receivedby_id')->nullable();
             $table->foreign('receivedby_id')->references('id')->on('users');
+            $table->boolean('is_exclusive')->default(false);
             $table->dateTime('checkIn_at');
             $table->dateTime('checkOut_at')->nullable();
             $table->integer('adults')->default(0);
