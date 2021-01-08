@@ -49,8 +49,11 @@ class ReservationController extends Controller
         $transactions = Transaction::where('is_reservation', 1)->whereBetween('checkIn_at', [$startDay, $endDay])->orderBy('created_at', 'desc')->get();
 
         return DataTables::of($transactions)
+                ->editColumn('id', function ($transaction) {
+                    return '<a href="'.route('transaction.invoice', $transaction->id).'">INV-'.$transaction->id.'</a>';
+                })
                 ->addColumn('guest', function ($transaction) {
-                    return '<a href="'.route('guest.show', $transaction->guest_id).'" class="btn btn-link">'.$transaction->guest->firstName.' '.$transaction->guest->lastName.'</a>';
+                    return '<a href="'.route('guest.show', $transaction->guest_id).'">'.$transaction->guest->firstName.' '.$transaction->guest->lastName.'</a>';
                 })
                 ->addColumn('service', function ($transaction) {
                     if($transaction->cottage) {
@@ -73,7 +76,14 @@ class ReservationController extends Controller
                     return ucfirst($transaction->type).' '.$sched;
                 })
                 ->addColumn('checkin', function ($transaction) {
-                    return $transaction->checkIn_at->format('M d, Y');
+                    return $transaction->checkIn_at->format('M d, Y h:i a');
+                })
+                ->addColumn('checkout', function ($transaction) {
+                    if($transaction->checkOut_at) {
+                        return $transaction->checkOut_at->format('M d, Y h:i a');
+                    } else {
+                        return '-';
+                    }
                 })
 
                 ->editColumn('status', function ($transaction) {
@@ -112,8 +122,11 @@ class ReservationController extends Controller
                     }
                   return $html;
                 })
+                ->addColumn('usetype', function ($transaction) {
+                    return ucfirst($transaction->type).' use';
+                })
 
-                ->rawColumns(['actions', 'guest', 'service', 'checkin', 'type','status'])
+                ->rawColumns(['actions', 'guest', 'service', 'checkin', 'type','status', 'checkout', 'usetype', 'id'])
                 ->toJson();
     }
 

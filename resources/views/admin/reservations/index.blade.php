@@ -23,72 +23,73 @@
         </div>
     </div>
     
-    <div class="row">
-        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-            <div class="card card-statistic-1">
-                <div class="card-icon bg-secondary">
-                    <i class="fas fa-calendar-day"></i>
-                </div>
-                <div class="card-wrap">
-                    <div class="card-header">
-                        <h4>Pending</h4>
-                    </div>
-                    <div class="card-body">
-                        {{ number_format($pending) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-            <div class="card card-statistic-1">
-                <div class="card-icon bg-warning">
-                    <i class="fas fa-tasks"></i>
-                </div>
-                <div class="card-wrap">
-                    <div class="card-header">
-                        <h4>Approved</h4>
-                    </div>
-                    <div class="card-body">
-                        {{ number_format($approved) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-            <div class="card card-statistic-1">
-                <div class="card-icon bg-success">
-                    <i class="fas fa-check"></i>
-                </div>
-                <div class="card-wrap">
-                    <div class="card-header">
-                        <h4>Completed</h4>
-                    </div>
-                    <div class="card-body">
-                        {{ number_format($completed) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-            <div class="card card-statistic-1">
-                <div class="card-icon bg-danger">
-                    <i class="fas fa-window-close"></i>
-                </div>
-                <div class="card-wrap">
-                    <div class="card-header">
-                        <h4>Cancelled</h4>
-                    </div>
-                    <div class="card-body">
-                        {{ number_format($cancelled) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="section-body">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="card card-statistic-1">
+                    <div class="card-icon bg-secondary">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Pending</h4>
+                        </div>
+                        <div class="card-body">
+                            {{ number_format($pending) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="card card-statistic-1">
+                    <div class="card-icon bg-warning">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Approved</h4>
+                        </div>
+                        <div class="card-body">
+                            {{ number_format($approved) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="card card-statistic-1">
+                    <div class="card-icon bg-success">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Completed</h4>
+                        </div>
+                        <div class="card-body">
+                            {{ number_format($completed) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="card card-statistic-1">
+                    <div class="card-icon bg-danger">
+                        <i class="fas fa-window-close"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Cancelled</h4>
+                        </div>
+                        <div class="card-body">
+                            {{ number_format($cancelled) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -103,13 +104,13 @@
                             <table class="table table-striped" width="100%" id="datatables">
                                 <thead>
                                     <tr>
-                                        {{-- <th>Invoice Number</th> --}}
-                                        <th>Date</th>
-                                        <th>Check In</th>
+                                        <th>Invoice Number</th>
                                         <th>Guest</th>
-                                        <th>Cottage, Room, Exclusive Rental</th>
+                                        <th>Rent</th>
+                                        <th>Use Type</th>
+                                        <th>Check In</th>
+                                        <th>Check Out</th>
                                         <th>Status</th>
-                                        {{-- <th>Approve</th> --}}
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -171,12 +172,8 @@
             },
             aaSorting: [],
             columns: [{
-                    data: 'checkin',
-                    name: 'checkin'
-                },
-                {
-                    data: 'type',
-                    name: 'type'
+                    data: 'id',
+                    name: 'id'
                 },
                 {
                     data: 'guest',
@@ -185,6 +182,18 @@
                 {
                     data: 'service',
                     name: 'service'
+                },
+                {
+                    data: 'usetype',
+                    name: 'usetype'
+                },
+                {
+                    data: 'checkin',
+                    name: 'checkin'
+                },
+                {
+                    data: 'checkout',
+                    name: 'checkout'
                 },
                 {
                     data: 'status',

@@ -433,7 +433,7 @@ class LandingPageController extends Controller
             $checkout = Carbon::parse($request->checkin)->setHour(17);  
         } else {
             $checkin = Carbon::parse($request->checkin)->setHour(9);  
-            $checkout = Carbon::parse($request->checkin)->addDay(1)->setHour(11);  
+            $checkout = Carbon::parse($request->checkin)->addDays(1)->setHour(11);  
         }
 
         $is_reserved = Transaction::whereDate('checkIn_at', $checkIn_at)->whereIn('type', [$request->type, 'night'])->first();

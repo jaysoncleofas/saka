@@ -26,60 +26,63 @@
         <div class="row">
             <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                 <div class="card card-statistic-1">
+                    <div class="card-icon bg-secondary">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Pending</h4>
+                        </div>
+                        <div class="card-body">
+                            {{ number_format($pending) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="card card-statistic-1">
+                    <div class="card-icon bg-warning">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Approved</h4>
+                        </div>
+                        <div class="card-body">
+                            {{ number_format($approved) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="card card-statistic-1">
                     <div class="card-icon bg-success">
                         <i class="fas fa-check"></i>
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4>Paid Transactions</h4>
+                            <h4>Completed</h4>
                         </div>
                         <div class="card-body">
-                            {{ number_format($paid_transactions) }}
+                            {{ number_format($completed) }}
                         </div>
                     </div>
                 </div>
             </div>
+    
             <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                 <div class="card card-statistic-1">
-                    <div class="card-icon bg-primary">
-                        <i class="fas fa-bolt"></i>
+                    <div class="card-icon bg-danger">
+                        <i class="fas fa-window-close"></i>
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4>Active Transactions</h4>
+                            <h4>Cancelled</h4>
                         </div>
                         <div class="card-body">
-                            {{ number_format($active_transactions) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                <div class="card card-statistic-1">
-                    <div class="card-icon bg-secondary">
-                        <i class="fas fa-arrow-alt-circle-right"></i>
-                    </div>
-                    <div class="card-wrap">
-                        <div class="card-header">
-                            <h4>Pending Transactions</h4>
-                        </div>
-                        <div class="card-body">
-                            {{ number_format($pending_transactions) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                <div class="card card-statistic-1">
-                    <div class="card-icon bg-warning">
-                        <i class="fas fa-poll"></i>
-                    </div>
-                    <div class="card-wrap">
-                        <div class="card-header">
-                            <h4>Total Transactions</h4>
-                        </div>
-                        <div class="card-body">
-                            {{ number_format($total_transactions) }}
+                            {{ number_format($cancelled) }}
                         </div>
                     </div>
                 </div>
@@ -103,8 +106,8 @@
                                     <tr>
                                         <th>Invoice Number</th>
                                         <th>Guest</th>
-                                        <th>Cottage</th>
-                                        <th>Room</th>
+                                        <th>Rent</th>
+                                        <th>Use Type</th>
                                         <th>Check In</th>
                                         <th>Check Out</th>
                                         <th>Type</th>
@@ -176,12 +179,12 @@
                     name: 'guest'
                 },
                 {
-                    data: 'cottage',
-                    name: 'cottage'
+                    data: 'service',
+                    name: 'service'
                 },
                 {
-                    data: 'room',
-                    name: 'room'
+                    data: 'usetype',
+                    name: 'usetype'
                 },
                 {
                     data: 'checkin',

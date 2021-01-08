@@ -101,8 +101,8 @@
                                 <tr>
                                     <th>Invoice Number</th>
                                     <th>Guest</th>
-                                    <th>Cottage</th>
-                                    <th>Room</th>
+                                    <th>Rent</th>
+                                    <th>Use Type</th>
                                     <th>Check In</th>
                                     <th>Check Out</th>
                                     <th>Type</th>
@@ -173,12 +173,12 @@
                     name: 'guest'
                 },
                 {
-                    data: 'cottage',
-                    name: 'cottage'
+                    data: 'service',
+                    name: 'service'
                 },
                 {
-                    data: 'room',
-                    name: 'room'
+                    data: 'usetype',
+                    name: 'usetype'
                 },
                 {
                     data: 'checkin',
