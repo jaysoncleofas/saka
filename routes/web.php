@@ -80,7 +80,6 @@ Route::get('/transaction/invoice/{id}', [App\Http\Controllers\TransactionControl
 // Route::post('/transaction/invoice/{id}/pay', [App\Http\Controllers\TransactionController::class, 'pay'])->name('transaction.pay');
 Route::put('/transaction/invoice/{id}/complete', [App\Http\Controllers\TransactionController::class, 'complete'])->name('transaction.complete');
 
-Route::post('/transaction/invoice/{id}/unpaid', [App\Http\Controllers\TransactionController::class, 'unpaid'])->name('transaction.unpaid');
 Route::get('/transaction/guest/create', [App\Http\Controllers\TransactionController::class, 'guest_create'])->name('transaction.guest_create');
 Route::get('/transaction/guest/{id}', [App\Http\Controllers\TransactionController::class, 'guest_show'])->name('transaction.guest_show');
 

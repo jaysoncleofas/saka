@@ -377,18 +377,4 @@ class TransactionController extends Controller
 
         return response('success', 200);
     }
-
-    public function unpaid($id)
-    {
-        $user = Auth::user();
-        $transaction = Transaction::findOrfail($id);
-
-        $transaction->update([
-            'status' => 'active',
-            'receivedby_id' => null,
-            'paid_at'=> null
-        ]);
-
-        return response('success', 200);
-    }
 }
