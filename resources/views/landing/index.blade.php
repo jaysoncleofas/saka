@@ -10,8 +10,8 @@
             <div data-w-id="a375f38e-cd39-316e-0b02-19c869f60288"
                 style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;"
                 class="split-content hero-left">
-                <h1 class="size-1 home">Enjoy today in our farm resort</h1>
-                <p class="paragraph hero">This farm resort offers a unique private pool shaped as a footprint and a natural farm like you’ve never seen. And wander through the unmatched gardens designed.</p>
+                <h1 class="size-1 home">Enjoy today at our farm resort</h1>
+                <p class="paragraph hero">This farm resort offers a unique private pool shaped as a footprint and a natural farm. <br> Wander through the natural garden design.</p>
                 <a href="rooms" class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mr-2">Browse Rooms</a>
                 <a href="contact" class="btn btn-lg btn-outline-dark button-secondary large w-inline-block radius-zero">Reserve Now</a>
             </div>
@@ -47,7 +47,7 @@
                 </div>
 
                 <h2>Visit our farm resort and reconnect with yourself</h2>
-                <p class="paragraph about">The concept for the pool is equivalent to its meaning in Ilocano. It's shaped as a footprint. There are 5 fingers that serve as kiddie pools and the main foot would be a 16x32m lap pool, with a slope of 3-5 feet. <br><br> Saka Resort is located at San Juan de Valdez, Tarlac, just 15 minutes away from the city proper, is 3 minutes away from the newly built Tarlac Recreational Park, and 30 minutes and on the way if you're going to visit the Tarlac Monastery.</p>
+                <p class="paragraph about">The concept for the pool is equivalent to its meaning in Ilocano. It's shaped as a footprint. There are 5 toes that serve as kiddie pools and the main foot would be a 16x32m lap pool, with a slope of 3-5 feet. <br><br> Saka Resort is located at San Juan de Valdez, Tarlac, just 15 minutes away from the city proper, 3 minutes away from the Tarlac Recreational Park, and 30 minutes and on the way if you're going to visit the Tarlac Monastery.</p>
                 <a href="about" class="btn btn-lg btn-outline-dark button-secondary large w-inline-block radius-zero">Explore More</a>
             </div>
         </div>
@@ -163,7 +163,7 @@
                     <div>Farm</div>
                 </div>
                 <h2>A genuine farm<br>inside our resort</h2>
-                <p class="paragraph restaurant">The reason why it is named SAKA is because this resort is unlike others. It is a genuine farm: with vegetable and fruit plants growing and a few animals too. It is located in one of the areas in Tarlac that's known for the rice fields: San Juan de Valdez.</p>
+                <p class="paragraph restaurant">SAKA is a genuine farm: with vegetable and fruit plants growing and a few animals too. It is located in one of the areas in Tarlac that's known for the rice fields: San Juan de Valdez.</p>
                     <a href="about" class="btn btn-lg btn-outline-dark button-secondary large w-inline-block radius-zero">Learn More</a>
             </div>
             <div class="split-content restaurant-right"><img

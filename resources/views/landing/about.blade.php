@@ -9,10 +9,9 @@
             style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); opacity: 1; transform-style: preserve-3d;"
             class="card about-page">
             <h1>About Us</h1>
-            <p class="paragraph about-page">In the Tagalog vernacular, the word saka means "to farm". On the other hand, in the Ilocano vernacular, it means "foot". <br> <br>
-                The reason why it is named SAKA is because this resort is unlike others. It is a genuine farm: with vegetable and fruit plants growing and a few animals too. It is located in one of the areas in Tarlac that's known for the rice fields: San Juan de Valdez.<br> <br>
-                Also, the concept for the pool is equivalent to its meaning in Ilocano. It's shaped as a footprint. There are 5 fingers that serve as kiddie pools and the main foot would be a 16x32m lap pool, with a slope of 3-5 feet.
-                </p>
+            <p class="paragraph about-page">In the Tagalog word saka means "to farm". In Ilocano, it means "foot". <br> <br>
+                SAKA is a genuine farm: with vegetable and fruit plants growing and a few animals too. It is located in one of the areas in Tarlac that's known for the rice fields: San Juan de Valdez.
+            </p>
         </div>
     </div>
     <div class="image-wrapper bg-about-page"><img
@@ -35,7 +34,7 @@
                     <div>About the Resort</div>
                 </div>
                 <h2 class="title about-us">A place carefully designed to help you reconnect</h2>
-                <p class="paragraph about-us">The concept for the pool is equivalent to its meaning in Ilocano. It's shaped as a footprint. There are 5 fingers that serve as kiddie pools and the main foot would be a 16x32m lap pool, with a slope of 3-5 feet. <br><br> Saka Resort is located at San Juan de Valdez, Tarlac, just 15 minutes away from the city proper, is 3 minutes away from the newly built Tarlac Recreational Park, and 30 minutes and on the way if you're going to visit the Tarlac Monastery. <br> <br>We are open from 9am-6pm for day swim, 6pm-10pm for night swim, and we also accept overnight stay.</p>
+                <p class="paragraph about-us">The concept for the pool is equivalent to its meaning in Ilocano: a footprint. There are 5 toes that serve as kiddie pools and the main foot would be a 16x32m lap pool, with a slope of 3-5 feet. <br><br> Saka Resort is located at San Juan de Valdez, Tarlac, just 15 minutes away from the city proper, is 3 minutes away from the newly built Tarlac Recreational Park, and 30 minutes and on the way if you're going to visit the Tarlac Monastery. <br> <br>We are open from 9am-6pm for day swim, 6pm-10pm for night swim, and we also accept overnight stay.</p>
             </div>
             <div class="split-content about-us-right"><img
                     src="{{ asset('/pics/pic10.jpg') }}"
