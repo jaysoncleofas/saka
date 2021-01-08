@@ -84,277 +84,277 @@
 
 @section('content')
 @include('landing.nav2')
-
-<div class="section room">
-    <div class="image-wrapper room">
-        <img style="opacity: 1; transform: translate3d(0px, 0px, 0px) scale3d(1.1, 1.1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;"
-            src="{{ $room->coverimage() ? asset('storage/rooms/'.$room->coverimage()->path) : asset('images/img07.jpg') }}"
-            alt="" sizes="100vw" class="image room">
-    </div>
-    <div class="container">
-        <div id="Book-Now" class="room-wrapper">
-            <div class="row">
-                <div class="col-lg-4">
-                    <h1 class="title room">{{ $room->name }}</h1>
-                    <div class="price">{{ number_format($room->price) }}&nbsp;PHP</div>
-                    <div class="divider room-page"></div>
-                    <p class="paragraph room">{{ $room->descriptions }}</p>
-                    <a href="#Gallery" class="btn btn-lg btn-outline-dark button-secondary large w-inline-block radius-zero view-gallery">View Gallery</a>
-                    {{-- <div class="about-room-page">
-                        <div class="split-content card-about-room-left">
-                            <div class="from-text">From</div>
-                            <div class="card-price-wrapper">
-                                <div>&nbsp;/night</div>
+    <div class="section room">
+        <div class="image-wrapper room">
+            <img style="opacity: 1; transform: translate3d(0px, 0px, 0px) scale3d(1.1, 1.1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;"
+                src="{{ $room->coverimage() ? asset('storage/rooms/'.$room->coverimage()->path) : asset('images/img07.jpg') }}"
+                alt="" sizes="100vw" class="image room">
+        </div>
+        <div class="container">
+            <div id="Book-Now" class="room-wrapper">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <h1 class="title room">{{ $room->name }}</h1>
+                        <div class="price">{{ number_format($room->price) }}&nbsp;PHP</div>
+                        <div class="divider room-page"></div>
+                        <p class="paragraph room">{{ $room->descriptions }}</p>
+                        <a href="#Gallery" class="btn btn-lg btn-outline-dark button-secondary large w-inline-block radius-zero view-gallery">View Gallery</a>
+                        {{-- <div class="about-room-page">
+                            <div class="split-content card-about-room-left">
+                                <div class="from-text">From</div>
+                                <div class="card-price-wrapper">
+                                    <div>&nbsp;/night</div>
+                                </div>
                             </div>
-                        </div>
-                    </div> --}}
-                    {{-- <a href="{{ route('room.book', $room->id) }}"
-                    class="btn btn-lg btn-outline-dark button-secondary large radius-zero">Book Now</a> --}}
-                    {{-- <a href="{{ route('landing.contact') }}"
-                    class="btn btn-lg btn-outline-dark button-secondary large radius-zero">Book Now</a> --}}
-                </div>
-                <div class="col-lg-8">
-                    <div class="card reservate-room">
-                        <div class="reservate-room-title-wrapper">
-                            <h3>Reservate Room</h3>
-                        </div>
-                        <div class="reservate-room-content">
-                            <div>
-                                <form action="{{ route('landing.room_reservation_store', $room->id) }}" method="POST" autocomplete="off">
-                                    @csrf
+                        </div> --}}
+                        {{-- <a href="{{ route('room.book', $room->id) }}"
+                        class="btn btn-lg btn-outline-dark button-secondary large radius-zero">Book Now</a> --}}
+                        {{-- <a href="{{ route('landing.contact') }}"
+                        class="btn btn-lg btn-outline-dark button-secondary large radius-zero">Book Now</a> --}}
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card reservate-room">
+                            <div class="reservate-room-title-wrapper">
+                                <h3>Reservate Room</h3>
+                            </div>
+                            <div class="reservate-room-content">
+                                <div>
+                                    <form action="{{ route('landing.room_reservation_store', $room->id) }}" method="POST" autocomplete="off">
+                                        @csrf
 
-                                    <div class="form-group">
-                                        <label for="datepicker">Check-in Date:</label>
-                                        <input type="text" name="checkin" class="form-control @error('checkin') is-invalid @enderror" id="datepicker" value="{{ old('checkin') }}">
-                                        @error('checkin')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-lg-12 mb-2">
-                                            <span>{{ $room->entrancefee }} Entrance fee</span>
-                                            @if ($room->entrancefee == 'Exclusive')
-                                            :
-                                            @foreach ($entranceFees as $item)
-                                            {{ $item->title }} P{{ number_format($item->nightPrice, 0) }}
-                                            @if(!($loop->last))
-                                            ,
-                                            @endif
-                                            @endforeach
-                                            @endif
-                                            <br>
-                                            @if ($room->extraPerson != 0)
-                                            <span>Good for {{ $room->min }}pax, {{ number_format($room->extraPerson, 0) }}php for extra person(max of {{ $room->max - $room->min }})</span>
-                                            @else
-                                            <span>Room max capacity is {{ $room->max }}pax</span>
-                                            @endif
-                                        </div>
-                                        
-                                        <div class="form-group col-lg-4">
-                                            <select name="adults" id="adults" class="form-control">
-                                                @for ($i = 1; $i <= $room->max; $i++) 
-                                                <option {{ old('adults') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $i }} {{ $i > 1 ? 'Adults' : 'Adult' }}</option>
-                                                @endfor
-                                            </select>
-                                            @error('adults')
+                                        <div class="form-group">
+                                            <label for="datepicker">Check-in Date:</label>
+                                            <input type="text" name="checkin" class="form-control @error('checkin') is-invalid @enderror" id="datepicker" value="{{ old('checkin') }}">
+                                            @error('checkin')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                             @enderror
                                         </div>
 
-                                        <div class="form-group col-lg-4">
-                                            <select name="kids" id="kids" class="form-control">
-                                                <option value="0">No Kids</option>
-                                                @for ($i = 1; $i <= $room->max; $i++) 
-                                                <option {{ old('kids') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $i }} {{ $i > 1 ? 'Kids' : 'Kid' }}</option>
-                                                @endfor
-                                            </select>
-                                            @error('kids')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-
-                                        <div class="form-group col-lg-4">
-                                            <select name="senior_citizen" id="senior_citizen" class="form-control">
-                                                <option value="0">No Senior Citizen</option>
-                                                @for ($i = 1; $i <= $room->max; $i++) 
-                                                <option {{ old('senior_citizen') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $i }} {{ $i > 1 ? 'Senior Citizens' : 'Senior Citizen' }}</option>
-                                                @endfor
-                                            </select>
-                                            @error('senior_citizen')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-
-                                        {{-- @if ($room->extraPerson != 0)
-                                        <div class="form-group col-lg-4">
-                                            <select name="extraPerson" id="extraPerson" class="form-control">
-                                                <option value="0">No Extra Person</option>
-                                                @for ($i = 1; $i <= ($room->max - $room->min); $i++) 
-                                                <option {{ old('extraPerson') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $i }} {{ $i > 1 ? 'Extra Persons' : 'Extra Person' }}</option>
-                                                @endfor
-                                            </select>
-                                            @error('extraPerson')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        @endif --}}
-
-                                        <div class="form-group col-lg-12 mb-0">
-                                            {{-- <label class="form-label">Select Type</label> --}}
-                                            <div
-                                                class="selectgroup selectgroup-pills @error('type') is-invalid @enderror">
-                                                <label class="selectgroup-item pb-0">
-                                                    <input type="radio" name="type" value="night"
-                                                        class="selectgroup-input"
-                                                        {{ old('type') == 'night' ? 'checked' : '' }}>
-                                                    <span class="selectgroup-button selectgroup-button-icon"><i
-                                                            class="fas fa-moon"></i> Night
-                                                        {{ config('yourconfig.resort')->night }}</span>
-                                                </label>
-                                                <label class="selectgroup-item pb-0">
-                                                    <input type="radio" name="type" value="overnight"
-                                                        class="selectgroup-input overnight"
-                                                        {{ old('type') == 'overnight' ? 'checked' : '' }}>
-                                                    <span class="selectgroup-button selectgroup-button-icon"><i
-                                                            class="fas fa-cloud-moon"></i> Overnight
-                                                        {{ config('yourconfig.resort')->overnight }}</span>
-                                                </label>
-                                            </div>
-                                            @error('type')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-
-                                        <div class="col-lg-12 breakfast-container d-none">
-                                            <div class="row">
-                                                @if (config('yourconfig.resort')->is_promo)
-                                                <div class="form-group col-lg-12 mb-0">
-                                                    <label class="form-label">Free Breakfast</label>
-                                                    <input type="hidden" name="isbreakfast" value="1">
-                                                </div>
-
-                                                <div class="form-group col-lg-12 breakfastaddons-container">
-                                                    <label class="form-label">Breakfast Add ons:</label>
-                                                    <div class="selectgroup selectgroup-pills">
-                                                        @foreach ($breakfasts as $breakfast)
-                                                        <label class="selectgroup-item mb-0">
-                                                            <input type="checkbox" name="breakfast[]"
-                                                                value="{{ $breakfast->id }}" class="selectgroup-input"
-                                                                {{ old('breakfast') ? (in_array($breakfast->id, old('breakfast')) ? 'checked' : '') : '' }}>
-                                                            <span
-                                                                class="selectgroup-button">{{ $breakfast->title.' P'.number_format($breakfast->price, 0).' ('.$breakfast->notes.')' }}</span>
-                                                        </label>
-                                                        @endforeach
-                                                    </div>
-                                                </div>
-                                                @else
-                                                <div class="form-group col-lg-12 mb-0">
-                                                    <label class="form-label">Breakfast
-                                                        (P{{ number_format(config('yourconfig.resort')->breakfastPrice, 0) }})</label>
-                                                    <div class="selectgroup selectgroup-pills">
-                                                        <label class="selectgroup-item">
-                                                            <input type="radio" name="isbreakfast" value="1"
-                                                                class="selectgroup-input yes-breakfast"
-                                                                {{ old('isbreakfast') == 1 ? 'checked' : '' }}>
-                                                            <span
-                                                                class="selectgroup-button selectgroup-button-icon">Yes</span>
-                                                        </label>
-                                                        <label class="selectgroup-item">
-                                                            <input type="radio" name="isbreakfast" value="0"
-                                                                class="selectgroup-input"
-                                                                {{ old('isbreakfast') == 0 ? 'checked' : '' }}>
-                                                            <span
-                                                                class="selectgroup-button selectgroup-button-icon">No</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group col-lg-12 breakfastaddons-container d-none">
-                                                    <label class="form-label">Breakfast Add ons:</label>
-                                                    <div class="selectgroup selectgroup-pills">
-                                                        @foreach ($breakfasts as $breakfast)
-                                                        <label class="selectgroup-item mb-0">
-                                                            <input type="checkbox" name="breakfast[]"
-                                                                value="{{ $breakfast->id }}" class="selectgroup-input"
-                                                                {{ old('breakfast') ? (in_array($breakfast->id, old('breakfast')) ? 'checked' : '') : '' }}>
-                                                            <span
-                                                                class="selectgroup-button">{{ $breakfast->title.' P'.number_format($breakfast->price, 0).' ('.$breakfast->notes.')' }}</span>
-                                                        </label>
-                                                        @endforeach
-                                                    </div>
-                                                </div>
+                                        <div class="row">
+                                            <div class="col-lg-12 mb-2">
+                                                <span>{{ $room->entrancefee }} Entrance fee</span>
+                                                @if ($room->entrancefee == 'Exclusive')
+                                                :
+                                                @foreach ($entranceFees as $item)
+                                                {{ $item->title }} P{{ number_format($item->nightPrice, 0) }}
+                                                @if(!($loop->last))
+                                                ,
                                                 @endif
-    
+                                                @endforeach
+                                                @endif
+                                                <br>
+                                                @if ($room->extraPerson != 0)
+                                                <span>Good for {{ $room->min }}pax, {{ number_format($room->extraPerson, 0) }}php for extra person(max of {{ $room->max - $room->min }})</span>
+                                                @else
+                                                <span>Room max capacity is {{ $room->max }}pax</span>
+                                                @endif
                                             </div>
-
-                                        </div>
-
-                                        {{-- <div class="row"> --}}
-                                            <div class="form-group col-md-6">
-                                                <label for="firstName">First Name</label>
-                                                <input type="text" class="form-control @error('firstName') is-invalid @enderror"
-                                                    name="firstName" id="firstName" value="{{ old('firstName') }}">
-                                                @error('firstName')
+                                            
+                                            <div class="form-group col-lg-4">
+                                                <select name="adults" id="adults" class="form-control">
+                                                    @for ($i = 1; $i <= $room->max; $i++) 
+                                                    <option {{ old('adults') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $i }} {{ $i > 1 ? 'Adults' : 'Adult' }}</option>
+                                                    @endfor
+                                                </select>
+                                                @error('adults')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                                 @enderror
                                             </div>
-            
-                                            <div class="form-group col-md-6">
-                                                <label for="lastName">Last Name</label>
-                                                <input type="text" class="form-control @error('lastName') is-invalid @enderror"
-                                                    name="lastName" id="lastName" value="{{ old('lastName') }}">
-                                                @error('lastName')
+
+                                            <div class="form-group col-lg-4">
+                                                <select name="kids" id="kids" class="form-control">
+                                                    <option value="0">No Kids</option>
+                                                    @for ($i = 1; $i <= $room->max; $i++) 
+                                                    <option {{ old('kids') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $i }} {{ $i > 1 ? 'Kids' : 'Kid' }}</option>
+                                                    @endfor
+                                                </select>
+                                                @error('kids')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                                 @enderror
                                             </div>
-                                        {{-- </div> --}}
-            
-                                        <div class="form-group col-md-6">
-                                            <label for="contactNumber">Contact Number</label>
-                                            <input type="text" class="form-control @error('contactNumber') is-invalid @enderror"
-                                                    name="contactNumber" id="contactNumber" value="{{ old('contactNumber') }}">
-                                            @error('contactNumber')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
 
-                                        <div class="form-group col-md-6">
-                                            <label for="email">Email</label>
-                                            <input type="text" class="form-control @error('email') is-invalid @enderror"
-                                                    name="email" id="email" value="{{ old('email') }}">
-                                            @error('email')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
+                                            <div class="form-group col-lg-4">
+                                                <select name="senior_citizen" id="senior_citizen" class="form-control">
+                                                    <option value="0">No Senior Citizen</option>
+                                                    @for ($i = 1; $i <= $room->max; $i++) 
+                                                    <option {{ old('senior_citizen') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $i }} {{ $i > 1 ? 'Senior Citizens' : 'Senior Citizen' }}</option>
+                                                    @endfor
+                                                </select>
+                                                @error('senior_citizen')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
 
-                                        <div class="col-lg-12">
-                                            <button type="submit"
-                                                class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mt-3">Book
-                                                Now</button>
+                                            {{-- @if ($room->extraPerson != 0)
+                                            <div class="form-group col-lg-4">
+                                                <select name="extraPerson" id="extraPerson" class="form-control">
+                                                    <option value="0">No Extra Person</option>
+                                                    @for ($i = 1; $i <= ($room->max - $room->min); $i++) 
+                                                    <option {{ old('extraPerson') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $i }} {{ $i > 1 ? 'Extra Persons' : 'Extra Person' }}</option>
+                                                    @endfor
+                                                </select>
+                                                @error('extraPerson')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                            @endif --}}
+
+                                            <div class="form-group col-lg-12 mb-0">
+                                                {{-- <label class="form-label">Select Type</label> --}}
+                                                <div
+                                                    class="selectgroup selectgroup-pills @error('type') is-invalid @enderror">
+                                                    <label class="selectgroup-item pb-0">
+                                                        <input type="radio" name="type" value="night"
+                                                            class="selectgroup-input"
+                                                            {{ old('type') == 'night' ? 'checked' : '' }}>
+                                                        <span class="selectgroup-button selectgroup-button-icon"><i
+                                                                class="fas fa-moon"></i> Night
+                                                            {{ config('yourconfig.resort')->night }}</span>
+                                                    </label>
+                                                    <label class="selectgroup-item pb-0">
+                                                        <input type="radio" name="type" value="overnight"
+                                                            class="selectgroup-input overnight"
+                                                            {{ old('type') == 'overnight' ? 'checked' : '' }}>
+                                                        <span class="selectgroup-button selectgroup-button-icon"><i
+                                                                class="fas fa-cloud-moon"></i> Overnight
+                                                            {{ config('yourconfig.resort')->overnight }}</span>
+                                                    </label>
+                                                </div>
+                                                @error('type')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+
+                                            <div class="col-lg-12 breakfast-container d-none">
+                                                <div class="row">
+                                                    @if (config('yourconfig.resort')->is_promo)
+                                                    <div class="form-group col-lg-12 mb-0">
+                                                        <label class="form-label">Free Breakfast</label>
+                                                        <input type="hidden" name="isbreakfast" value="1">
+                                                    </div>
+
+                                                    <div class="form-group col-lg-12 breakfastaddons-container">
+                                                        <label class="form-label">Breakfast Add ons:</label>
+                                                        <div class="selectgroup selectgroup-pills">
+                                                            @foreach ($breakfasts as $breakfast)
+                                                            <label class="selectgroup-item mb-0">
+                                                                <input type="checkbox" name="breakfast[]"
+                                                                    value="{{ $breakfast->id }}" class="selectgroup-input"
+                                                                    {{ old('breakfast') ? (in_array($breakfast->id, old('breakfast')) ? 'checked' : '') : '' }}>
+                                                                <span
+                                                                    class="selectgroup-button">{{ $breakfast->title.' P'.number_format($breakfast->price, 0).' ('.$breakfast->notes.')' }}</span>
+                                                            </label>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                    @else
+                                                    <div class="form-group col-lg-12 mb-0">
+                                                        <label class="form-label">Breakfast
+                                                            (P{{ number_format(config('yourconfig.resort')->breakfastPrice, 0) }})</label>
+                                                        <div class="selectgroup selectgroup-pills">
+                                                            <label class="selectgroup-item">
+                                                                <input type="radio" name="isbreakfast" value="1"
+                                                                    class="selectgroup-input yes-breakfast"
+                                                                    {{ old('isbreakfast') == 1 ? 'checked' : '' }}>
+                                                                <span
+                                                                    class="selectgroup-button selectgroup-button-icon">Yes</span>
+                                                            </label>
+                                                            <label class="selectgroup-item">
+                                                                <input type="radio" name="isbreakfast" value="0"
+                                                                    class="selectgroup-input"
+                                                                    {{ old('isbreakfast') == 0 ? 'checked' : '' }}>
+                                                                <span
+                                                                    class="selectgroup-button selectgroup-button-icon">No</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-lg-12 breakfastaddons-container d-none">
+                                                        <label class="form-label">Breakfast Add ons:</label>
+                                                        <div class="selectgroup selectgroup-pills">
+                                                            @foreach ($breakfasts as $breakfast)
+                                                            <label class="selectgroup-item mb-0">
+                                                                <input type="checkbox" name="breakfast[]"
+                                                                    value="{{ $breakfast->id }}" class="selectgroup-input"
+                                                                    {{ old('breakfast') ? (in_array($breakfast->id, old('breakfast')) ? 'checked' : '') : '' }}>
+                                                                <span
+                                                                    class="selectgroup-button">{{ $breakfast->title.' P'.number_format($breakfast->price, 0).' ('.$breakfast->notes.')' }}</span>
+                                                            </label>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                    @endif
+        
+                                                </div>
+
+                                            </div>
+
+                                            {{-- <div class="row"> --}}
+                                                <div class="form-group col-md-6">
+                                                    <label for="firstName">First Name</label>
+                                                    <input type="text" class="form-control @error('firstName') is-invalid @enderror"
+                                                        name="firstName" id="firstName" value="{{ old('firstName') }}">
+                                                    @error('firstName')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                
+                                                <div class="form-group col-md-6">
+                                                    <label for="lastName">Last Name</label>
+                                                    <input type="text" class="form-control @error('lastName') is-invalid @enderror"
+                                                        name="lastName" id="lastName" value="{{ old('lastName') }}">
+                                                    @error('lastName')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                            {{-- </div> --}}
+                
+                                            <div class="form-group col-md-6">
+                                                <label for="contactNumber">Contact Number</label>
+                                                <input type="text" class="form-control @error('contactNumber') is-invalid @enderror"
+                                                        name="contactNumber" id="contactNumber" value="{{ old('contactNumber') }}">
+                                                @error('contactNumber')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <label for="email">Email</label>
+                                                <input type="text" class="form-control @error('email') is-invalid @enderror"
+                                                        name="email" id="email" value="{{ old('email') }}">
+                                                @error('email')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+
+                                            <div class="col-lg-12">
+                                                <button type="submit"
+                                                    class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mt-3">Book
+                                                    Now</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -403,7 +403,6 @@
             </div>
         </div>
     </div>
-
     @include('landing.footer')
 
     @endsection
