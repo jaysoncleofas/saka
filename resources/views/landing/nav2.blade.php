@@ -1,6 +1,6 @@
 <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light" style="border-bottom: 1px solid rgb(232, 232, 225);">
     <div class="container">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{{ route('landing.index') }}">
             <img src="{{ asset('/pics/A.png') }}" width="50" height="50" class="d-inline-block align-top mr-2" alt="">
             {{ config('yourconfig.resort')->name }}
         </a>
