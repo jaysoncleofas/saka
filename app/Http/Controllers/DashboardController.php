@@ -33,10 +33,10 @@ class DashboardController extends Controller
         $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfDay();
         $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfDay();
 
-        $data['active_transactions'] = Transaction::whereIn('status', ['active', 'approved'])->whereBetween('checkIn_at', [$startDay, $endDay])->count();
-        // $data['total_transactions'] = Transaction::whereIn('status', ['active', 'approved'])->whereBetween('checkIn_at', [$startDay, $endDay])->count();
-        $data['walkin'] = Transaction::whereIn('status', ['active', 'approved'])->whereIs_reservation(0)->whereBetween('checkIn_at', [$startDay, $endDay])->count();
-        $data['reservation'] = Transaction::whereIn('status', ['active', 'approved'])->whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->count();
+        $data['active_transactions'] = Transaction::whereIn('status', ['active', 'confirmed'])->whereBetween('checkIn_at', [$startDay, $endDay])->count();
+        // $data['total_transactions'] = Transaction::whereIn('status', ['active', 'confirmed'])->whereBetween('checkIn_at', [$startDay, $endDay])->count();
+        $data['walkin'] = Transaction::whereIn('status', ['active', 'confirmed'])->whereIs_reservation(0)->whereBetween('checkIn_at', [$startDay, $endDay])->count();
+        $data['reservation'] = Transaction::whereIn('status', ['active', 'confirmed'])->whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->count();
         return view('admin.dashboard', $data);
     }
 
@@ -45,7 +45,7 @@ class DashboardController extends Controller
         $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfDay();
         $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfDay();
 
-        $transactions = Transaction::whereIn('status', ['active', 'approved'])->whereBetween('checkIn_at', [$startDay, $endDay])->orderBy('created_at', 'asc')->get();
+        $transactions = Transaction::whereIn('status', ['active', 'confirmed'])->whereBetween('checkIn_at', [$startDay, $endDay])->orderBy('created_at', 'asc')->get();
 
         return DataTables::of($transactions)
                 ->editColumn('id', function ($transaction) {
