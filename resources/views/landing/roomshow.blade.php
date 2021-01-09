@@ -363,7 +363,7 @@
         </div>
     </div>
 
-    <div id="Gallery" class="section room-gallery">
+    <div id="Gallery" class="section room-gallery mt-0">
         <div data-w-id="994faaf5-2600-70ed-ac03-5b5e6c485f48"
             style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); opacity: 1; transform-style: preserve-3d;"
             class="container-small-658px text-center w-container">
