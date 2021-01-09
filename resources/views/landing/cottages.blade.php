@@ -19,7 +19,7 @@
                     role="listitem" class="w-dyn-item">
                     <div data-w-id="a401d7a1-981e-8de5-af70-01e85569058d" class="room-page-wrapper room-page">
                         <span class="image-wrapper w-inline-block"><img
-                                src="{{ $cottage->image ? asset('storage/cottages/'.$cottage->image) : asset('images/img07.jpg') }}"
+                                src="{{ $cottage->coverimage() ? asset('storage/cottages/'.$cottage->coverimage()->path) : asset('images/img07.jpg') }}"
                                 alt=""
                                 sizes="(max-width: 479px) 100vw, (max-width: 767px) 90vw, (max-width: 991px) 530px, (max-width: 1919px) 46vw, 576px"
                                 {{-- srcset="https://assets.website-files.com/5f28567562c2bb18b4a14f33/5f32cfd10e90f5949c551038_image-room-thumbnail-01-hotel-template-p-500.jpeg 500w, https://assets.website-files.com/5f28567562c2bb18b4a14f33/5f32cfd10e90f5949c551038_image-room-thumbnail-01-hotel-template-p-800.jpeg 800w, https://assets.website-files.com/5f28567562c2bb18b4a14f33/5f32cfd10e90f5949c551038_image-room-thumbnail-01-hotel-template-p-1080.jpeg 1080w, https://assets.website-files.com/5f28567562c2bb18b4a14f33/5f32cfd10e90f5949c551038_image-room-thumbnail-01-hotel-template.jpg 1152w" --}}
