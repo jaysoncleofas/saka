@@ -1119,6 +1119,7 @@ h1 {
     -o-object-position: 0% 50%;
     object-position: 0% 50%;
     height: 500px;
+    width: 100%;
 }
 
 .card.room-page {
