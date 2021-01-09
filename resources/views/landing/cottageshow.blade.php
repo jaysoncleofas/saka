@@ -89,7 +89,7 @@
 <div class="section room">
     <div class="image-wrapper room">
         <img style="opacity: 1; transform: translate3d(0px, 0px, 0px) scale3d(1.1, 1.1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;"
-            src="{{ $cottage->coverimage() ? asset('storage/rooms/'.$cottage->coverimage()->path) : asset('images/img07.jpg') }}"
+            src="{{ $cottage->coverimage() ? asset('storage/cottages/'.$cottage->coverimage()->path) : asset('images/img07.jpg') }}"
             alt="" sizes="100vw" class="image room">
     </div>
     <div class="container">
@@ -335,7 +335,7 @@
                 <div class="carousel-inner">
                     @foreach ($cottage->images as $item)
                     <div class="carousel-item {{ $loop->first ? 'active' : ''}}">
-                        <img class="d-block w-100 room-images" src="{{ asset('storage/rooms/'.$item->path) }}"
+                        <img class="d-block w-100 room-images" src="{{ asset('storage/cottages/'.$item->path) }}"
                             alt="First slide">
                     </div>
                     @endforeach
