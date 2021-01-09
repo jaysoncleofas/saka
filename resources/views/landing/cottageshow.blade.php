@@ -89,7 +89,7 @@
 <div class="section room">
     <div class="image-wrapper room">
         <img style="opacity: 1; transform: translate3d(0px, 0px, 0px) scale3d(1.1, 1.1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;"
-            src="{{ $cottage->coverimage() ? asset('storage/cottages/'.$cottage->coverimage()->path) : asset('images/img07.jpg') }}"
+            src="{{ asset('pics/pic10.jpg') }}"
             alt="" sizes="100vw" class="image room">
     </div>
     <div class="container">
