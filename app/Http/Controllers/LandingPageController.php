@@ -431,12 +431,13 @@ class LandingPageController extends Controller
         if($request->type == 'overnight') {
             $checkin = Carbon::parse($request->checkin)->setHour(9);  
             $checkout = Carbon::parse($request->checkin)->setHour(17);  
+            $is_reserved = Transaction::whereDate('checkIn_at', $checkIn_at)->whereIn('type', [$request->type, 'night'])->first();
         } else {
             $checkin = Carbon::parse($request->checkin)->setHour(9);  
             $checkout = Carbon::parse($request->checkin)->addDays(1)->setHour(11);  
+            $is_reserved = Transaction::whereDate('checkIn_at', $checkIn_at)->where('type', $request->type)->first();
         }
 
-        $is_reserved = Transaction::whereDate('checkIn_at', $checkIn_at)->whereIn('type', [$request->type, 'night'])->first();
         if($is_reserved) {
             session()->flash('notification', 'Sorry, the date is not available.');
             session()->flash('type', 'error');
