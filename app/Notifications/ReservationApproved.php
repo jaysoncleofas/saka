@@ -6,8 +6,9 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Carbon\Carbon;
 
-class ReservationSent extends Notification
+class ReservationApproved extends Notification
 {
     use Queueable;
 
@@ -47,14 +48,26 @@ class ReservationSent extends Notification
         $resort = config('yourconfig.resort');
         $phone = $resort->phone;
         $email = $resort->email;
-
+        $type = '';
+        if($tran->cottage) {
+            $type = 'Cottage: '.$tran->cottage->name;
+        } elseif($tran->room) {
+            $type = 'Room: '.$tran->room->name;
+        } else {
+            $type = 'Exclusive Rental';
+        }
+        $usetype = ucfirst($tran->type).' use';
         return (new MailMessage)
-                    ->subject('Reservation Sent')
+                    ->subject('Reservation Approved')
                     ->greeting('Hi '.$fname.'!')
-                    ->line('Thank you for checking us out.')
-                    ->line('We are reviewing your reservation: Control#'.$tran->id)
+                    ->line('Thank you for choosing Saka Resort. We look forward to hosting your stay.')
+                    ->line('Here are your booking details:')
+                    ->line('Reservation Control Number:'. $tran->id)
+                    ->line($type)
+                    ->line($usetype)
+                    ->line('Check in date:'. Carbon::parse($tran->checkIn_at)->toDayDateTimeString())
+                    ->line('Check out date:'. Carbon::parse($tran->checkOut_at)->toDayDateTimeString())
                     ->action('View Reservation', $url)
-                    ->line('Our customer care team will reply within one business day, however our actual reply time is often sooner.')
                     ->line('If you need to make changes or require assistance please call '.$phone.' or email us at '.$email.'. ')
                     ->line('We look forward to welcoming you in Saka Resort soon!');
     }

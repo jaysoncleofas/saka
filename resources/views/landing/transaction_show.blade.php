@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-12">
-                                <strong>Transaction# {{ $transaction->id }}</strong>
+                                <strong>Control# {{ $transaction->id }}</strong>
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <strong>Status:</strong> {{ ucfirst($transaction->status) }} <br>

@@ -104,7 +104,7 @@
                             <table class="table table-striped" width="100%" id="datatables">
                                 <thead>
                                     <tr>
-                                        <th>Invoice Number</th>
+                                        <th>Control Number</th>
                                         <th>Guest</th>
                                         <th>Rent</th>
                                         <th>Use Type</th>
@@ -154,7 +154,7 @@
 
         cb(start, end);
 
-        $('#datatables').DataTable({
+        var datatables2 = $('#datatables').DataTable({
             processing: true,
             serverSide: true,
             responsive: true,
@@ -209,6 +209,102 @@
                     searchable: false
                 },
             ]
+        });
+
+        $(document).on('click', '.trigger-approve', function () {
+            var _this = $(this);
+            var _url = _this.data('action');
+            var _model = _this.data('model');
+            swal({
+                title: 'Are you sure?',
+                text: 'Once approved, you will not be able to disapprove this ' +_model+ '!',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: 'put',
+                        url: _url,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (result) {
+                            if (result == 'success') {
+                                swal('The '+_model+' has been approved!', {
+                                    icon: 'success',
+                                });
+                                datatables2.ajax.reload();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        $(document).on('click', '.trigger-delete2', function () {
+            var _this = $(this);
+            var _url = _this.data('action');
+            var _model = _this.data('model');
+            swal({
+                title: 'Are you sure?',
+                text: 'Once deleted, you will not be able to recover this ' +_model+ '!',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: 'delete',
+                        url: _url,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (result) {
+                            if (result == 'success') {
+                                swal('The '+_model+' has been deleted!', {
+                                    icon: 'success',
+                                });
+                                datatables2.ajax.reload();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        $(document).on('click', '.trigger-cancel', function () {
+            var _this = $(this);
+            var _url = _this.data('action');
+            var _model = _this.data('model');
+            swal({
+                title: 'Are you sure?',
+                text: 'Once cancelled, you will not be able to revert this ' +_model+ '!',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: 'put',
+                        url: _url,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (result) {
+                            if (result == 'success') {
+                                swal('The '+_model+' has been cancelled!', {
+                                    icon: 'success',
+                                });
+                                datatables2.ajax.reload();
+                            }
+                        }
+                    });
+                }
+            });
         });
     });
 </script>

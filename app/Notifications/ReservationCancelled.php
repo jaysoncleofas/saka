@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ReservationSent extends Notification
+class ReservationCancelled extends Notification
 {
     use Queueable;
 
@@ -49,14 +49,12 @@ class ReservationSent extends Notification
         $email = $resort->email;
 
         return (new MailMessage)
-                    ->subject('Reservation Sent')
+                    ->subject('Reservation Cancelled')
                     ->greeting('Hi '.$fname.'!')
-                    ->line('Thank you for checking us out.')
-                    ->line('We are reviewing your reservation: Control#'.$tran->id)
+                    ->line('Due to some reasons, we need to cancel your reservation: Control#'.$tran->id)
                     ->action('View Reservation', $url)
-                    ->line('Our customer care team will reply within one business day, however our actual reply time is often sooner.')
                     ->line('If you need to make changes or require assistance please call '.$phone.' or email us at '.$email.'. ')
-                    ->line('We look forward to welcoming you in Saka Resort soon!');
+                    ->line('Thank you for booking with us!');
     }
 
     /**

@@ -283,7 +283,7 @@ class TransactionController extends Controller
 
         return DataTables::of($transactions)
                 ->editColumn('id', function ($transaction) {
-                    return '<a href="'.route('transaction.invoice', $transaction->id).'">INV-'.$transaction->id.'</a>';
+                    return '<a href="'.route('transaction.invoice', $transaction->id).'">CTRL-'.$transaction->id.'</a>';
                 })
                 ->addColumn('guest', function ($transaction) {
                     return '<a href="'.route('guest.show', $transaction->guest_id).'">'.$transaction->guest->firstName.' '.$transaction->guest->lastName.'</a>';

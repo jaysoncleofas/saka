@@ -38,7 +38,6 @@ Route::post('/exclusive-rental/store', [App\Http\Controllers\LandingPageControll
 Route::post('exclusive-rental/get_available', [App\Http\Controllers\LandingPageController::class, 'getexclusive_available'])->name('landing.getexclusive_available');
 
 Route::get('/contact', [App\Http\Controllers\LandingPageController::class, 'contact'])->name('landing.contact');
-Route::post('/reservation-store', [App\Http\Controllers\LandingPageController::class, 'reservation_store'])->name('landing.reservation-store');
 
 // Auth::routes();
 Auth::routes(['register' => false, 'reset' => false]);

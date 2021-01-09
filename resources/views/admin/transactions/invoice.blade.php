@@ -11,7 +11,7 @@
             <div class="col-12 col-md-12 col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4><a href="{{ route('transaction.show', $transaction->id) }}"><h4>Invoice #{{ $transaction->id }}</h4></a></h4>
+                        <h4><a href="{{ route('transaction.show', $transaction->id) }}"><h4>Control #{{ $transaction->id }}</h4></a></h4>
                         <div class="card-header-action">
                             <a href="{{ route('transaction.edit', $transaction->id) }}" class="mr-2">Edit <i class="fa fa-edit"></i></a>
                             @if ($transaction->status == 'completed')
@@ -34,7 +34,7 @@
                                 <p><strong>Invoice date:</strong> {{ $transaction->created_at->toFormattedDateString() }}</p>
                             </div>
                             <div class="col-6 text-right">
-                                <h4 class="h4-responsive"><small>Invoice No.</small><strong> <span class="blue-text">#{{ $transaction->id }}</span></strong></h4>
+                                <h4 class="h4-responsive"><small>Control No.</small><strong> <span class="blue-text">#{{ $transaction->id }}</span></strong></h4>
                                 <p><small>To:</small></p>
                                 <p><strong>{{ $transaction->guest->full_name }}</strong></p>
                                 <p>{{ $transaction->guest->address }}</p>

@@ -13,6 +13,8 @@ use App\Models\Room;
 use App\Models\Entrancefee;
 use App\Models\Breakfast;
 use App\Models\Resort;
+use App\Notifications\ReservationApproved;
+use App\Notifications\ReservationCancelled;
 
 class ReservationController extends Controller
 {
@@ -50,7 +52,7 @@ class ReservationController extends Controller
 
         return DataTables::of($transactions)
                 ->editColumn('id', function ($transaction) {
-                    return '<a href="'.route('transaction.invoice', $transaction->id).'">INV-'.$transaction->id.'</a>';
+                    return '<a href="'.route('transaction.invoice', $transaction->id).'">CTRL-'.$transaction->id.'</a>';
                 })
                 ->addColumn('guest', function ($transaction) {
                     return '<a href="'.route('guest.show', $transaction->guest_id).'">'.$transaction->guest->firstName.' '.$transaction->guest->lastName.'</a>';
@@ -135,8 +137,12 @@ class ReservationController extends Controller
         $transaction = Transaction::findOrfail($id);
 
         $transaction->update([
-            'status' => 'approved'
+            'status' => 'approved',
+            'approved_at' => Carbon::now()
         ]);
+        $transaction->guest->notify(new ReservationApproved($transaction));
+        $msg = "Thank you for choosing Saka Resort. Your reservation: control#".$transaction->id." has been approved. We look forward to hosting your stay.";
+        $smsResult = \App\Helpers\CustomSMS::send($transaction->guest->contact, $msg);
         return response('success', 200);
     }
 
@@ -145,8 +151,12 @@ class ReservationController extends Controller
         $transaction = Transaction::findOrfail($id);
 
         $transaction->update([
-            'status' => 'cancelled'
+            'status' => 'cancelled',
+            'cancelled_at' => Carbon::now()
         ]);
+        $transaction->guest->notify(new ReservationCancelled($transaction));
+        $msg = "Your reservation has been cancelled. Due to some reasons, we need to cancel your reservation: control#".$transaction->id;
+        $smsResult = \App\Helpers\CustomSMS::send($transaction->guest->contact, $msg);
         return response('success', 200);
     }
 }

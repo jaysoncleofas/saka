@@ -99,7 +99,7 @@
                         <table class="table table-striped" width="100%" id="datatables">
                             <thead>
                                 <tr>
-                                    <th>Invoice Number</th>
+                                    <th>Control Number</th>
                                     <th>Guest</th>
                                     <th>Rent</th>
                                     <th>Use Type</th>
