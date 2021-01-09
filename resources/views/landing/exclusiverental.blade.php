@@ -80,6 +80,7 @@
         text-align: center !important;
     }
 
+    .grecaptcha-badge { visibility: hidden; }
 </style>
 @endsection
 
@@ -128,10 +129,13 @@
                         </div>
                         <div class="reservate-room-content">
                             <div>
-                                <form action="{{ route('landing.exclusive_rental_store') }}"
+                                <form class="room-reservation-form" action="{{ route('landing.exclusive_rental_store') }}"
                                     method="POST" autocomplete="off">
                                     @csrf
-
+                                    <input type='hidden' name='recaptcha_token' id='recaptcha_token'
+                                    @if($errors->has('recaptcha_token'))
+                                        {{$errors->first('recaptcha_token')}}
+                                    @endif>
                                     <div class="form-group">
                                         <label for="datepicker">Check-in Date:</label>
                                         <input type="text" name="checkin"
@@ -275,6 +279,9 @@
                                             <button type="submit"
                                                 class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mt-3">Book
                                                 Now</button>
+                                                <p class="mt-4">This site is protected by ReCaptcha and the Google
+                                                    <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+                                                    <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
                                         </div>
                                     </div>
                                 </form>
@@ -287,52 +294,18 @@
     </div>
 </div>
 
-    {{-- <div id="Gallery" class="section room-gallery">
-        <div data-w-id="994faaf5-2600-70ed-ac03-5b5e6c485f48"
-            style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); opacity: 1; transform-style: preserve-3d;"
-            class="container-small-658px text-center w-container">
-            <div class="subtitle-wrapper">
-                <div>01</div>
-                <div class="dash"></div>
-                <div>Gallery</div>
-            </div>
-            <h2 class="title room-gallery">A carefully designed room just for you</h2>
-            <p class="paragraph room-gallery">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et sapien tempus duis
-            facilisis pretium massa pellentesque.</p>
-        </div>
-        <div class="container">
-            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators">
-                    @foreach ($cottage->images as $key => $item)
-                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ $key }}"
-                        class="{{ $loop->first ? 'active' : ''}}"></li>
-                    @endforeach
-                </ol>
-                <div class="carousel-inner">
-                    @foreach ($cottage->images as $item)
-                    <div class="carousel-item {{ $loop->first ? 'active' : ''}}">
-                        <img class="d-block w-100 room-images" src="{{ asset('storage/rooms/'.$item->path) }}"
-                            alt="First slide">
-                    </div>
-                    @endforeach
-                </div>
-                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </div>
-        </div>
-    </div> --}}
-
     @include('landing.footer')
 
     @endsection
 
     @section('script')
+    <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.sitekey') }}"></script>
+    <script>
+    grecaptcha.ready(function() {
+    grecaptcha.execute('{{ config('services.recaptcha.sitekey') }}').then(function(token) {
+    document.getElementById("recaptcha_token").value = token;
+    }); });
+    </script>
     @if (session('notification'))
     <script>
         swal({
@@ -421,6 +394,13 @@
                 $('.day-tour').addClass('d-none');
                 $('.overnight-tour').removeClass('d-none');
             }
+        });
+
+        $(document).on('click', '.btn-submit', function () {
+            var _this = $(this);
+            _this.attr("disabled", true);
+            _this.append('<span class="spinner-border spinner-border-sm ml-2" role="status" aria-hidden="true"></span>');
+            $('.room-reservation-form').submit();
         });
     </script>
     @endsection

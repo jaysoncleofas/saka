@@ -122,8 +122,7 @@
                                                     <div class="split-content card-about-room-left">
                                                         <div class="from-text">From</div>
                                                         <div class="card-price-wrapper">
-                                                            <div data-wf-sku-bindings="%5B%7B%22from%22%3A%22f_price_%22%2C%22to%22%3A%22innerHTML%22%7D%5D" class="price">P&nbsp;{{ number_format($room->price, 0) }}</div>
-                                                            <div>&nbsp;/night</div>
+                                                            <div class="price">{{ number_format($room->price) }}&nbsp;PHP</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -226,8 +225,7 @@
                                                 <div class="split-content card-about-room-left">
                                                     <div class="from-text">From</div>
                                                     <div class="card-price-wrapper">
-                                                        <div data-wf-sku-bindings="%5B%7B%22from%22%3A%22f_price_%22%2C%22to%22%3A%22innerHTML%22%7D%5D" class="price">P&nbsp;{{ number_format($cottage->price, 0) }}</div>
-                                                        <div>&nbsp;/Day use</div>
+                                                        <div class="price">{{ number_format($cottage->price) }}&nbsp;PHP</div>
                                                     </div>
                                                 </div>
                                             </div>

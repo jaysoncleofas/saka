@@ -13,6 +13,7 @@ use App\Models\Resort;
 use DB;
 use Carbon\Carbon;
 use App\Notifications\ReservationSent;
+use App\Rules\ReCaptchaRule;
 
 class LandingPageController extends Controller
 {
@@ -69,6 +70,7 @@ class LandingPageController extends Controller
             'kids' => 'required|numeric',
             'senior_citizen' => 'required|numeric',
             'type' => 'required',
+            'recaptcha_token' => ['required', new ReCaptchaRule($request->recaptcha_token)]
         ]);
 
         $room = Room::findOrFail($id);
@@ -211,6 +213,7 @@ class LandingPageController extends Controller
             'kids' => 'required|numeric',
             'senior_citizen' => 'required|numeric',
             'type' => 'required',
+            'recaptcha_token' => ['required', new ReCaptchaRule($request->recaptcha_token)]
         ]);
 
         $cottage = Cottage::findOrFail($id);
@@ -319,6 +322,7 @@ class LandingPageController extends Controller
             'kids' => 'required|numeric',
             'senior_citizen' => 'required|numeric',
             'type' => 'required',
+            'recaptcha_token' => ['required', new ReCaptchaRule($request->recaptcha_token)]
         ]);
 
         $checkIn_at = Carbon::parse($request->checkin);

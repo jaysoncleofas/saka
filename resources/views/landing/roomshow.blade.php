@@ -79,6 +79,7 @@
         text-align: center !important;
     }
 
+    .grecaptcha-badge { visibility: hidden; }
 </style>
 @endsection
 
@@ -119,9 +120,12 @@
                             </div>
                             <div class="reservate-room-content">
                                 <div>
-                                    <form action="{{ route('landing.room_reservation_store', $room->id) }}" method="POST" autocomplete="off">
+                                    <form class="room-reservation-form" action="{{ route('landing.room_reservation_store', $room->id) }}" method="POST" autocomplete="off">
                                         @csrf
-
+                                        <input type='hidden' name='recaptcha_token' id='recaptcha_token'
+                                        @if($errors->has('recaptcha_token'))
+                                            {{$errors->first('recaptcha_token')}}
+                                        @endif>
                                         <div class="form-group">
                                             <label for="datepicker">Check-in Date:</label>
                                             <input type="text" name="checkin" class="form-control @error('checkin') is-invalid @enderror" id="datepicker" value="{{ old('checkin') }}">
@@ -349,8 +353,11 @@
 
                                             <div class="col-lg-12">
                                                 <button type="submit"
-                                                    class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mt-3">Book
+                                                    class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mt-3 btn-submit">Book
                                                     Now</button>
+                                                    <p class="mt-4">This site is protected by ReCaptcha and the Google
+                                                        <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+                                                        <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
                                             </div>
                                         </div>
                                     </form>
@@ -408,6 +415,15 @@
     @endsection
 
     @section('script')
+    
+    <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.sitekey') }}"></script>
+    <script>
+    grecaptcha.ready(function() {
+    grecaptcha.execute('{{ config('services.recaptcha.sitekey') }}').then(function(token) {
+    document.getElementById("recaptcha_token").value = token;
+    }); });
+    </script>
+
     @if (session('notification'))
     <script>
     swal({
@@ -444,16 +460,11 @@
                 } // End if
             });
         });
-
-        var today = new Date().toISOString().split('T')[0];
-        // console.log(today);
         var new_date = moment().add(3, 'days').format('MM-DD-YYYY');
 
         $(document).on('change', 'input:radio[name="type"]', function () {
             if ($(this).is(':checked') && $(this).val() == 'overnight') {
                 $('.breakfast-container').removeClass('d-none');
-                console.log('test');
-                // append goes here
             } else {
                 $('.breakfast-container').addClass('d-none');
             }
@@ -462,15 +473,12 @@
         $(document).on('change', 'input:radio[name="isbreakfast"]', function () {
             if ($(this).is(':checked') && $(this).val() == '1') {
                 $('.breakfastaddons-container').removeClass('d-none');
-                console.log('test');
-                // append goes here
             } else {
                 $('.breakfastaddons-container').addClass('d-none');
             }
         });
 
         var disabledDates = [];
-        //   var disabledDates2 = ['01/11/2021','01/13/2021'];
         $.ajax({
             type: 'post',
             url: "{{ route('landing.getrooms_available', $room->id) }}",
@@ -489,19 +497,11 @@
             }
         });
 
-        $(document).on('change', '#datepicker', function () {
+        $(document).on('click', '.btn-submit', function () {
             var _this = $(this);
-
+            _this.attr("disabled", true);
+            _this.append('<span class="spinner-border spinner-border-sm ml-2" role="status" aria-hidden="true"></span>');
+            $('.room-reservation-form').submit();
         });
-
-        // });
-        // var disabledDates = ['01/11/2021','01/13/2021'];
-
-        // $('#datepicker').on('changeDate', function() {
-        //     $('#my_hidden_input').val(
-        //         $('#datepicker').datepicker('getFormattedDate')
-        //     );
-        // });
-
     </script>
     @endsection

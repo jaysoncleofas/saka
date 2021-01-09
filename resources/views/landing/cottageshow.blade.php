@@ -80,6 +80,7 @@
         text-align: center !important;
     }
 
+    .grecaptcha-badge { visibility: hidden; }
 </style>
 @endsection
 
@@ -123,10 +124,13 @@
                         </div>
                         <div class="reservate-room-content">
                             <div>
-                                <form action="{{ route('landing.cottage_reservation_store', $cottage->id) }}"
+                                <form class="room-reservation-form" action="{{ route('landing.cottage_reservation_store', $cottage->id) }}"
                                     method="POST" autocomplete="off">
                                     @csrf
-
+                                    <input type='hidden' name='recaptcha_token' id='recaptcha_token'
+                                    @if($errors->has('recaptcha_token'))
+                                        {{$errors->first('recaptcha_token')}}
+                                    @endif>
                                     <div class="form-group">
                                         <label for="datepicker">Check-in Date:</label>
                                         <input type="text" name="checkin"
@@ -300,6 +304,9 @@
                                             <button type="submit"
                                                 class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mt-3">Book
                                                 Now</button>
+                                                <p class="mt-4">This site is protected by ReCaptcha and the Google
+                                                    <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+                                                    <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
                                         </div>
                                     </div>
                                 </form>
@@ -357,6 +364,14 @@
     @endsection
 
     @section('script')
+    <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.sitekey') }}"></script>
+    <script>
+    grecaptcha.ready(function() {
+    grecaptcha.execute('{{ config('services.recaptcha.sitekey') }}').then(function(token) {
+    document.getElementById("recaptcha_token").value = token;
+    }); });
+    </script>
+
     @if (session('notification'))
     <script>
         swal({
@@ -484,6 +499,13 @@
                 total = total - 1;
             }
             $('#unit').val(total);
+        });
+
+        $(document).on('click', '.btn-submit', function () {
+            var _this = $(this);
+            _this.attr("disabled", true);
+            _this.append('<span class="spinner-border spinner-border-sm ml-2" role="status" aria-hidden="true"></span>');
+            $('.room-reservation-form').submit();
         });
     </script>
     @endsection
