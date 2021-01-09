@@ -320,7 +320,7 @@
                 <div class="dash"></div>
                 <div>Gallery</div>
             </div>
-            <h2 class="title room-gallery">A carefully designed room just for you</h2>
+            <h2 class="title room-gallery">A carefully designed cottage just for you</h2>
             {{-- <p class="paragraph room-gallery">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et sapien tempus duis
             facilisis pretium massa pellentesque.</p> --}}
         </div>
