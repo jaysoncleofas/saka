@@ -1118,6 +1118,7 @@ h1 {
     object-fit: cover;
     -o-object-position: 0% 50%;
     object-position: 0% 50%;
+    height: 500px;
 }
 
 .card.room-page {
