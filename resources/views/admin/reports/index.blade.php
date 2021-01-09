@@ -58,8 +58,7 @@
                                     <tr>
                                         <th>Check-In Date</th>
                                         <th>Guest</th>
-                                        <th>Room</th>
-                                        <th>Cottage</th>
+                                        <th>Service</th>
                                         <th>Total Entrance fees</th>
                                         <th>Total Bills</th>
                                     </tr>
@@ -129,12 +128,8 @@
                     name: 'guest'
                 },
                 {
-                    data: 'room',
-                    name: 'room'
-                },
-                {
-                    data: 'cottage',
-                    name: 'cottage'
+                    data: 'service',
+                    name: 'service'
                 },
                 {
                     data: 'totalEntranceFee',

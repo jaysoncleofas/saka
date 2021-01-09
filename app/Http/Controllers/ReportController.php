@@ -13,8 +13,8 @@ class ReportController extends Controller
     {
         $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfMonth();
         $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfMonth();
-        $data['TotalEntrancefee'] = Transaction::where('status', 'paid')->whereBetween('checkIn_at', [$startDay, $endDay])->sum('totalEntrancefee');
-        $data['TotalBill'] = Transaction::where('status', 'paid')->whereBetween('checkIn_at', [$startDay, $endDay])->sum('totalBill');
+        $data['TotalEntrancefee'] = Transaction::where('status', 'completed')->whereBetween('checkIn_at', [$startDay, $endDay])->sum('totalEntrancefee');
+        $data['TotalBill'] = Transaction::where('status', 'completed')->whereBetween('checkIn_at', [$startDay, $endDay])->sum('totalBill');
         return view('admin.reports.index', $data);
     }
 
@@ -22,25 +22,20 @@ class ReportController extends Controller
     {
         $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfMonth();
         $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfMonth();
-        $transactions = Transaction::orderBy('checkIn_at', 'desc')->where('status', 'paid')->whereBetween('checkIn_at', [$startDay, $endDay])->get();
+        $transactions = Transaction::orderBy('checkIn_at', 'desc')->where('status', 'completed')->whereBetween('checkIn_at', [$startDay, $endDay])->get();
         // return json_encode($startDay);
         return DataTables::of($transactions)
                 ->addColumn('guest', function ($transaction) {
                     return '<a href="'.route('guest.show', $transaction->guest_id).'" class="btn btn-link">'.$transaction->guest->firstName.' '.$transaction->guest->lastName.'</a>';
                 })
-                ->addColumn('cottage', function ($transaction) {
+                ->addColumn('service', function ($transaction) {
                     if($transaction->cottage) {
-                        return $transaction->cottage->name;
-                    } else {
-                        return '-';
-                    }
-                })
-                ->addColumn('room', function ($transaction) {
-                    if($transaction->room) {
-                        return $transaction->room->name;
-                    } else {
-                        return '-';
-                    }
+                        return 'Cottage: '.$transaction->cottage->name;
+                    } elseif($transaction->room) {
+                        return 'Room: '.$transaction->room->name;
+                    } elseif($transaction->is_exclusive) {
+                        return 'Exclusive Rental';
+                    } 
                 })
                 ->editColumn('checkIn_at', function ($transaction) {
                     return $transaction->checkIn_at->format('M d, Y h:i a');
@@ -51,7 +46,7 @@ class ReportController extends Controller
                 ->editColumn('totalBill', function ($transaction) {
                     return 'P'.number_format($transaction->totalBill, 2);
                 })
-                ->rawColumns(['guest', 'cottage', 'room', 'checkIn_at', 'totalEntranceFee', 'totalBill'])
+                ->rawColumns(['guest', 'service', 'checkIn_at', 'totalEntranceFee', 'totalBill'])
                 ->toJson();
     }
 }
