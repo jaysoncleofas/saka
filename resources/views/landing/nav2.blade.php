@@ -22,7 +22,7 @@
                     <a class="nav-link" href="{{ route('landing.rooms') }}">Rooms</a>
                 </li>
 
-                <li class="nav-item {{ Nav::isRoute('landing.cottages') }}">
+                <li class="nav-item {{ Nav::isRoute('landing.cottages') }}{{ Nav::isRoute('cottage.show') }}">
                     <a class="nav-link" href="{{ route('landing.cottages') }}">Cottages</a>
                 </li>
 
