@@ -112,33 +112,81 @@
     </div>
 </div>
 
-<div class="section request-info">
-    <div class="container">
-        <div class="request-info-wrapper">
-            <div class="image-wrapper request-info"><img
-                    src="{{ asset('/pics/pic10.jpg') }}"
-                    {{-- srcset="https://assets.website-files.com/5f28567562c2bb7095a14f34/5f3406833d7865a717909c6e_image-request-info-hotel-template-p-500.jpeg 500w, https://assets.website-files.com/5f28567562c2bb7095a14f34/5f3406833d7865a717909c6e_image-request-info-hotel-template.jpg 1560w" --}}
-                    sizes="(max-width: 767px) 100vw, (max-width: 991px) 654px, 50vw"
-                    style="opacity: 1; transform: translate3d(0px, 0px, 0px) scale3d(1.1, 1.1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;"
-                    data-w-id="a7bd4ca7-b754-97b7-fa57-9c69621a36e9" alt="" class="image request-info"></div>
-            <div class="split-content request-info-left">
-                <div data-w-id="cdcaa8df-bde4-2db1-76a0-5f9daae3a122"
-                    style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); opacity: 1; transform-style: preserve-3d;"
-                    class="interaction-wrapper">
-                    <div class="subtitle-wrapper left">
-                        <div>01</div>
-                        <div class="dash"></div>
-                        <div>Reservation</div>
-                    </div>
-                    <h2 class="title request-info">Get a reservation today</h2>
-                    <p class="paragraph request-info">Day use ({{ config('yourconfig.resort')->day }}), Night use ({{ config('yourconfig.resort')->night }}) <br> and Overnight ({{ config('yourconfig.resort')->overnight }})</p>
-                </div>
-                <div class="card request-info">
-                    <div class="card-body">
-                        
-                    </div>
+<div class="section instagram">
+    <div data-w-id="826f6178-2f16-6e2c-de9c-95e5f3966b68" class="container-small-616px text-center w-container"
+        style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;">
+        <div class="subtitle-wrapper">
+            <div>01</div>
+            <div class="dash"></div>
+            <div class="instagram-grid">Follow</div>
+        </div>
+        <h2 class="title instagram">Follow us to discover amazing stories</h2>
+    </div>
+    <div class="w-layout-grid grid">
+        <a data-w-id="826f6178-2f16-6e2c-de9c-95e5f3966b72"
+            href="#" class="image-wrapper instagram w-inline-block"
+            style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;">
+            <div class="image-instagram-hover"
+                style="transform: translate3d(0px, 100%, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; display: none;">
+                <div class="instagram-icon-wrapper"
+                    style="opacity: 0; transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;">
+                    <img src="{{ asset('/pics/pic12.jpg') }}" alt="" class="instagram-icon">
                 </div>
             </div>
+
+            <img src="{{ asset('/pics/pic19.jpg') }}" alt="" class="image instagram">
+        </a>
+        
+        <a data-w-id="826f6178-2f16-6e2c-de9c-95e5f3966b77" href="#"
+            class="image-wrapper instagram w-inline-block"
+            style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;">
+            <div class="image-instagram-hover"
+                style="transform: translate3d(0px, 100%, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; display: none;">
+                <div class="instagram-icon-wrapper"
+                    style="opacity: 0; transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;">
+                    <img src="https://assets.website-files.com/5f28567562c2bb7095a14f34/5f28b11486a831465affd83c_icon-instagram-section-hotel-template.svg" alt="" class="instagram-icon"></div>
+            </div>
+            
+            <img src="{{ asset('/pics/pic10.jpg') }}"
+                {{-- srcset="https://assets.website-files.com/5f28567562c2bb7095a14f34/5f32bc83e9e05bbbe8fbd5b5_image-instagram-02-hotel-template-p-500.jpeg 500w, https://assets.website-files.com/5f28567562c2bb7095a14f34/5f32bc83e9e05bbbe8fbd5b5_image-instagram-02-hotel-template.jpg 720w" --}}
+                sizes="(max-width: 720px) 100vw, 720px" alt="" class="image instagram">
+        </a>
+        
+        <a data-w-id="826f6178-2f16-6e2c-de9c-95e5f3966b7c" href="#"
+            class="image-wrapper instagram w-inline-block"
+            style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;">
+            <div class="image-instagram-hover"
+                style="transform: translate3d(0px, 100%, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; display: none;">
+                <div class="instagram-icon-wrapper"
+                    style="opacity: 0; transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;">
+                    <img src="https://assets.website-files.com/5f28567562c2bb7095a14f34/5f28b11486a831465affd83c_icon-instagram-section-hotel-template.svg" alt="" class="instagram-icon"></div>
+            </div>
+            
+            <img src="{{ asset('/pics/pic11.jpg') }}"
+                {{-- srcset="https://assets.website-files.com/5f28567562c2bb7095a14f34/5f32bc84df3c3636649e8d16_image-instagram-03-hotel-template-p-500.jpeg 500w, https://assets.website-files.com/5f28567562c2bb7095a14f34/5f32bc84df3c3636649e8d16_image-instagram-03-hotel-template.jpg 720w" --}}
+                sizes="(max-width: 720px) 100vw, 720px" alt="" class="image instagram">
+        </a>
+        
+        <a data-w-id="826f6178-2f16-6e2c-de9c-95e5f3966b81" href="#"
+            class="image-wrapper instagram w-inline-block"
+            style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;">
+            <div class="image-instagram-hover"
+                style="transform: translate3d(0px, 100%, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; display: none;">
+                <div class="instagram-icon-wrapper"
+                    style="opacity: 0; transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;">
+                    <img src="https://assets.website-files.com/5f28567562c2bb7095a14f34/5f28b11486a831465affd83c_icon-instagram-section-hotel-template.svg" alt="" class="instagram-icon"></div>
+            </div>
+            
+            <img src="{{ asset('/pics/pic2.jpeg') }}"
+                {{-- srcset="https://assets.website-files.com/5f28567562c2bb7095a14f34/5f32bc84f0dd13d143ea2337_image-instagram-04-hotel-template-p-500.jpeg 500w, https://assets.website-files.com/5f28567562c2bb7095a14f34/5f32bc84f0dd13d143ea2337_image-instagram-04-hotel-template.jpg 720w" --}}
+                sizes="(max-width: 720px) 100vw, 720px" alt="" class="image instagram">
+        </a>
+    </div>
+
+    <div class="container">
+        <div data-w-id="826f6178-2f16-6e2c-de9c-95e5f3966b87" class="flex-vc"
+            style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;">
+            <a href="{{ config('yourconfig.resort')->facebook }}" target="_blank" class="btn btn-lg btn-outline-dark">Follow Us</a>
         </div>
     </div>
 </div>
