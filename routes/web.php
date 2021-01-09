@@ -85,7 +85,7 @@ Route::get('/transaction/guest/{id}', [App\Http\Controllers\TransactionControlle
 Route::resource('reservation', App\Http\Controllers\ReservationController::class)->except(['index', 'show', 'update', 'store']);
 Route::get('/reservations', [App\Http\Controllers\ReservationController::class, 'index'])->name('reservation.index');
 Route::get('/reservations-datatables', [App\Http\Controllers\ReservationController::class, 'datatables'])->name('reservation.datatables');
-Route::put('/reservation-approve/{id}', [App\Http\Controllers\ReservationController::class, 'approve'])->name('reservation.approve');
+Route::put('/reservation-confirm/{id}', [App\Http\Controllers\ReservationController::class, 'confirm'])->name('reservation.confirm');
 Route::put('/reservation-cancel/{id}', [App\Http\Controllers\ReservationController::class, 'cancel'])->name('reservation.cancel');
 
 Route::get('/reports', [App\Http\Controllers\ReportController::class, 'index'])->name('report.index');

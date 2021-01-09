@@ -34,7 +34,7 @@ class CreateTransactionsTable extends Migration
             $table->boolean('is_breakfast')->default(false);
             $table->boolean('is_freebreakfast')->default(false);
             $table->boolean('is_reservation')->default(false);
-            $table->enum('status', ['pending', 'approved', 'active', 'completed', 'cancelled']);
+            $table->enum('status', ['pending', 'confirmed', 'active', 'completed', 'cancelled']);
             $table->text('notes')->nullable();
             $table->integer('extraPerson')->nullable();
             $table->decimal('extraPersonTotal', 10, 2)->nullable();

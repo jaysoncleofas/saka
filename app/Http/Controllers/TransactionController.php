@@ -27,7 +27,7 @@ class TransactionController extends Controller
         $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfMonth();
 
         $data['pending'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('pending')->count();
-        $data['approved'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('approved')->count();
+        $data['confirmed'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('confirmed')->count();
         $data['completed'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('completed')->count();
         $data['cancelled'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('cancelled')->count();
 
@@ -317,8 +317,8 @@ class TransactionController extends Controller
                 ->editColumn('status', function ($transaction) {
                     if($transaction->status == 'pending') {
                         return '<span class="badge badge-secondary">Pending</span>';
-                    } elseif($transaction->status == 'approved') {
-                        return '<span class="badge badge-warning">Approved</span>';
+                    } elseif($transaction->status == 'confirmed') {
+                        return '<span class="badge badge-warning">Confirmed</span>';
                     } elseif($transaction->status == 'active') {
                         return '<span class="badge badge-primary">Active</span>';
                     } elseif($transaction->status == 'completed') {
@@ -340,7 +340,7 @@ class TransactionController extends Controller
                       <div class="dropdown-divider"></div>';
         
                     if($transaction->status == 'pending') {
-                        $html .='<a class="dropdown-item trigger-approve" data-id="'. $transaction->id .'" data-action="'.route('reservation.approve', $transaction->id).'" data-model="reservation" href="#">Approve</a>';
+                        $html .='<a class="dropdown-item trigger-confirm" data-id="'. $transaction->id .'" data-action="'.route('reservation.confirm', $transaction->id).'" data-model="reservation" href="#">Confirm</a>';
                     }
 
                     if($transaction->status != 'cancelled' && $transaction->status != 'completed') {

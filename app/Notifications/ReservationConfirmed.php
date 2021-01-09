@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Carbon\Carbon;
 
-class ReservationApproved extends Notification
+class ReservationConfirmed extends Notification
 {
     use Queueable;
 
@@ -58,7 +58,7 @@ class ReservationApproved extends Notification
         }
         $usetype = ucfirst($tran->type).' use';
         return (new MailMessage)
-                    ->subject('Reservation Approved')
+                    ->subject('Reservation Confirmed')
                     ->greeting('Hi '.$fname.'!')
                     ->line('Thank you for choosing Saka Resort. We look forward to hosting your stay.')
                     ->line('Here are your booking details:')

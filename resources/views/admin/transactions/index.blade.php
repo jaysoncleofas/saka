@@ -47,10 +47,10 @@
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4>Approved</h4>
+                            <h4>Confirmed</h4>
                         </div>
                         <div class="card-body">
-                            {{ number_format($approved) }}
+                            {{ number_format($confirmed) }}
                         </div>
                     </div>
                 </div>
@@ -211,13 +211,13 @@
             ]
         });
 
-        $(document).on('click', '.trigger-approve', function () {
+        $(document).on('click', '.trigger-confirm', function () {
             var _this = $(this);
             var _url = _this.data('action');
             var _model = _this.data('model');
             swal({
                 title: 'Are you sure?',
-                text: 'Once approved, you will not be able to disapprove this ' +_model+ '!',
+                text: 'Once confirmed, you will not be able to revert this ' +_model+ '!',
                 icon: 'warning',
                 buttons: true,
                 dangerMode: true,
@@ -232,7 +232,7 @@
                         },
                         success: function (result) {
                             if (result == 'success') {
-                                swal('The '+_model+' has been approved!', {
+                                swal('The '+_model+' has been confirmed!', {
                                     icon: 'success',
                                 });
                                 datatables2.ajax.reload();

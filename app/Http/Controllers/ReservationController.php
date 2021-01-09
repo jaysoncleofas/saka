@@ -13,7 +13,7 @@ use App\Models\Room;
 use App\Models\Entrancefee;
 use App\Models\Breakfast;
 use App\Models\Resort;
-use App\Notifications\ReservationApproved;
+use App\Notifications\ReservationConfirmed;
 use App\Notifications\ReservationCancelled;
 
 class ReservationController extends Controller
@@ -28,7 +28,7 @@ class ReservationController extends Controller
         $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfMonth();
         $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfMonth();
         $data['pending'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('pending')->count();
-        $data['approved'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('approved')->count();
+        $data['confirmed'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('confirmed')->count();
         $data['completed'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('completed')->count();
         $data['cancelled'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('cancelled')->count();
         return view('admin.reservations.index', $data);
@@ -91,8 +91,8 @@ class ReservationController extends Controller
                 ->editColumn('status', function ($transaction) {
                     if($transaction->status == 'pending') {
                         return '<span class="badge badge-secondary">Pending</span>';
-                    } elseif($transaction->status == 'approved') {
-                        return '<span class="badge badge-warning">Approved</span>';
+                    } elseif($transaction->status == 'confirmed') {
+                        return '<span class="badge badge-warning">Confirmed</span>';
                     } elseif($transaction->status == 'active') {
                         return '<span class="badge badge-primary">Active</span>';
                     } elseif($transaction->status == 'completed') {
@@ -114,7 +114,7 @@ class ReservationController extends Controller
                       <div class="dropdown-divider"></div>';
         
                     if($transaction->status == 'pending') {
-                        $html .='<a class="dropdown-item trigger-approve" data-id="'. $transaction->id .'" data-action="'.route('reservation.approve', $transaction->id).'" data-model="reservation" href="#">Approve</a>';
+                        $html .='<a class="dropdown-item trigger-confirm" data-id="'. $transaction->id .'" data-action="'.route('reservation.confirm', $transaction->id).'" data-model="reservation" href="#">Confirm</a>';
                     }
 
                     if($transaction->status != 'cancelled' && $transaction->status != 'completed') {
@@ -132,16 +132,16 @@ class ReservationController extends Controller
                 ->toJson();
     }
 
-    public function approve($id)
+    public function confirm($id)
     {
         $transaction = Transaction::findOrfail($id);
 
         $transaction->update([
-            'status' => 'approved',
-            'approved_at' => Carbon::now()
+            'status' => 'confirmed',
+            'confirmed_at' => Carbon::now()
         ]);
-        $transaction->guest->notify(new ReservationApproved($transaction));
-        $msg = "Thank you for choosing Saka Resort. Your reservation: control#".$transaction->id." has been approved. We look forward to hosting your stay.";
+        $transaction->guest->notify(new ReservationConfirmed($transaction));
+        $msg = "Thank you for choosing Saka Resort. Your reservation: control#".$transaction->id." has been confirmed. We look forward to hosting your stay.";
         $smsResult = \App\Helpers\CustomSMS::send($transaction->guest->contact, $msg);
         return response('success', 200);
     }
