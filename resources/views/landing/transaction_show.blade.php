@@ -1,5 +1,14 @@
 @extends('layouts.resort')
 
+@section('style')
+<style>
+    .swal-footer,
+    .swal-text {
+        text-align: center !important;
+    }
+</style>
+@endsection
+
 @section('content')
 @include('landing.nav2')
 
