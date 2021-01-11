@@ -140,7 +140,7 @@ class ReservationController extends Controller
             'status' => 'confirmed',
             'confirmed_at' => Carbon::now()
         ]);
-        // $transaction->guest->notify(new ReservationConfirmed($transaction));
+        $transaction->guest->notify(new ReservationConfirmed($transaction));
         $msg = "Thank you for choosing Saka Resort. Your reservation: control#".$transaction->id." has been confirmed. We look forward to hosting your stay.";
         // $smsResult = \App\Helpers\CustomSMS::send($transaction->guest->contact, $msg);
         return response('success', 200);
@@ -154,7 +154,7 @@ class ReservationController extends Controller
             'status' => 'cancelled',
             'cancelled_at' => Carbon::now()
         ]);
-        // $transaction->guest->notify(new ReservationCancelled($transaction));
+        $transaction->guest->notify(new ReservationCancelled($transaction));
         $msg = "Your reservation has been cancelled. Due to some reasons, we need to cancel your reservation: control#".$transaction->id;
         // $smsResult = \App\Helpers\CustomSMS::send($transaction->guest->contact, $msg);
         return response('success', 200);

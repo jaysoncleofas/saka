@@ -195,7 +195,7 @@ class LandingPageController extends Controller
             $transaction->breakfasts()->sync($request->breakfast);
         }
     
-        // $guest->notify(new ReservationSent($transaction));
+        $guest->notify(new ReservationSent($transaction));
         $msg = "Thank you for checking us out. We are reviewing your reservation: control#".$transaction->id.". We sent the reservation link to your email.";
         // $smsResult = \App\Helpers\CustomSMS::send($guest->contact, $msg);
         session()->flash('type', 'success');
@@ -305,7 +305,7 @@ class LandingPageController extends Controller
         $transaction->controlCode = $controlCode;
         $transaction->save();
 
-        // $guest->notify(new ReservationSent($transaction));
+        $guest->notify(new ReservationSent($transaction));
         $msg = "Thank you for checking us out. We are reviewing your reservation: control#".$transaction->id.". We sent the reservation link to your email.";
         // $smsResult = \App\Helpers\CustomSMS::send($guest->contact, $msg);
         session()->flash('type', 'success');
@@ -410,7 +410,7 @@ class LandingPageController extends Controller
         $transaction->controlCode = $controlCode;
         $transaction->save();
 
-        // $guest->notify(new ReservationSent($transaction));
+        $guest->notify(new ReservationSent($transaction));
         $msg = "Thank you for checking us out. We are reviewing your reservation: control#".$transaction->id.". We sent the reservation link to your email.";
         // $smsResult = \App\Helpers\CustomSMS::send($guest->contact, $msg);
         session()->flash('type', 'success');
