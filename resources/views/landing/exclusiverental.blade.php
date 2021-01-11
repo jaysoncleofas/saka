@@ -182,7 +182,7 @@
 
                                         <div class="form-group col-lg-4">
                                             <select name="adults" id="adults" class="form-control">
-                                                @for ($i = 2; $i <= 100; $i++) <option
+                                                @for ($i = 2; $i <= 150; $i++) <option
                                                     {{ old('adults') == $i ? 'selected' : '' }} value="{{ $i }}">
                                                     {{ $i }} {{ $i > 1 ? 'Adults' : 'Adult' }}</option>
                                                     @endfor
@@ -197,7 +197,7 @@
                                         <div class="form-group col-lg-4">
                                             <select name="kids" id="kids" class="form-control">
                                                 <option value="0">No Kids</option>
-                                                @for ($i = 1; $i <= 100; $i++) <option
+                                                @for ($i = 1; $i <= 150; $i++) <option
                                                     {{ old('kids') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $i }}
                                                     {{ $i > 1 ? 'Kids' : 'Kid' }}</option>
                                                     @endfor
@@ -212,7 +212,7 @@
                                         <div class="form-group col-lg-4">
                                             <select name="senior_citizen" id="senior_citizen" class="form-control">
                                                 <option value="0">No Senior Citizen</option>
-                                                @for ($i = 1; $i <= 100; $i++) <option
+                                                @for ($i = 1; $i <= 150; $i++) <option
                                                     {{ old('senior_citizen') == $i ? 'selected' : '' }}
                                                     value="{{ $i }}">{{ $i }}
                                                     {{ $i > 1 ? 'Senior Citizens' : 'Senior Citizen' }}</option>
@@ -269,6 +269,16 @@
                                             <input type="text" class="form-control @error('email') is-invalid @enderror"
                                                 name="email" id="email" value="{{ old('email') }}">
                                             @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group col-md-12">
+                                            <label for="address">Address</label>
+                                            <textarea class="form-control @error('email') is-invalid @enderror" name="address" id="address"  rows="3">{{ old('address') }}</textarea>
+                                            @error('address')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

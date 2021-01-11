@@ -351,6 +351,16 @@
                                                 @enderror
                                             </div>
 
+                                            <div class="form-group col-md-12">
+                                                <label for="address">Address</label>
+                                                <textarea class="form-control @error('email') is-invalid @enderror" name="address" id="address"  rows="3">{{ old('address') }}</textarea>
+                                                @error('address')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+
                                             <div class="col-lg-12">
                                                 <button type="submit"
                                                     class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mt-3 btn-submit">Book

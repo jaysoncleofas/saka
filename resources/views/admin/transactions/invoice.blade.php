@@ -230,10 +230,12 @@
                         },
                         success: function (result) {
                             if (result == 'success') {
-                                swal('The '+_model+' has been completed!', {
-                                    icon: 'success',
+                                iziToast.{{ session('type') }}({
+                                    title: '',
+                                    message: 'The '+_model+' has been completed!',
+                                    position: 'topRight'
                                 });
-                                datatables2.ajax.reload();
+                                setTimeout(function(){ location.reload(); }, 3000);
                             }
                         }
                     });

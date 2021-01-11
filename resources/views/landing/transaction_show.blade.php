@@ -22,7 +22,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row is-size-15">
                             <div class="col-lg-12">
                                 <strong>Control# {{ $transaction->id }}</strong>
                                 <div class="row">
@@ -38,10 +38,6 @@
                                         <strong>Check In:</strong> {{ $transaction->checkIn_at->format('M d, Y h:i a') }} <br>
                                         <strong>Check Out:</strong> {{ $transaction->checkOut_at ? $transaction->checkOut_at->format('M d, Y h:i a') : '-' }} <br>
                                         <strong>Type:</strong> {{ ucfirst($transaction->type) }} Use <br>
-                                    </div>
-
-
-                                    <div class="col-lg-6">
                                         @if ($transaction->room_id)
                                         <strong>Entrance Fee:</strong> {{ $transaction->room->entrancefee }} <br>
                                         @endif
@@ -61,6 +57,14 @@
                                             @endphp
                                         </span>
                                         @endif
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <strong>Guest:</strong> {{ $transaction->guest->fullname }} <br>
+                                        <strong>Contact Number:</strong> {{ $transaction->guest->contact }} <br>
+                                        <strong>Email:</strong> {{ $transaction->guest->email }} <br>
+                                        <strong>Address:</strong> {{ $transaction->guest->address }} <br>
+                                        <strong>Notes:</strong> {{ $transaction->notes }} <br>
                                     </div>
                                     
                                 </div>

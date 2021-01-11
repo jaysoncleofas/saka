@@ -96,3 +96,13 @@ Route::get('/settings', [App\Http\Controllers\SettingController::class, 'index']
 Route::resource('/settings/entrancefee', App\Http\Controllers\EntrancefeeController::class)->only(['edit', 'update']);
 Route::resource('/settings/breakfast', App\Http\Controllers\BreakfastController::class)->except(['index', 'show']);
 Route::resource('resort', App\Http\Controllers\ResortController::class)->only(['update']);
+
+Route::post('/transaction/get_available_rooms_cottages', [App\Http\Controllers\TransactionController::class, 'get_available_rooms_cottages'])->name('transaction.get_available_rooms_cottages');
+
+Route::get('/transaction/{id}/edit/cottage', [App\Http\Controllers\TransactionController::class, 'edit_cottage'])->name('transaction.edit_cottage');
+Route::get('/transaction/{id}/edit/room', [App\Http\Controllers\TransactionController::class, 'edit_room'])->name('transaction.edit_room');
+Route::get('/transaction/{id}/edit/exclusive', [App\Http\Controllers\TransactionController::class, 'edit_exclusive'])->name('transaction.edit_exclusive');
+
+Route::put('/transaction/{id}/edit/cottage', [App\Http\Controllers\TransactionController::class, 'update_cottage'])->name('transaction.update_cottage');
+Route::put('/transaction/{id}/edit/room', [App\Http\Controllers\TransactionController::class, 'update_room'])->name('transaction.update_room');
+Route::put('/transaction/{id}/edit/exclusive', [App\Http\Controllers\TransactionController::class, 'update_exclusive'])->name('transaction.update_exclusive');

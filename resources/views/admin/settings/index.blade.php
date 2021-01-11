@@ -65,26 +65,6 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group">
-                                <label for="breakfastPrice">Breakfast Price</label>
-                                <input type="text" class="form-control digit_only2 @error('breakfastPrice') is-invalid @enderror"
-                                    name="breakfastPrice" id="breakfastPrice" value="{{ number_format($resort->breakfastPrice, 0) }}">
-                                @error('breakfastPrice')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <div class="control-label">Breakfast Promo</div>
-                                <label for="promo" class="custom-switch mt-2 pl-0">
-                                    <input type="checkbox" name="promo" id="promo" value="1" class="custom-switch-input" {{ $resort->is_promo ? 'checked' : '' }}>
-                                    <span class="custom-switch-indicator"></span>
-                                    <span class="custom-switch-description">Free breakfast for online booking</span>
-                                </label>
-                            </div>
-
                             <span>Operational time:</span>
                             <div class="row">
                                 <div class="col-lg-4">

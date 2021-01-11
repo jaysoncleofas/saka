@@ -65,12 +65,12 @@ class LandingPageController extends Controller
             'lastName' => 'required',
             'contactNumber' => 'required',
             'email' => 'required',
+            'address' => 'required',
             'checkin' => 'required',
             'adults' => 'required|numeric',
             'kids' => 'required|numeric',
             'senior_citizen' => 'required|numeric',
-            'type' => 'required',
-            'recaptcha_token' => ['required', new ReCaptchaRule($request->recaptcha_token)]
+            'type' => 'required'
         ]);
 
         $room = Room::findOrFail($id);
@@ -103,12 +103,14 @@ class LandingPageController extends Controller
                 'lastName' => $request->lastName,
                 'contact' => $request->contactNumber,
                 'email' => $request->email,
+                'address' => $request->address,
             ]);
         } else {
             $guest->update([
                 'firstName' => $request->firstName,
                 'lastName' => $request->lastName,
                 'email' => $request->email,
+                'address' => $request->address,
             ]);
         }
 
@@ -208,12 +210,12 @@ class LandingPageController extends Controller
             'lastName' => 'required',
             'contactNumber' => 'required',
             'email' => 'required',
+            'address' => 'required',
             'checkin' => 'required',
             'adults' => 'required|numeric',
             'kids' => 'required|numeric',
             'senior_citizen' => 'required|numeric',
-            'type' => 'required',
-            'recaptcha_token' => ['required', new ReCaptchaRule($request->recaptcha_token)]
+            'type' => 'required'
         ]);
 
         $cottage = Cottage::findOrFail($id);
@@ -240,12 +242,14 @@ class LandingPageController extends Controller
                 'lastName' => $request->lastName,
                 'contact' => $request->contactNumber,
                 'email' => $request->email,
+                'address' => $request->address,
             ]);
         } else {
             $guest->update([
                 'firstName' => $request->firstName,
                 'lastName' => $request->lastName,
                 'email' => $request->email,
+                'address' => $request->address,
             ]);
         }
 
@@ -317,12 +321,12 @@ class LandingPageController extends Controller
             'lastName' => 'required',
             'contactNumber' => 'required',
             'email' => 'required',
+            'address' => 'required',
             'checkin' => 'required',
             'adults' => 'required|numeric',
             'kids' => 'required|numeric',
             'senior_citizen' => 'required|numeric',
-            'type' => 'required',
-            'recaptcha_token' => ['required', new ReCaptchaRule($request->recaptcha_token)]
+            'type' => 'required'
         ]);
 
         $checkIn_at = Carbon::parse($request->checkin);
@@ -349,12 +353,14 @@ class LandingPageController extends Controller
                 'lastName' => $request->lastName,
                 'contact' => $request->contactNumber,
                 'email' => $request->email,
+                'address' => $request->address,
             ]);
         } else {
             $guest->update([
                 'firstName' => $request->firstName,
                 'lastName' => $request->lastName,
                 'email' => $request->email,
+                'address' => $request->address,
             ]);
         }
         $extraPerson = null;

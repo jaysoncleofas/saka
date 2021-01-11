@@ -22,71 +22,16 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        {{-- <div class="row">
-                            <div class="col-lg-4">
-                                <strong>Transaction</strong>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item"><strong>Check In:</strong> {{ $transaction->checkIn_at->format('M d, Y h:i a') }}</li>
-                                    <li class="list-group-item"><strong>Check Out:</strong> {{ $transaction->checkOut_at ? $transaction->checkOut_at->format('M d, Y h:i a') : '-' }}</li>
-                                    <li class="list-group-item"><strong>Adults:</strong> {{ $transaction->adults }}</li>
-                                    <li class="list-group-item"><strong>Kids:</strong> {{ $transaction->kids }}</li>
-                                    <li class="list-group-item"><strong>Senior Citizens:</strong> {{ $transaction->senior }}</li>
-                                    <li class="list-group-item"><strong>Use:</strong> {{ ucfirst($transaction->type) }}</li>
-                                    <li class="list-group-item"><strong>Breakfast:</strong> {{ $transaction->is_breakfast == 1 ? 'Yes' : 'No' }}
-                                        <span class="ml-5">
-                                            <strong>Add ons:</strong>
-                                            @php
-                                                $breakfasts_array = [];
-                                                foreach ($transaction->breakfasts as $breakfast) {
-                                                    array_push($breakfasts_array, $breakfast->title);
-                                                }
-                                                echo implode(', ', $breakfasts_array);
-                                            @endphp
-                                        </span>
-                                    </li>
-                                    @if ($transaction->cottage_id)
-                                    <li class="list-group-item">
-                                        <strong>Cottage:</strong> 
-                                        {{ $transaction->cottage->name }}
-                                    </li>
-                                    @endif
-                                    @if ($transaction->room_id)
-                                    <li class="list-group-item">
-                                        <strong>Room:</strong> 
-                                        {{ $transaction->room->name }}
-                                    </li>
-                                    @endif
-                                    <li class="list-group-item"><strong>Notes:</strong> {{ $transaction->notes }}</li>
-                                </ul>
-                            </div>
-                            <div class="col-lg-4">
-                                <strong>Guest</strong>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item"><strong>Name:</strong> {{ $transaction->guest->firstName .' '.$transaction->guest->middleName.' '.$transaction->guest->lastName }}</li>
-                                    <li class="list-group-item"><strong>Contact:</strong> {{ $transaction->guest->contact }}</li>
-                                    <li class="list-group-item"><strong>Age:</strong> {{ $transaction->guest->age }}</li>
-                                    <li class="list-group-item"><strong>Address:</strong> {{ $transaction->guest->address }}</li>
-                                </ul>
-                            </div>
-
-                            <div class="col-lg-4">
-                                <strong>Bills</strong>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item"><strong>Total Bills:</strong> P{{ number_format($transaction->totalBill, 2) }}</li>                                    
-                                    <li class="list-group-item"><strong>Payment Received by:</strong> 
-                                        @if ($transaction->status == 'paid')
-                                            {{ $transaction->receivedby->firstName .' '.$transaction->receivedby->lastName }}
-                                        @endif
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> --}}
-                        <div class="row">
+                        <div class="row is-size-15">
                             <div class="col-lg-12">
-                                <strong>Control# {{ $transaction->id }}</strong>
+                                <strong>Control#{{ $transaction->id }}</strong>
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-6 col-md-6">
                                         <strong>Status:</strong> {{ ucfirst($transaction->status) }} <br>
+                                        <strong>Payment Received by:</strong> 
+                                        @if ($transaction->status == 'completed')
+                                            {{ $transaction->receivedby->firstName .' '.$transaction->receivedby->lastName }}
+                                        @endif <br>
                                         @if ($transaction->cottage_id)
                                        <strong>Cottage:</strong> {{ $transaction->cottage->name }} <br>
                                         @endif
@@ -100,19 +45,15 @@
                                         <strong>Check In:</strong> {{ $transaction->checkIn_at->format('M d, Y h:i a') }} <br>
                                         <strong>Check Out:</strong> {{ $transaction->checkOut_at ? $transaction->checkOut_at->format('M d, Y h:i a') : '-' }} <br>
                                         <strong>Type:</strong> {{ ucfirst($transaction->type) }} Use <br>
-                                    </div>
-
-
-                                    <div class="col-lg-6">
                                         @if ($transaction->room_id)
                                         <strong>Entrance Fee:</strong> {{ $transaction->room->entrancefee }} <br>
                                         @endif
                                         <strong>Adults:</strong> {{ $transaction->adults }} <br>
                                         <strong>Kids:</strong> {{ $transaction->kids }} <br>
                                         <strong>Senior Citizens:</strong> {{ $transaction->senior }} <br>
-                                        @if ($transaction->is_breakfast)
-                                        <strong>Breakfast:</strong> {{ $transaction->is_breakfast == 1 ? 'Yes' : 'No' }}
-                                        <span class="ml-5">
+                                        @if ($transaction->room_id && $transaction->type == 'overnight')
+                                        <strong>Breakfast:</strong> Free <br>
+                                        <span class="">
                                             <strong>Add ons:</strong>
                                             @php
                                                 $breakfasts_array = [];
@@ -124,7 +65,13 @@
                                         </span>
                                         @endif
                                     </div>
-                                    
+                                    <div class="col-lg-6 col-md-6">
+                                        <strong>Guest:</strong> {{ $transaction->guest->fullname }} <br>
+                                        <strong>Contact Number:</strong> {{ $transaction->guest->contact }} <br>
+                                        <strong>Email:</strong> {{ $transaction->guest->email }} <br>
+                                        <strong>Address:</strong> {{ $transaction->guest->address }} <br>
+                                        <strong>Notes:</strong> {{ $transaction->notes }} <br>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -228,12 +175,12 @@
                                                 </tr>
                                             @endif
 
-                                            @if ($transaction->is_breakfast)
+                                            @if ($transaction->room_id && $transaction->type == 'overnight')
                                                 <tr>
-                                                    <td>Breakfast</td>
-                                                    <td>1</td>
-                                                    <td>P{{ ($transaction->is_freebreakfast == 0 ) ? number_format(config('yourconfig.resort')->breakfastPrice, 2) : 0 }}</td>
-                                                    <td>P<span class="totalprice">{{ ($transaction->is_freebreakfast == 0 ) ? number_format(config('yourconfig.resort')->breakfastPrice, 2) : 0 }}</span></td>
+                                                    <td>Breakfast Add ons:</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
                                                 </tr>
 
                                                 @foreach ($transaction->breakfasts as $breakfast)
