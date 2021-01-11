@@ -374,13 +374,13 @@
     @endsection
 
     @section('script')
-    <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.sitekey') }}"></script>
+    {{-- <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.sitekey') }}"></script>
     <script>
     grecaptcha.ready(function() {
     grecaptcha.execute('{{ config('services.recaptcha.sitekey') }}').then(function(token) {
     document.getElementById("recaptcha_token").value = token;
     }); });
-    </script>
+    </script> --}}
 
     @if (session('notification'))
     <script>

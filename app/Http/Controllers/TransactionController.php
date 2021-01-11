@@ -619,23 +619,26 @@ class TransactionController extends Controller
         if($request->rent_type == 'cottage') {
             $cottages = Cottage::all();
             foreach($cottages as $cottage) {
-                $slot = Transaction::where('cottage_id', $cottage->id)->whereDate('checkIn_at', $checkin)->where('type', $request->type)->whereNot('status', 'cancelled')->count();
+                $slot = Transaction::where('cottage_id', $cottage->id)->whereDate('checkIn_at', $checkin)->where('type', $request->type)->where('status', '!=', 'cancelled')->count();
                 if($slot && $request->edit == 1 && $request->cottageid == $cottage->id) {
                     $slot = $slot - 1;
                 } 
                 if($slot < $cottage->units) {
                     $test = $cottage->units - $slot;
-                    $available_data[] = [
-                        'is_selected' => ($request->cottageid == $cottage->id) ? 1 : 0,
-                        'name' => $cottage->name, 
-                        'id' => $cottage->id,
-                        'text' => 'P'.(number_format(($request->type == 'day' ? $cottage->price : $cottage->nightPrice), 2)).', '.$cottage->descriptions.', '.$test.' units available.'
-                    ];
+                    $exclusive = Transaction::whereDate('checkIn_at', $checkin)->where('type', $request->type)->where('is_exclusive', 1)->where('status', '!=', 'cancelled')->count();
+                    if(!$exclusive){
+                        $available_data[] = [
+                            'is_selected' => ($request->cottageid == $cottage->id) ? 1 : 0,
+                            'name' => $cottage->name, 
+                            'id' => $cottage->id,
+                            'text' => 'P'.(number_format(($request->type == 'day' ? $cottage->price : $cottage->nightPrice), 2)).', '.$cottage->descriptions.', '.$test.' units available.'
+                        ];
+                    }
                 }
             }
         } elseif($request->rent_type == 'room') {
             $new_arr = [];
-            $slot = Transaction::whereNotNull('room_id')->whereDate('checkIn_at', $checkin)->whereNot('status', 'cancelled')->pluck('room_id')->toArray();
+            $slot = Transaction::whereNotNull('room_id')->whereDate('checkIn_at', $checkin)->where('status', '!=', 'cancelled')->pluck('room_id')->toArray();
             if($request->edit && $request->roomid) {
                 foreach($slot as $item) {
                     if($item != $request->roomid) {
@@ -649,12 +652,15 @@ class TransactionController extends Controller
             }
             $rooms = Room::whereNotIn('id', $new_arr)->get();
             foreach($rooms as $room) {
-                $available_data[] = [
-                    'is_selected' => ($request->roomid == $room->id) ? 1 : 0,
-                    'name' => $room->name, 
-                    'id' => $room->id,
-                    'text' => 'P'.number_format($room->price, 2).', '.$room->descriptions
-                ];
+                $exclusive = Transaction::whereDate('checkIn_at', $checkin)->where('type', 'overnight')->where('is_exclusive', 1)->where('status', '!=', 'cancelled')->count();
+                if(!$exclusive){
+                    $available_data[] = [
+                        'is_selected' => ($request->roomid == $room->id) ? 1 : 0,
+                        'name' => $room->name, 
+                        'id' => $room->id,
+                        'text' => 'P'.number_format($room->price, 2).', '.$room->descriptions
+                    ];
+                }
             }
         }
         return response()->json(['type' => ucwords($request->rent_type == 'exclusive_rental' ? 'exclusive rental' : $request->rent_type), 'data' => $available_data], 200);

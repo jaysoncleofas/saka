@@ -309,13 +309,14 @@
     @endsection
 
     @section('script')
-    <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.sitekey') }}"></script>
+    {{-- <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.sitekey') }}"></script>
     <script>
     grecaptcha.ready(function() {
     grecaptcha.execute('{{ config('services.recaptcha.sitekey') }}').then(function(token) {
     document.getElementById("recaptcha_token").value = token;
     }); });
-    </script>
+    </script> --}}
+
     @if (session('notification'))
     <script>
         swal({
@@ -360,21 +361,20 @@
         $('#datepicker').datepicker({
             startDate: new_date
         });
+        // $('#datepicker').datepicker('setDate', new_date);
 
-        
-        $(document).on('change', '#datepicker', function () {
-            var _this = $(this);
+        var getexclusive_available = function () {
             $.ajax({
                 type: 'post',
                 url: "{{ route('landing.getexclusive_available') }}",
                 data: {
-                    checkin: _this.val(),
+                    checkin: $('#datepicker').val(),
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (result) {
-                    console.log(result);
+                    // console.log(result);
                     if(result.status.includes('overnight')) {
                         $('.overnight').removeAttr('disabled');
                         $('.span-overnight').removeClass('disabled');
@@ -393,6 +393,12 @@
                     $('.day').prop('checked', false);
                 }
             });
+        }
+        if($('#datepicker').val() != ''){
+            getexclusive_available();
+        }
+        $(document).on('change', '#datepicker', function () {
+            getexclusive_available();
         });
 
         $(document).on('change', 'input:radio[name="type"]', function () {
