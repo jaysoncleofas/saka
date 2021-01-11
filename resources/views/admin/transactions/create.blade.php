@@ -568,7 +568,7 @@
                                             </div>
                                             <input type="button" name="previous" class="previous action-button-previous btn btn-secondary"
                                                 value="Previous" /> 
-                                            <button name="make_payment"
+                                            <button type="button" name="make_payment"
                                             class="next action-button btn btn-primary fourth-next">Submit</button>
                                         </fieldset>
                                     </form>

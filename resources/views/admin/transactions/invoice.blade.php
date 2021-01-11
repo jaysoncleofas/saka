@@ -230,7 +230,7 @@
                         },
                         success: function (result) {
                             if (result == 'success') {
-                                iziToast.{{ session('type') }}({
+                                iziToast.success({
                                     title: '',
                                     message: 'The '+_model+' has been completed!',
                                     position: 'topRight'

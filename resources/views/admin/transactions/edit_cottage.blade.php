@@ -13,13 +13,7 @@
     }
 
     #msform fieldset .form-card {
-        /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
-        background-color: #fff;
-        border-radius: 3px;
-        border: none;
-        position: relative; */
         padding: 20px 40px 30px 40px;
-        /* box-sizing: border-box; */
         width: 94%;
         margin: 0 3% 20px 3%;
     }
@@ -67,7 +61,7 @@
 
     #progressbar li {
         list-style-type: none;
-        width: 25%;
+        width: 33.3%;
         float: left;
         position: relative
     }
@@ -87,7 +81,7 @@
     #progressbar #payment:before {
         font-family: "Font Awesome 5 Free";
         font-weight: 900;
-        content: "\f15c";
+        content: "\f00c";
     }
 
     #progressbar #confirm:before {
@@ -148,7 +142,7 @@
         <div class="container-fluid" id="grad1">
             {{-- justify-content-center --}}
             <div class="row mt-0">
-                <div class="col-lg-8 col-md-10 col-sm-12 text-center p-0 mt-3 mb-2">
+                <div class="col-lg-12 text-center p-0 mt-3 mb-2">
                     <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
                         <div class="card-header">
                             <h4>Edit Transaction</h4>
@@ -162,7 +156,7 @@
                                             <li class="active" id="account"><strong>Date</strong></li>
                                             <li id="personal"><strong>Details</strong></li>
                                             <li id="payment"><strong>Confirm</strong></li>
-                                            <li id="confirm"><strong>Finish</strong></li>
+                                            {{-- <li id="confirm"><strong>Finish</strong></li> --}}
                                         </ul> <!-- fieldsets -->
                                         <fieldset>
                                             <div class="form-card text-left">
@@ -235,8 +229,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <input type="button" name="next" class="first-next next action-button btn btn-primary"
-                                                value="Next Step" />
+                                            <button type="button" name="next" class="first-next next action-button btn btn-primary">Next Step</button>
                                         </fieldset>
                                         <fieldset>
                                             <div class="form-card text-left">    
@@ -322,24 +315,8 @@
                                             </div>
                                             <input type="button" name="previous" class="previous action-button-previous btn btn-secondary"
                                                 value="Previous" /> 
-                                            <input type="button" name="make_payment"
-                                                class="next action-button btn btn-primary third-next" value="Confirm" />
-                                        </fieldset>
-                                        <fieldset>
-                                            <div class="form-card">
-                                                <h2 class="fs-title text-center">Success !</h2> <br><br>
-                                                <div class="row justify-content-center">
-                                                    <div class="col-12">
-                                                        <i class="fa fa-check-circle" style="font-size: 200px; color: #47c363;"></i>
-                                                    </div>
-                                                </div> <br><br>
-                                                <div class="row justify-content-center">
-                                                    <div class="col-7 text-center">
-                                                        <h5>You Have Successfully Updated the Transaction</h5>
-                                                        <a href="" class="btn btn-primary view-transaction mr-2 mt-4">View Transaction</a>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <button type="button" name="make_payment"
+                                        class="next action-button btn btn-primary third-next">Submit</button>
                                         </fieldset>
                                     </form>
                                 </div>
@@ -389,6 +366,9 @@
                 });
                 return false;
             } else {
+                var _this = $(this);
+                _this.attr("disabled", true);
+                _this.append('<span class="spinner-border spinner-border-sm ml-2" role="status" aria-hidden="true"></span>');
                 $.ajax({
                     type: 'post',
                     url: "{{ route('transaction.get_available_rooms_cottages') }}",
@@ -427,12 +407,14 @@
                             _html += '<p class="text-danger">No available '+result.type+'!</p>';
                         }
                         $('.rental-container-result').html(_html);
+                        _this.removeAttr("disabled");
+                        _this.find('.spinner-border').remove();
+
+                        current_fs = _this.parent();
+                        next_fs = _this.parent().next();
+                        next_fieldset(current_fs, next_fs);
                     }
                 });
-
-                current_fs = $(this).parent();
-                next_fs = $(this).parent().next();
-                next_fieldset(current_fs, next_fs);
             }
         });
 
@@ -481,6 +463,10 @@
             var senior = $('#Senior_Citizen').val();
             var notes = $('#notes').val();
 
+            var _this = $(this);
+            _this.attr("disabled", true);
+            _this.append('<span class="spinner-border spinner-border-sm ml-2" role="status" aria-hidden="true"></span>');
+            
             $.ajax({
                 type: 'put',
                 url: "{{ route('transaction.update_cottage', $transaction->id) }}",
@@ -499,10 +485,14 @@
                 success: function (result) {
                     var _this = $(".third-next");
                     if(result.status == 'success') {
-                        $('.view-transaction').attr('href', result.link);
-                        current_fs = _this.parent();
-                        next_fs = _this.parent().next();
-                        next_fieldset(current_fs, next_fs);
+                        iziToast.success({
+                            title: '',
+                            message: 'Success!',
+                            position: 'topRight'
+                        });
+                        setTimeout(function(){ 
+                            window.location.href = result.link;
+                         }, 1000);
                     } 
                     if(result.status == 'error') {
                         swal({
@@ -511,6 +501,9 @@
                             icon: "error",
                             button: true,
                         });
+                        
+                        _this.removeAttr("disabled");
+                        _this.find('.spinner-border').remove();
                     }
                 }
             });

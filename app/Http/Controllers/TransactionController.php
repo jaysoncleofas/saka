@@ -186,7 +186,7 @@ class TransactionController extends Controller
         $transaction->is_reservation = $is_reservation ? 1 : 0;
         $transaction->extraPerson = $extraPerson;
         $transaction->extraPersonTotal = $extraPersonTotal;
-        $transaction->totalEntranceFee = 0;
+        $transaction->totalEntranceFee = $extraPersonTotal;
         $transaction->breakfastfees = 0;
         $transaction->rentBill = $rentBill;
         $transaction->totalBill = $totalBill;
@@ -619,7 +619,7 @@ class TransactionController extends Controller
         if($request->rent_type == 'cottage') {
             $cottages = Cottage::all();
             foreach($cottages as $cottage) {
-                $slot = Transaction::where('cottage_id', $cottage->id)->whereDate('checkIn_at', $checkin)->where('type', $request->type)->count();
+                $slot = Transaction::where('cottage_id', $cottage->id)->whereDate('checkIn_at', $checkin)->where('type', $request->type)->whereNot('status', 'cancelled')->count();
                 if($slot && $request->edit == 1 && $request->cottageid == $cottage->id) {
                     $slot = $slot - 1;
                 } 
@@ -635,7 +635,7 @@ class TransactionController extends Controller
             }
         } elseif($request->rent_type == 'room') {
             $new_arr = [];
-            $slot = Transaction::whereNotNull('room_id')->whereDate('checkIn_at', $checkin)->pluck('room_id')->toArray();
+            $slot = Transaction::whereNotNull('room_id')->whereDate('checkIn_at', $checkin)->whereNot('status', 'cancelled')->pluck('room_id')->toArray();
             if($request->edit && $request->roomid) {
                 foreach($slot as $item) {
                     if($item != $request->roomid) {
@@ -846,6 +846,56 @@ class TransactionController extends Controller
         if($request->addons) {
             $transaction->breakfasts()->sync($request->addons);
         }
+
+        return response()->json(['status' => 'success', 'link' => route('transaction.show', $transaction->id)], 200);
+    }
+
+    public function update_exclusive(Request $request, $id)
+    {
+        $transaction = Transaction::findOrFail($id);
+
+        $request->validate([
+            'checkin' => 'required',
+            'type' => 'required',
+            'adults' => 'required|numeric',
+            'kids' => 'required|numeric',
+            'senior' => 'required|numeric',
+            'notes' => 'nullable',
+        ]);
+
+        if($request->type == 'overnight') {
+            $checkin = Carbon::parse($request->checkin)->setHour(9);  
+            $checkout = Carbon::parse($request->checkin)->addDays(1)->setHour(11);   
+        } else {
+            $checkin = Carbon::parse($request->checkin)->setHour(9);  
+            $checkout = Carbon::parse($request->checkin)->setHour(17);
+        }
+
+        $extraPerson = null;
+        $totalpax = $request->adults + $request->kids + $request->senior;
+        $maxpax = $request->type == 'day' ? 60 : 30;
+        $extraPersonTotal = 0;
+        if($totalpax > $maxpax) {
+            $extraPerson = $totalpax - $maxpax;
+            $extraPersonTotal = $extraPerson * ($request->type == 'day' ? 200 : 250);
+        }
+        $rentBill = $request->type == 'day' ? 15000 : 25000;
+        $totalBill = $extraPersonTotal + $rentBill;
+
+
+        $transaction->checkIn_at = $checkin;
+        $transaction->checkOut_at = $checkout;
+        $transaction->adults = $request->adults;
+        $transaction->kids = $request->kids;
+        $transaction->senior = $request->senior;
+        $transaction->type = $request->type;
+        $transaction->notes = $request->notes;
+        $transaction->extraPerson = $extraPerson;
+        $transaction->extraPersonTotal = $extraPersonTotal;
+        $transaction->totalEntranceFee = $extraPersonTotal;
+        $transaction->rentBill = $rentBill;
+        $transaction->totalBill = $totalBill;
+        $transaction->update();
 
         return response()->json(['status' => 'success', 'link' => route('transaction.show', $transaction->id)], 200);
     }
