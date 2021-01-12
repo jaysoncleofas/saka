@@ -365,9 +365,9 @@
                                                 <button type="submit"
                                                     class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mt-3 btn-submit">Book
                                                     Now</button>
-                                                    <p class="mt-4">This site is protected by ReCaptcha and the Google
+                                                    {{-- <p class="mt-4">This site is protected by ReCaptcha and the Google
                                                         <a href="https://policies.google.com/privacy">Privacy Policy</a> and
-                                                        <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+                                                        <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p> --}}
                                             </div>
                                         </div>
                                     </form>
