@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Cottage;
 use App\Models\CottageImage;
+use Auth;
 
 class CottageController extends Controller
 {
@@ -26,11 +27,19 @@ class CottageController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+        if($user->role_id == 2) {
+            return abort(404);
+        }
         return view('admin.cottages.index');
     }
 
     public function create()
     {
+        $user = Auth::user();
+        if($user->role_id == 2) {
+            return abort(404);
+        }
         return view('admin.cottages.create');
     }
 
@@ -89,6 +98,10 @@ class CottageController extends Controller
 
     public function edit($id)
     {
+        $user = Auth::user();
+        if($user->role_id == 2) {
+            return abort(404);
+        }
         $cottage = Cottage::findOrFail($id);
         return view('admin.cottages.edit', compact('cottage'));
     }
@@ -163,6 +176,10 @@ class CottageController extends Controller
 
     public function destroy($id)
     {
+        $user = Auth::user();
+        if($user->role_id == 2) {
+            return abort(404);
+        }
         $cottage = Cottage::find($id);
         $cottage->delete();
         

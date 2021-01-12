@@ -27,6 +27,7 @@ class CreateResortsTable extends Migration
             $table->text('facebook');
             $table->text('instagram');
             $table->text('twitter');
+            $table->bigInteger('points')->default(0);
             $table->timestamps();
         });
     }

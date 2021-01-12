@@ -100,23 +100,11 @@
                         <div class="divider room-page"></div>
                         <p class="paragraph room">{{ $room->descriptions }}</p>
                         <a href="#Gallery" class="btn btn-lg btn-outline-dark button-secondary large w-inline-block radius-zero view-gallery">View Gallery</a>
-                        {{-- <div class="about-room-page">
-                            <div class="split-content card-about-room-left">
-                                <div class="from-text">From</div>
-                                <div class="card-price-wrapper">
-                                    <div>&nbsp;/night</div>
-                                </div>
-                            </div>
-                        </div> --}}
-                        {{-- <a href="{{ route('room.book', $room->id) }}"
-                        class="btn btn-lg btn-outline-dark button-secondary large radius-zero">Book Now</a> --}}
-                        {{-- <a href="{{ route('landing.contact') }}"
-                        class="btn btn-lg btn-outline-dark button-secondary large radius-zero">Book Now</a> --}}
                     </div>
                     <div class="col-lg-8">
                         <div class="card reservate-room">
                             <div class="reservate-room-title-wrapper">
-                                <h3>Reservate Room</h3>
+                                <h3>Reserve Room</h3>
                             </div>
                             <div class="reservate-room-content">
                                 <div>
@@ -128,7 +116,7 @@
                                         @endif>
                                         <div class="form-group">
                                             <label for="datepicker">Check-in Date:</label>
-                                            <input type="text" name="checkin" class="form-control @error('checkin') is-invalid @enderror" id="datepicker" value="{{ old('checkin') }}">
+                                            <input type="text" name="checkin" required class="form-control @error('checkin') is-invalid @enderror" id="datepicker" value="{{ old('checkin') }}">
                                             @error('checkin')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -197,22 +185,6 @@
                                                 @enderror
                                             </div>
 
-                                            {{-- @if ($room->extraPerson != 0)
-                                            <div class="form-group col-lg-4">
-                                                <select name="extraPerson" id="extraPerson" class="form-control">
-                                                    <option value="0">No Extra Person</option>
-                                                    @for ($i = 1; $i <= ($room->max - $room->min); $i++) 
-                                                    <option {{ old('extraPerson') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $i }} {{ $i > 1 ? 'Extra Persons' : 'Extra Person' }}</option>
-                                                    @endfor
-                                                </select>
-                                                @error('extraPerson')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
-                                            </div>
-                                            @endif --}}
-
                                             <div class="form-group col-lg-12 mb-0">
                                                 {{-- <label class="form-label">Select Type</label> --}}
                                                 <div
@@ -243,7 +215,6 @@
 
                                             <div class="col-lg-12 breakfast-container d-none">
                                                 <div class="row">
-                                                    @if (config('yourconfig.resort')->is_promo)
                                                     <div class="form-group col-lg-12 mb-0">
                                                         <label class="form-label">Free Breakfast</label>
                                                         <input type="hidden" name="isbreakfast" value="1">
@@ -263,52 +234,13 @@
                                                             @endforeach
                                                         </div>
                                                     </div>
-                                                    @else
-                                                    <div class="form-group col-lg-12 mb-0">
-                                                        <label class="form-label">Breakfast
-                                                            (P{{ number_format(config('yourconfig.resort')->breakfastPrice, 0) }})</label>
-                                                        <div class="selectgroup selectgroup-pills">
-                                                            <label class="selectgroup-item">
-                                                                <input type="radio" name="isbreakfast" value="1"
-                                                                    class="selectgroup-input yes-breakfast"
-                                                                    {{ old('isbreakfast') == 1 ? 'checked' : '' }}>
-                                                                <span
-                                                                    class="selectgroup-button selectgroup-button-icon">Yes</span>
-                                                            </label>
-                                                            <label class="selectgroup-item">
-                                                                <input type="radio" name="isbreakfast" value="0"
-                                                                    class="selectgroup-input"
-                                                                    {{ old('isbreakfast') == 0 ? 'checked' : '' }}>
-                                                                <span
-                                                                    class="selectgroup-button selectgroup-button-icon">No</span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group col-lg-12 breakfastaddons-container d-none">
-                                                        <label class="form-label">Breakfast Add ons:</label>
-                                                        <div class="selectgroup selectgroup-pills">
-                                                            @foreach ($breakfasts as $breakfast)
-                                                            <label class="selectgroup-item mb-0">
-                                                                <input type="checkbox" name="breakfast[]"
-                                                                    value="{{ $breakfast->id }}" class="selectgroup-input"
-                                                                    {{ old('breakfast') ? (in_array($breakfast->id, old('breakfast')) ? 'checked' : '') : '' }}>
-                                                                <span
-                                                                    class="selectgroup-button">{{ $breakfast->title.' P'.number_format($breakfast->price, 0).' ('.$breakfast->notes.')' }}</span>
-                                                            </label>
-                                                            @endforeach
-                                                        </div>
-                                                    </div>
-                                                    @endif
-        
                                                 </div>
-
                                             </div>
 
                                             {{-- <div class="row"> --}}
                                                 <div class="form-group col-md-6">
                                                     <label for="firstName">First Name</label>
-                                                    <input type="text" class="form-control @error('firstName') is-invalid @enderror"
+                                                    <input type="text" required class="form-control @error('firstName') is-invalid @enderror"
                                                         name="firstName" id="firstName" value="{{ old('firstName') }}">
                                                     @error('firstName')
                                                     <span class="invalid-feedback" role="alert">
@@ -319,7 +251,7 @@
                 
                                                 <div class="form-group col-md-6">
                                                     <label for="lastName">Last Name</label>
-                                                    <input type="text" class="form-control @error('lastName') is-invalid @enderror"
+                                                    <input type="text" required class="form-control @error('lastName') is-invalid @enderror"
                                                         name="lastName" id="lastName" value="{{ old('lastName') }}">
                                                     @error('lastName')
                                                     <span class="invalid-feedback" role="alert">
@@ -331,7 +263,7 @@
                 
                                             <div class="form-group col-md-6">
                                                 <label for="contactNumber">Contact Number</label>
-                                                <input type="text" class="form-control @error('contactNumber') is-invalid @enderror"
+                                                <input type="text" required class="form-control @error('contactNumber') is-invalid @enderror"
                                                         name="contactNumber" id="contactNumber" value="{{ old('contactNumber') }}">
                                                 @error('contactNumber')
                                                 <span class="invalid-feedback" role="alert">
@@ -342,7 +274,7 @@
 
                                             <div class="form-group col-md-6">
                                                 <label for="email">Email</label>
-                                                <input type="text" class="form-control @error('email') is-invalid @enderror"
+                                                <input type="email" required class="form-control @error('email') is-invalid @enderror"
                                                         name="email" id="email" value="{{ old('email') }}">
                                                 @error('email')
                                                 <span class="invalid-feedback" role="alert">
@@ -353,7 +285,7 @@
 
                                             <div class="form-group col-md-12">
                                                 <label for="address">Address</label>
-                                                <textarea class="form-control @error('email') is-invalid @enderror" name="address" id="address"  rows="3">{{ old('address') }}</textarea>
+                                                <textarea required class="form-control @error('address') is-invalid @enderror" name="address" id="address"  rows="3">{{ old('address') }}</textarea>
                                                 @error('address')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -509,9 +441,67 @@
 
         $(document).on('click', '.btn-submit', function () {
             var _this = $(this);
-            _this.attr("disabled", true);
-            _this.append('<span class="spinner-border spinner-border-sm ml-2" role="status" aria-hidden="true"></span>');
-            $('.room-reservation-form').submit();
+            if ($('#datepicker').val() == "") {
+                swal({
+                    title: 'Error!',
+                    text: 'Check-in Date must be filled out',
+                    icon: "error",
+                    button: true,
+                });
+                return false;
+            } else if(!$('input:radio[name="type"]:checked').val()) {
+                swal({
+                    title: 'Error!',
+                    text: 'Select Day use or Nigth use!',
+                    icon: "error",
+                    button: true,
+                });
+                return false;
+            } else if($('#firstName').val() == "") {
+                swal({
+                    title: 'Error!',
+                    text: 'First Name field is required!',
+                    icon: "error",
+                    button: true,
+                });
+                return false;
+            } else if($('#lastName').val() == "") {
+                swal({
+                    title: 'Error!',
+                    text: 'Last Name field is required!',
+                    icon: "error",
+                    button: true,
+                });
+                return false;
+            } else if($('#contactNumber').val() == "") {
+                swal({
+                    title: 'Error!',
+                    text: 'Contact Number field is required!',
+                    icon: "error",
+                    button: true,
+                });
+                return false;
+            } else if($('#email').val() == "") {
+                swal({
+                    title: 'Error!',
+                    text: 'Email field is required!',
+                    icon: "error",
+                    button: true,
+                });
+                return false;
+            } else if($('#address').val() == "") {
+                swal({
+                    title: 'Error!',
+                    text: 'Address field is required!',
+                    icon: "error",
+                    button: true,
+                });
+                return false;
+            } else {
+                _this.attr("disabled", true);
+                _this.append('<span class="spinner-border spinner-border-sm ml-2" role="status" aria-hidden="true"></span>');
+                $('.room-reservation-form').submit();
+            }
         });
     </script>
     @endsection

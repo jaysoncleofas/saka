@@ -60,29 +60,35 @@ var myChart = new Chart(ctx, {
     }]
   },
   options: {
-    legend: {
-      display: false
+    responsive: true,
+    title: {
+      display: true,
+      text: 'Chart.js Line Chart'
+    },
+    tooltips: {
+      mode: 'index',
+      intersect: false,
+    },
+    hover: {
+      mode: 'nearest',
+      intersect: true
     },
     scales: {
-      yAxes: [{
-        gridLines: {
-          drawBorder: false,
-          color: '#f2f2f2',
-        },
-        ticks: {
-          beginAtZero: true,
-          stepSize: 150
+      xAxes: [{
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Month'
         }
       }],
-      xAxes: [{
-        ticks: {
-          display: false
-        },
-        gridLines: {
-          display: false
+      yAxes: [{
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Value'
         }
       }]
-    },
+    }
   }
 });
 

@@ -109,7 +109,15 @@ class ReservationController extends Controller
                     </button>
                     <div class="dropdown-menu">
                       <a class="dropdown-item" href="'.route('transaction.show', $transaction->id).'">View</a>
-                      <a class="dropdown-item" href="'.route('transaction.edit', $transaction->id).'">Edit</a>
+                      <a class="dropdown-item" href="';
+                      if($transaction->cottage_id){
+                        $html .= route('transaction.edit_cottage', $transaction->id);
+                      } elseif($transaction->room_id){
+                        $html .= route('transaction.edit_room', $transaction->id);
+                      }if($transaction->is_exclusive){
+                        $html .= route('transaction.edit_exclusive', $transaction->id);
+                      }
+                      $html .= '">Edit</a>
                       <a class="dropdown-item trigger-delete2" data-action="'.route('transaction.destroy', $transaction->id).'" data-model="reservation" href="#">Delete</a>
                       <div class="dropdown-divider"></div>';
         
@@ -137,12 +145,12 @@ class ReservationController extends Controller
         $transaction = Transaction::findOrfail($id);
 
         $transaction->update([
-            'status' => 'confirmed',
+            'status' => 'active',
             'confirmed_at' => Carbon::now()
         ]);
         $transaction->guest->notify(new ReservationConfirmed($transaction));
         $msg = "Thank you for choosing Saka Resort. Your reservation: control#".$transaction->id." has been confirmed. We look forward to hosting your stay.";
-        // $smsResult = \App\Helpers\CustomSMS::send($transaction->guest->contact, $msg);
+        $smsResult = \App\Helpers\CustomSMS::send($transaction->guest->contact, $msg);
         return response('success', 200);
     }
 

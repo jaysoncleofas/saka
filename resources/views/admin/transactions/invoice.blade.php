@@ -13,7 +13,15 @@
                     <div class="card-header">
                         <h4><a href="{{ route('transaction.show', $transaction->id) }}"><h4>Control #{{ $transaction->id }}</h4></a></h4>
                         <div class="card-header-action">
-                            <a href="{{ route('transaction.edit', $transaction->id) }}" class="mr-2">Edit <i class="fa fa-edit"></i></a>
+                            <a href="@php
+                            if($transaction->cottage_id){
+                                echo route('transaction.edit_cottage', $transaction->id);
+                              } elseif($transaction->room_id){
+                                echo route('transaction.edit_room', $transaction->id);
+                              }if($transaction->is_exclusive){
+                                echo route('transaction.edit_exclusive', $transaction->id);
+                              }
+                            @endphp" class="mr-2">Edit <i class="fa fa-edit"></i></a>
                             @if ($transaction->status == 'completed')
                             <a href="#" class="btn btn-success disabled mr-2">Completed</a>
                             @else

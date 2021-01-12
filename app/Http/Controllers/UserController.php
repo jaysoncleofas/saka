@@ -28,6 +28,10 @@ class UserController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+        if($user->role_id == 2) {
+            return abort(404);
+        }
         return view('admin.users.index');
     }
 

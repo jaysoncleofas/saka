@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Room;
 use App\Models\RoomImage;
+use Auth;
 
 class RoomController extends Controller
 {
@@ -26,11 +27,19 @@ class RoomController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+        if($user->role_id == 2) {
+            return abort(404);
+        }
         return view('admin.rooms.index');
     }
 
     public function create()
     {
+        $user = Auth::user();
+        if($user->role_id == 2) {
+            return abort(404);
+        }
         return view('admin.rooms.create');
     }
 
@@ -91,6 +100,10 @@ class RoomController extends Controller
 
     public function edit($id)
     {
+        $user = Auth::user();
+        if($user->role_id == 2) {
+            return abort(404);
+        }
         $room = Room::find($id);
         return view('admin.rooms.edit', compact('room'));
     }
@@ -169,6 +182,10 @@ class RoomController extends Controller
 
     public function destroy($id)
     {
+        $user = Auth::user();
+        if($user->role_id == 2) {
+            return abort(404);
+        }
         $room = Room::find($id);
         $room->delete();
         

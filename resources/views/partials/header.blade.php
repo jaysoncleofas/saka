@@ -30,6 +30,20 @@
         .is-size-15 {
             line-height: 2;
         }
+        @media screen and (max-width: 479px) {
+            .main-content {
+                padding-left: 0px;
+                padding-right: 0px;
+            }
+            #msform fieldset .form-card{
+                padding: 0px !important;
+                margin: 0px !important;
+            }
+            .main-wrapper-1 .section .section-header {
+                margin-left: 0px;
+                margin-right: 0px;
+            }
+        }
     </style>
     @yield('style')
 </head>

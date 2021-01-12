@@ -12,6 +12,9 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>Resort Settings</h4>
+                        <div class="card-header-action">
+                            SMS Credits: <strong>{{ number_format($resort->points, 0) }}</strong>
+                        </div>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('resort.update', $resort->id) }}">
@@ -205,7 +208,7 @@
                                                 <td>P{{ number_format($breakfast->price, 0) }}</td>
                                                 <td>{{ $breakfast->notes }}</td>
                                                 <td>{{ $breakfast->is_active ? 'Active' : 'Inactive' }}</td>
-                                                <td><a href="{{ route('breakfast.edit', $breakfast->id) }}" class="btn btn-primary btn-action mr-1" title="Edit"><i class="fas fa-pencil-alt"></i></a> <a class="btn btn-danger btn-action trigger-delete" title="Delete" data-action="{{ route('breakfast.destroy', $breakfast->id) }}" data-model="breakfast"><i class="fas fa-trash"></i></a></td>
+                                                <td><a href="{{ route('breakfast.edit', $breakfast->id) }}" class="btn btn-primary btn-action mr-1 mb-1" title="Edit"><i class="fas fa-pencil-alt"></i></a> <a class="btn btn-danger btn-action trigger-delete mb-1" title="Delete" data-action="{{ route('breakfast.destroy', $breakfast->id) }}" data-model="breakfast"><i class="fas fa-trash"></i></a></td>
                                             </tr>
                                             @endforeach
                                         </tbody>

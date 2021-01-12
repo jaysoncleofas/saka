@@ -64,7 +64,7 @@
                                         <strong>Contact Number:</strong> {{ $transaction->guest->contact }} <br>
                                         <strong>Email:</strong> {{ $transaction->guest->email }} <br>
                                         <strong>Address:</strong> {{ $transaction->guest->address }} <br>
-                                        <strong>Notes:</strong> {{ $transaction->notes }} <br>
+                                        {{-- <strong>Notes:</strong> {{ $transaction->notes }} <br> --}}
                                     </div>
                                     
                                 </div>

@@ -350,7 +350,46 @@
                                                 </div>
 
                                                 <div class="row">
-                                                    <div class="form-group col-lg-4">
+                                                    <div class="form-group col-lg-4 col-md-4 col-sm-4">
+                                                        <label for="adults">Adults</label>
+                                                        <input type="text"
+                                                            class="form-control digit_only @error('adults') is-invalid @enderror"
+                                                            name="adults" id="adults"
+                                                            value="{{ old('adults') ?? 0 }}">
+                                                        @error('adults')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                        @enderror
+                                                    </div>
+
+                                                    <div class="form-group col-lg-4 col-md-4 col-sm-4">
+                                                        <label for="kids">Kids</label>
+                                                        <input type="text"
+                                                            class="form-control digit_only @error('kids') is-invalid @enderror"
+                                                            name="kids" id="kids"
+                                                            value="{{ old('kids') ?? 0 }}">
+                                                        @error('kids')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                        @enderror
+                                                    </div>
+                    
+                                                    <div class="form-group col-lg-4 col-md-4 col-sm-4">
+                                                        <label for="senior_citizen">Senior Citizen</label>
+                                                        <input type="text"
+                                                            class="form-control digit_only @error('senior_citizen') is-invalid @enderror"
+                                                            name="senior_citizen" id="senior_citizen"
+                                                            value="{{ old('senior_citizen') ?? 0 }}">
+                                                        @error('senior_citizen')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                        @enderror
+                                                    </div>
+
+                                                    {{-- <div class="form-group col-lg-4">
                                                         <select name="adults" id="adults" class="form-control">
                                                             @for ($i = 2; $i <= 150; $i++) <option
                                                                 {{ old('adults') == $i ? 'selected' : '' }} value="{{ $i }}">
@@ -362,8 +401,8 @@
                                                             <strong>{{ $message }}</strong>
                                                         </span>
                                                         @enderror
-                                                    </div>
-            
+                                                    </div> --}}
+{{--             
                                                     <div class="form-group col-lg-4">
                                                         <select name="kids" id="kids" class="form-control">
                                                             <option value="0">No Kids</option>
@@ -393,7 +432,7 @@
                                                             <strong>{{ $message }}</strong>
                                                         </span>
                                                         @enderror
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
 
                                                 <div class="form-group">

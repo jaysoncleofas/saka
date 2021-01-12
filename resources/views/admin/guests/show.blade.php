@@ -12,9 +12,6 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>Show Guest</h4>
-                        <div class="card-header-action">
-                            <a href="{{ route('transaction.create', $guest->id) }}" class="btn btn-primary">Add Transaction</a>
-                        </div>
                     </div>
                     <div class="card-body">
                         <strong>Guest Information</strong>

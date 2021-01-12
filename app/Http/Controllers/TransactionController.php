@@ -27,10 +27,10 @@ class TransactionController extends Controller
         $startDay = $request->startdate ? Carbon::parse($request->startdate)->startOfDay() : Carbon::now()->startOfMonth();
         $endDay = $request->enddate ? Carbon::parse($request->enddate)->endOfDay() : Carbon::now()->endOfMonth();
 
-        $data['pending'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('pending')->count();
-        $data['confirmed'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('confirmed')->count();
-        $data['completed'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('completed')->count();
-        $data['cancelled'] = Transaction::whereIs_reservation(1)->whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('cancelled')->count();
+        $data['pending'] = Transaction::whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('pending')->count();
+        $data['confirmed'] = Transaction::whereBetween('checkIn_at', [$startDay, $endDay])->whereIn('status', ['confirmed', 'active'])->count();
+        $data['completed'] = Transaction::whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('completed')->count();
+        $data['cancelled'] = Transaction::whereBetween('checkIn_at', [$startDay, $endDay])->whereStatus('cancelled')->count();
 
         return view('admin.transactions.index', $data);
     }

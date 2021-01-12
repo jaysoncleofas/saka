@@ -17,7 +17,15 @@
                             @endif
                         </h4>
                         <div class="card-header-action">
-                            <a href="{{ route('transaction.edit', $transaction->id) }}" class="mr-2">Edit <i class="fa fa-edit"></i></a>
+                            <a href="@php
+                                if($transaction->cottage_id){
+                                    echo route('transaction.edit_cottage', $transaction->id);
+                                  } elseif($transaction->room_id){
+                                    echo route('transaction.edit_room', $transaction->id);
+                                  }if($transaction->is_exclusive){
+                                    echo route('transaction.edit_exclusive', $transaction->id);
+                                  }
+                            @endphp" class="mr-2">Edit <i class="fa fa-edit"></i></a>
                             <a href="{{ route('transaction.invoice', $transaction->id) }}" class="btn btn-primary">Show Invoice</a>
                         </div>
                     </div>
