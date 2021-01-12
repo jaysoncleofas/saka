@@ -5,7 +5,7 @@
 @include('landing.nav1')
 {{-- hero  --}}
 <div class="section hero">
-    <div class="mask d-flex justify-content-center align-items-center">
+    {{-- <div class="mask d-flex justify-content-center align-items-center"> --}}
         <div class="container">
             <div data-w-id="a375f38e-cd39-316e-0b02-19c869f60288"
                 style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;"
@@ -22,7 +22,7 @@
                 {{-- srcset="https://assets.website-files.com/5f28567562c2bb7095a14f34/5f32c1ae95b617b18ca22d2d_image-hero-hotel-template-p-500.jpeg 500w, https://assets.website-files.com/5f28567562c2bb7095a14f34/5f32c1ae95b617b18ca22d2d_image-hero-hotel-template.jpg 1416w" --}}
                 sizes="(max-width: 991px) 100vw, 46vw" class="image hero">
         </div>
-    </div>
+    {{-- </div> --}}
 </div>
 
 {{-- about  --}}

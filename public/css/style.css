@@ -1461,3 +1461,25 @@ h1 {
     border-color: #fff !important;
     cursor: not-allowed
 }
+
+@media screen and (max-width: 991px) {
+    .split-content.hero-left {
+        max-width: 100%;
+        margin-bottom: 60px;
+    }
+    .image-wrapper.hero {
+        position: static;
+        left: 0px;
+        top: auto;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    .section.hero {
+        padding-top: 120px;
+    }
+    .image.hero {
+        height: 300px;
+    }
+}
