@@ -54,7 +54,7 @@ class ReservationSent extends Notification
                     ->line('Thank you for checking us out.')
                     ->line('We are reviewing your reservation: Control#'.$tran->id)
                     ->action('View Reservation', $url)
-                    ->line('Our customer care team will reply within one business day, however our actual reply time is often sooner.')
+                    // ->line('Our customer care team will reply within one business day, however our actual reply time is often sooner.')
                     ->line('If you need to make changes or require assistance please call '.$phone.' or email us at '.$email.'. ')
                     ->line('We look forward to welcoming you in Saka Resort soon!');
     }
