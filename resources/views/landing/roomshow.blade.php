@@ -263,7 +263,7 @@
                 
                                             <div class="form-group col-md-6">
                                                 <label for="contactNumber">Contact Number</label>
-                                                <input type="text" required class="form-control @error('contactNumber') is-invalid @enderror"
+                                                <input type="text" required class="form-control phone-number @error('contactNumber') is-invalid @enderror"
                                                         name="contactNumber" id="contactNumber" value="{{ old('contactNumber') }}">
                                                 @error('contactNumber')
                                                 <span class="invalid-feedback" role="alert">

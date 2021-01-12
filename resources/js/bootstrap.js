@@ -38,6 +38,16 @@ window.daterangepicker = require('daterangepicker');
 window.datepicker = require('bootstrap-datepicker');
 
 window.Chart = require('chart.js');
+
+// window.Cleave = require('cleave.js');
+// import "cleave.js/dist/addons/cleave-phone.ph.js";
+
+// var cleavePN = new Cleave('.phone-number', {
+//     phone: true,
+//     phoneRegionCode: 'us'
+//   });
+
+// window.Cleave = require('cleave.js');
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

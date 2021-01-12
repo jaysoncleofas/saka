@@ -113,4 +113,5 @@ $(document).ready(function () {
 
     $('.digit_only').mask('000', {reverse: true});
     $('.digit_only2').mask('00000', {reverse: true});
+    $('.phone-number').mask('00000000000');
 });

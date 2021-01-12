@@ -40,7 +40,7 @@ Route::post('exclusive-rental/get_available', [App\Http\Controllers\LandingPageC
 Route::get('/contact', [App\Http\Controllers\LandingPageController::class, 'contact'])->name('landing.contact');
 
 // Auth::routes();
-Auth::routes(['register' => false, 'reset' => false]);
+Auth::routes(['register' => false]);
 
 Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/dashboard/transaction_datatables', [App\Http\Controllers\DashboardController::class, 'transaction_datatables'])->name('dashboard.transaction_datatables');

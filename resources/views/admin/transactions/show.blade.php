@@ -74,6 +74,12 @@
                                         @endif
                                     </div>
                                     <div class="col-lg-6 col-md-6">
+                                        @if ($transaction->completed_at)
+                                        <strong>Completed Date:</strong> {{ date('M d, Y h:i a', strtotime($transaction->completed_at)) }} <br>
+                                        @endif
+                                        @if ($transaction->cancelled_at)
+                                        <strong>Cancelled Date:</strong> {{ date('M d, Y h:i a', strtotime($transaction->cancelled_at)) }} <br>
+                                        @endif
                                         <strong>Guest:</strong> {{ $transaction->guest->fullname }} <br>
                                         <strong>Contact Number:</strong> {{ $transaction->guest->contact }} <br>
                                         <strong>Email:</strong> {{ $transaction->guest->email }} <br>
