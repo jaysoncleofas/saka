@@ -186,7 +186,7 @@
     <div class="container">
         <div data-w-id="826f6178-2f16-6e2c-de9c-95e5f3966b87" class="flex-vc"
             style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;">
-            <a href="{{ config('yourconfig.resort')->facebook }}" target="_blank" class="btn btn-lg btn-outline-dark">Follow Us</a>
+            <a href="{{ config('yourconfig.resort')->facebook }}" target="_blank" class="btn btn-lg btn-outline-dark button-secondary large w-inline-block radius-zero">Follow Us</a>
         </div>
     </div>
 </div>

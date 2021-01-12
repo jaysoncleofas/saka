@@ -6,6 +6,10 @@ body {
     letter-spacing: -0.02em;
     background-color: #fff;
 }
+.section {
+    padding-top: 140px;
+    padding-bottom: 140px;
+}
 
 .button-secondary.large,
 .button-primary.large {
@@ -79,20 +83,9 @@ html, body, header, .view {
 }
 
 .section.hero {
-    height: 100%;
-    /* position: relative;
-    overflow: hidden; */
-
-    position: relative;
-    overflow: hidden;
-    cursor: default;
-    
-    
-    /* 
     position: relative;
     padding-top: 298px;
     padding-bottom: 298px;
-    margin-top: -56px; */
 }
 
 .mask {
@@ -159,8 +152,6 @@ img {
 
 .section.about {
     background-color: #f8f8f8;
-    padding-top: 140px;
-    padding-bottom: 140px;
 }
 
 .about-wrapper {
@@ -275,8 +266,6 @@ h2 {
 }
 
 .section.rooms-section {
-    padding-top: 140px;
-    padding-bottom: 140px;
     background-color: #fff;
 }
 
@@ -541,8 +530,6 @@ h2 {
 
 .section.instagram {
     background-color: #f8f8f8;
-    padding-top: 140px;
-    padding-bottom: 140px;
 }
 
 .title.instagram {
@@ -850,8 +837,6 @@ h2 {
 .section.restaurant-section {
     position: relative;
     background-color: #f8f8f8;
-    padding-top: 140px;
-    padding-bottom: 140px;
 }
 
 .restaurant-wrapper {
@@ -1461,11 +1446,63 @@ h1 {
     border-color: #fff !important;
     cursor: not-allowed
 }
-
 @media screen and (max-width: 991px) {
     .split-content.hero-left {
         max-width: 100%;
         margin-bottom: 60px;
+    }
+    .image.bg-about-page {
+        height: 600px;
+    }
+    .image-wrapper.bg-about-page {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        max-height: 600px;
+    }
+    .image.about-us-2 {
+        width: 65%;
+        max-height: 450px;
+        max-width: 100%;
+        margin-left: -210px;
+        -o-object-fit: cover;
+        object-fit: cover;
+    }
+    .split-content.about-us-left {
+        max-width: 494px;
+        margin-right: 0px;
+        margin-bottom: 60px;
+        -webkit-align-self: flex-start;
+        -ms-flex-item-align: start;
+        align-self: flex-start;
+    }
+    .about-us-wrapper {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-align: start;
+        -webkit-align-items: flex-start;
+        -ms-flex-align: start;
+        align-items: flex-start;
+    }
+    .image-wrapper.bg-about-page {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        max-height: 600px;
+    }
+    .section.about-page {
+        padding-top: 390px;
+    }
+    h1 {
+        font-size: 53px;
+    }
+    .section.about {
+        overflow: hidden;
     }
     .image-wrapper.hero {
         position: static;
@@ -1473,13 +1510,776 @@ h1 {
         top: auto;
         width: 100%;
     }
+    .image.hero {
+        height: 500px;
+    }
+    .footer-grid {
+        margin-bottom: 80px;
+        grid-row-gap: 0px;
+        -ms-grid-columns: auto;
+        grid-template-columns: auto;
+    }
+    .image-wrapper {
+        width: 100%;
+    }
+    .title.instagram {
+        max-width: 450px;
+    }
+    h2 {
+        font-size: 37px;
+    }
+    .size-1.home {
+        max-width: 720px;
+    }
+
+    .size-1 {
+        font-size: 70px;
+    }
+
+    .section.about {
+        overflow: hidden;
+    }
+    .section.hero {
+        padding-top: 170px;
+        padding-bottom: 0px;
+    }
+
+    .about-wrapper {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+    }
+
+    .image.about {
+        width: 100%;
+        height: 100%;
+        -o-object-fit: cover;
+        object-fit: cover;
+    }
+    .title.cta {
+        max-width: 384px;
+    }
+    .image-wrapper {
+        width: 100%;
+    }
+    .room-section-wrapper {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .image.room-section {
+        width: 100%;
+        height: 450px;
+        max-width: none;
+    }
+    .restaurant-wrapper {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .split-content.restaurant-left {
+        max-width: 494px;
+        margin-right: 0px;
+        margin-bottom: 60px;
+        -webkit-align-self: flex-start;
+        -ms-flex-item-align: start;
+        align-self: flex-start;
+    }
+    .split-content.restaurant-right {
+        width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+    .image.restaurant-1 {
+        width: 80%;
+        max-height: 450px;
+        max-width: 100%;
+        -webkit-align-self: flex-start;
+        -ms-flex-item-align: start;
+        align-self: flex-start;
+        -o-object-fit: cover;
+        object-fit: cover;
+    }
+    .image.restaurant-2 {
+        width: 80%;
+        max-height: 450px;
+        max-width: 100%;
+        margin-top: -207px;
+        -webkit-align-self: flex-end;
+        -ms-flex-item-align: end;
+        align-self: flex-end;
+        -o-object-fit: cover;
+        object-fit: cover;
+    }
+    .card.testimonial {
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+    .testimonial-about-wrapper {
+        -webkit-box-align: end;
+        -webkit-align-items: flex-end;
+        -ms-flex-align: end;
+        align-items: flex-end;
+    }
+    .testimonial-about {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-align: start;
+        -webkit-align-items: flex-start;
+        -ms-flex-align: start;
+        align-items: flex-start;
+    }
+    .testimonial-about-content {
+        margin-top: 18px;
+        margin-left: 0px;
+    }
+    .image-wrapper.about {
+        width: 110%;
+        height: 700px;
+        max-width: none;
+        margin-top: -362px;
+    }
+    .image.about {
+        width: 100%;
+        height: 100%;
+        -o-object-fit: cover;
+        object-fit: cover;
+    }
+    .card.about {
+        position: static;
+        padding-top: 80px;
+        padding-bottom: 80px;
+        -webkit-box-ordinal-group: 0;
+        -webkit-order: -1;
+        -ms-flex-order: -1;
+        order: -1;
+    }
+    .image.instagram {
+        height: 200px;
+        width: 200px;
+        object-fit: cover;
+    }
+    .image.bg-about-page {
+        height: 600px;
+    }
+    .subtitle-wrapper {
+        margin-bottom: 20px;
+    }
+    .split-content.about-us-right {
+        max-width: 100%;
+        -webkit-align-self: stretch;
+        -ms-flex-item-align: stretch;
+        -ms-grid-row-align: stretch;
+        align-self: stretch;
+    }
+    .image.about-us-1 {
+        width: 65%;
+        max-height: 450px;
+        max-width: 100%;
+        -o-object-fit: cover;
+        object-fit: cover;
+    }
+    .section.about-page {
+        padding-top: 390px;
+    }
+}
+@media screen and (max-width: 767px) {
+    .footer-top {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-align: start;
+        -webkit-align-items: flex-start;
+        -ms-flex-align: start;
+        align-items: flex-start;
+    }
+    h1 {
+        font-size: 44px;
+    }
+    .split-content.footer-top-left {
+        margin-bottom: 32px;
+    }
+    .size-1.home {
+        margin-bottom: 20px;
+    }
+    .paragraph.hero {
+        margin-bottom: 40px;
+    }
+    .subtitle-wrapper {
+        margin-bottom: 20px;
+    }
+    /* .section.rooms-section {
+        padding-bottom: 140px;
+    }     */
+    .card.room-section {
+        max-width: 90%;
+        margin-top: -68px;
+        padding: 40px;
+    }
+    .image.room-section {
+        height: 380px;
+    }
+    h2 {
+        font-size: 33px;
+    }
+    .paragraph.restaurant {
+        margin-bottom: 40px;
+    }
+    .image.restaurant-1 {
+        width: 60%;
+        max-height: 300px;
+    }
+    .image.restaurant-2 {
+        width: 60%;
+        max-height: 300px;
+        margin-top: -184px;
+    }
+    .bg-image-home {
+        height: 420px;
+    }
+    .subtitle-wrapper {
+        margin-bottom: 20px;
+    }
+    .testimonials-grid {
+        max-width: 530px;
+        margin-right: auto;
+        margin-bottom: 40px;
+        margin-left: auto;
+        grid-row-gap: 24px;
+        -ms-grid-columns: 1fr;
+        grid-template-columns: 1fr;
+    }
+    .card.testimonial {
+        padding-right: 40px;
+        padding-left: 40px;
+    }
+    .title.instagram {
+        max-width: 350px;
+    }
+    .grid {
+        grid-row-gap: 0px;
+        -ms-grid-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
+    }
+    .instagram-icon-wrapper {
+        width: 50px;
+        height: 50px;
+    }
+    .image.instagram {
+        height: 200px;
+        width: 200px;
+        object-fit: cover;
+    }
+    .footer-grid {
+        margin-bottom: 60px;
+        justify-items: center;
+        grid-row-gap: 24px;
+        -ms-grid-columns: 1fr;
+        grid-template-columns: 1fr;
+    }
+    .button-secondary.large, .button-primary.large {
+        display: block;
+        width: 100%;
+    }
+    .section.about-page {
+        padding-top: 316px;
+    }
+    .card.about-page {
+        padding: 60px 40px;
+    }
+    .image-wrapper.bg-about-page {
+        max-height: 500px;
+    }
+    .image.bg-about-page {
+        height: 500px;
+    }
+    .section.about-us {
+        padding-top: 80px;
+        padding-bottom: 100px;
+    }
+    .about-us-wrapper {
+        -webkit-box-align: stretch;
+        -webkit-align-items: stretch;
+        -ms-flex-align: stretch;
+        align-items: stretch;
+    }
+    .image.about-us-1 {
+        width: 50%;
+        max-height: 300px;
+    }
+    .image.about-us-2 {
+        width: 50%;
+        max-height: 300px;
+        margin-left: -78px;
+    }
 }
 
 @media screen and (max-width: 479px) {
+    .section.testimonials {
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
+    h1 {
+        font-size: 37px;
+    }
+    .image.about-us-2 {
+        width: 60%;
+        margin-left: -120px;
+    }
+    .image.about-us-1 {
+        width: 60%;
+    }
+    .split-content.about-us-left {
+        margin-bottom: 40px;
+    }
+    .section.about-us {
+        padding-top: 60px;
+        padding-bottom: 80px;
+    }
+    .image.bg-about-page {
+        height: 400px;
+    }
+    .image-wrapper.bg-about-page {
+        max-height: 400px;
+    }
+    .card.about-page {
+        padding: 40px 30px;
+    }
+    .section.about-page {
+        padding-top: 280px;
+    }
+    .flex-vc {
+        -webkit-box-align: stretch;
+        -webkit-align-items: stretch;
+        -ms-flex-align: stretch;
+        align-items: stretch;
+    }
+    .title.instagram {
+        max-width: 300px;
+    }
     .section.hero {
         padding-top: 120px;
     }
+    .testimonial-about {
+        margin-bottom: 10px;
+    }
+    .testimonial-about-wrapper {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-align: start;
+        -webkit-align-items: flex-start;
+        -ms-flex-align: start;
+        align-items: flex-start;
+    }
     .image.hero {
         height: 300px;
+    }
+    .size-1 {
+        font-size: 49px;
+    }
+    .section {
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
+    .image-wrapper.about {
+        width: 115%;
+        height: 500px;
+        margin-top: -251px;
+    }
+    .card.about {
+        position: static;
+        padding: 40px 30px;
+        -webkit-box-ordinal-group: 0;
+        -webkit-order: -1;
+        -ms-flex-order: -1;
+        order: -1;
+        text-align: left;
+    }
+    .subtitle-wrapper.about {
+        -webkit-box-pack: start;
+        -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+        justify-content: flex-start;
+    }
+    .dash {
+        width: 30px;
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+    h2 {
+        font-size: 29.5px;
+    }
+    .paragraph.about {
+        margin-bottom: 40px;
+    }
+    .section {
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
+    .section.cta {
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
+    .card.cta {
+        padding: 40px 30px;
+    }
+    .paragraph.cta {
+        margin-bottom: 20px;
+    }
+    .container-small-616px {
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+    .rooms-section-slider {
+        height: 880px;
+    }
+    .card.room-section {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        overflow: hidden;
+        max-height: 610px;
+        min-height: 610px;
+        padding-right: 30px;
+        padding-left: 30px;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .image.room-section {
+        height: 280px;
+    }
+    .split-content.restaurant-left {
+        margin-bottom: 40px;
+    }
+    .image.restaurant-2 {
+        margin-top: -96px;
+    }
+    .bg-image-home {
+        height: 380px;
+    }
+    .container-small-658px {
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+    .testimonials-grid {
+        margin-bottom: 40px;
+    }
+    .card.testimonial {
+        padding-right: 30px;
+        padding-left: 30px;
+    }
+    .container-small-616px {
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+    .grid {
+        margin-top: 40px;
+    }
+    .divider.footer-divider {
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+    .footer-grid {
+        margin-bottom: 40px;
+        justify-items: start;
+    }
+    .small-print-wrapper {
+        padding: 20px 10px;
+        font-size: 16px;
+    }
+    .copyright {
+        line-height: 1.5em;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .section.rooms {
+        padding-top: 170px;
+    }
+    .rooms-grid {
+        max-width: 530px;
+        margin-right: auto;
+        margin-left: auto;
+        -ms-grid-columns: 1fr;
+        grid-template-columns: 1fr;
+    }
+    .image-wrapper {
+        width: 100%;
+    }
+    h3 {
+        font-size: 28px;
+    }
+    .section.contact {
+        padding-top: 170px;
+    }
+    .divider.contact {
+        margin-top: 60px;
+    }
+    .contact-grid {
+        -webkit-justify-content: space-around;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+        grid-column-gap: 2vw;
+        -ms-grid-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
+        text-align: center;
+    }
+    .contact-wrapper {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+    .contact-icon {
+        margin-right: 0px;
+        margin-bottom: 20px;
+    }
+    .contact-address {
+        font-size: 13px;
+    }
+    .room-wrapper {
+        max-width: 653px;
+        margin-right: auto;
+        margin-left: auto;
+        padding-right: 40px;
+        padding-left: 40px;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .split-content.room-left {
+        max-width: 100%;
+        margin-bottom: 40px;
+    }
+    .card.reservate-room {
+        width: 100%;
+    }
+    h3 {
+        font-size: 28px;
+    }
+    .reservate-room-content {
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+    .image.room {
+        height: 550px;
+    }
+    .section.room {
+        padding-top: 349px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .reservate-room-content {
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+    h3 {
+        font-size: 27px;
+    }
+    .reservate-room-title-wrapper {
+        padding: 20px;
+    }
+    .contact-icon {
+        margin-right: 20px;
+        margin-bottom: 0px;
+    }
+    .divider.contact {
+        margin-top: 40px;
+    }
+    .contact-wrapper {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+        flex-direction: row;
+    }
+    .contact-grid {
+        grid-row-gap: 40px;
+        -ms-grid-columns: auto;
+        grid-template-columns: auto;
+        text-align: left;
+    }
+    .section.rooms {
+        padding-top: 140px;
+    }
+    .title.rooms {
+        margin-bottom: 20px;
+    }
+    .rooms-grid {
+        margin-top: 40px;
+    }
+    .card.room-page {
+        margin-top: -80px;
+        margin-right: 20px;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+    h3 {
+        font-size: 27px;
+    }
+    .divider.room-page {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .about-room-page {
+        margin-bottom: 40px;
+    }
+    .price {
+        font-size: 22px;
+    }
+    .section.contact {
+        padding-top: 140px;
+    }
+    .room-wrapper {
+        padding-top: 50px;
+        padding-bottom: 48px;
+    }
+    .price {
+        font-size: 22px;
+    }
+    .image.room {
+        height: 450px;
+    }
+    .section.room {
+        padding-top: 320px;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    .section.room {
+        padding-top: 246px;
+    }
+    .image.room {
+        height: 320px;
+    }
+    .card-price-wrapper {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+    .reservate-room-content {
+        padding-right: 16px;
+        padding-bottom: 20px;
+        padding-left: 16px;
+    }
+    h3 {
+        font-size: 25px;
+    }
+    .reservate-room-title-wrapper {
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+    .room-wrapper {
+        padding: 40px 30px 20px;
+    }
+    .contact-icon {
+        width: 30px;
+        height: 30px;
+    }
+    .section.rooms {
+        padding-top: 120px;
+        padding-bottom: 80px;
+    }
+    .container-small-616px {
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+    .section.contact {
+        padding-top: 120px;
+    }
+    .service-wrapper {
+        margin-right: 32px;
+    }
+    .container-small-616px {
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+    .title.rooms {
+        margin-bottom: 10px;
+    }
+    .rooms-grid {
+        margin-top: 20px;
+        grid-row-gap: 40px;
+    }
+    .card.room-page {
+        margin-top: -65px;
+        padding: 30px;
+    }
+    .service-wrapper {
+        margin-right: 32px;
+    }
+    h3 {
+        font-size: 25px;
+    }
+    .divider.room-page {
+        -webkit-box-flex: 0;
+        -webkit-flex: 0 0 auto;
+        -ms-flex: 0 0 auto;
+        flex: 0 0 auto;
+    }
+    .about-room-page {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-align: start;
+        -webkit-align-items: flex-start;
+        -ms-flex-align: start;
+        align-items: flex-start;
+    }
+    .split-content.card-about-room-left {
+        margin-bottom: 20px;
+    }
+    .card-price-wrapper {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
     }
 }

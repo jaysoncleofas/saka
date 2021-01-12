@@ -12,8 +12,8 @@
                 class="split-content hero-left">
                 <h1 class="size-1 home">Enjoy today at our farm resort</h1>
                 <p class="paragraph hero">This farm resort offers a unique private pool shaped as a footprint and a natural farm. <br> Wander through the natural garden design.</p>
-                <a href="rooms" class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mr-2">Browse Rooms</a>
-                <a href="contact" class="btn btn-lg btn-outline-dark button-secondary large w-inline-block radius-zero">Reserve Now</a>
+                <a href="rooms" class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mr-2 mb-4">Browse Rooms</a>
+                <a href="contact" class="btn btn-lg btn-outline-dark button-secondary large w-inline-block radius-zero mb-4">Reserve Now</a>
             </div>
         </div>
         
@@ -47,7 +47,9 @@
                 </div>
 
                 <h2>Visit our farm resort and reconnect with yourself</h2>
-                <p class="paragraph about">The concept for the pool is equivalent to its meaning in Ilocano. It's shaped as a footprint. There are 5 toes that serve as kiddie pools and the main foot would be a 16x32m lap pool, with a slope of 3-5 feet. <br><br> Saka Resort is located at San Juan de Valdez, Tarlac, just 15 minutes away from the city proper, 3 minutes away from the Tarlac Recreational Park, and 30 minutes and on the way if you're going to visit the Tarlac Monastery.</p>
+                <p class="paragraph about">The concept for the pool is equivalent to its meaning in Ilocano. It's shaped as a footprint. There are 5 toes that serve as kiddie pools and the main foot would be a 16x32m lap pool, with a slope of 3-5 feet. 
+                    {{-- <br><br> Saka Resort is located at San Juan de Valdez, Tarlac, just 15 minutes away from the city proper, 3 minutes away from the Tarlac Recreational Park, and 30 minutes and on the way if you're going to visit the Tarlac Monastery. --}}
+                </p>
                 <a href="about" class="btn btn-lg btn-outline-dark button-secondary large w-inline-block radius-zero">Explore More</a>
             </div>
         </div>
@@ -62,7 +64,7 @@
             <div class="dash-accent"></div>
             <h2 class="title cta">Visit our resort today</h2>
             <p class="paragraph cta">We are open from {{ config('yourconfig.resort')->day }} for day swim, {{ config('yourconfig.resort')->night }} for night swim, and we also accept overnight stay {{ config('yourconfig.resort')->overnight }}</p>
-            <a href="cottages" class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mr-2">Browse Cottages</a>
+            <a href="cottages" class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero">Browse Cottages</a>
         </div>
     </div>
     
@@ -126,7 +128,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <a href="{{ route('room.show', $room->id) }}" class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mr-2">More Information</a>
+                                                <a href="{{ route('room.show', $room->id) }}" class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero">More Information</a>
                                             </div>
                                         </div>
                                     </div>
@@ -229,7 +231,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <a href="{{ route('cottage.show', $cottage->id) }}" class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mr-2">More Information</a>
+                                            <a href="{{ route('cottage.show', $cottage->id) }}" class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero">More Information</a>
                                         </div>
                                     </div>
                                 </div>
@@ -308,7 +310,7 @@
         <div data-w-id="55c0f8ac-c8ef-5e07-8454-99f3b872d6b3"
             style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); opacity: 1; transform-style: preserve-3d;"
             class="flex-vc">
-            <a href="contact" class="btn btn-lg btn-outline-dark">Reserve Now</a>
+            <a href="contact" class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero">Reserve Now</a>
         </div>
     </div>
 </div>
@@ -388,7 +390,7 @@
     <div class="container">
         <div data-w-id="826f6178-2f16-6e2c-de9c-95e5f3966b87" class="flex-vc"
             style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; opacity: 1;">
-            <a href="{{ config('yourconfig.resort')->facebook }}" target="_blank" class="btn btn-lg btn-outline-dark">Follow Us</a>
+            <a href="{{ config('yourconfig.resort')->facebook }}" target="_blank" class="btn btn-lg btn-outline-dark button-secondary large w-inline-block radius-zero">Follow Us</a>
         </div>
     </div>
 </div>

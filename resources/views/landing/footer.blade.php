@@ -7,7 +7,7 @@
                     <img src="{{ asset('/pics/A.png') }}" alt="" class="footer-logo mr-3">
                     <span class="h3">{{ config('yourconfig.resort')->name }}</span>
                 </a>
-                <p class="paragraph footer-paragraph mt-3">In the Tagalog vernacular, the word saka means "to farm". On the other hand, in the Ilocano vernacular, it means "foot".</p>
+                <p class="paragraph footer-paragraph mt-3">In the Tagalog word saka means "to farm". In Ilocano, it means "foot".</p>
             </div>
 
             <div data-w-id="a849da38-4a0a-3a01-70a3-2e66b13808e5" class="split-content footer-top-right"
