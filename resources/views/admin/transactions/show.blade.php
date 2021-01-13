@@ -50,6 +50,7 @@
                                         @if ($transaction->is_exclusive)
                                        <strong>Exclusive Rental:</strong> P{{ number_format($transaction->rentBill, 0) }} <br>
                                         @endif
+                                        <strong>Type:</strong> {{ ucfirst($transaction->type) }} Use <br>
                                         <strong>Check In:</strong> {{ $transaction->checkIn_at->format('M d, Y h:i a') }} <br>
                                         <strong>Check Out:</strong> {{ $transaction->checkOut_at ? $transaction->checkOut_at->format('M d, Y h:i a') : '-' }} <br>
                                         <strong>Type:</strong> {{ ucfirst($transaction->type) }} Use <br>

@@ -28,6 +28,9 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <strong>Status:</strong> {{ ucfirst($transaction->status) }} <br>
+                                        @if ($transaction->is_exclusive)
+                                       <strong>Rent:</strong> Exclusive Rental <br>
+                                        @endif
                                         @if ($transaction->cottage_id)
                                        <strong>Cottage:</strong> {{ $transaction->cottage->name }} <br>
                                         @endif
@@ -35,9 +38,9 @@
                                         <strong>Room:</strong> {{ $transaction->room->name }} <br>
                                         {{-- <strong>Entrance Fee:</strong> {{ $transaction->room->entrancefee }} <br> --}}
                                         @endif
+                                        <strong>Type:</strong> {{ ucfirst($transaction->type) }} Use <br>
                                         <strong>Check In:</strong> {{ $transaction->checkIn_at->format('M d, Y h:i a') }} <br>
                                         <strong>Check Out:</strong> {{ $transaction->checkOut_at ? $transaction->checkOut_at->format('M d, Y h:i a') : '-' }} <br>
-                                        <strong>Type:</strong> {{ ucfirst($transaction->type) }} Use <br>
                                         @if ($transaction->room_id)
                                         <strong>Entrance Fee:</strong> {{ $transaction->room->entrancefee }} <br>
                                         @endif
