@@ -49,10 +49,10 @@ class ReservationSent extends Notification
         $email = $resort->email;
 
         return (new MailMessage)
-                    ->subject('Reservation Sent')
+                    ->subject('Reservation')
                     ->greeting('Hi '.$fname.'!')
-                    ->line('Thank you for checking us out.')
-                    ->line('We are reviewing your reservation: Control#'.$tran->id)
+                    ->line('Thank you for booking with Saka Resort.')
+                    ->line('We are reviewing your reservation with a Control#'.$tran->id)
                     ->action('View Reservation', $url)
                     // ->line('Our customer care team will reply within one business day, however our actual reply time is often sooner.')
                     ->line('If you need to make changes or require assistance please call '.$phone.' or email us at '.$email.'. ')

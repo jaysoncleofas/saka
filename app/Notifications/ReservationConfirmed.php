@@ -58,7 +58,7 @@ class ReservationConfirmed extends Notification
         }
         $usetype = ucfirst($tran->type).' use';
         return (new MailMessage)
-                    ->subject('Reservation Confirmed')
+                    ->subject('Reservation Confirmation')
                     ->greeting('Hi '.$fname.'!')
                     ->line('Thank you for choosing Saka Resort. We look forward to hosting your stay.')
                     ->line('Here are your booking details:')
