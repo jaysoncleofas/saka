@@ -9,7 +9,7 @@ class CustomSMS
     static function send($number, $message)
     {
 		$resort = Resort::findOrFail(1);
-		if($resort->points > 0) {
+		if($resort->points < 0) {
 			$ch = curl_init();
 			$parameters = array(
 				'apikey' => 'b96892f0be3b73851d59d21f75fe4f8b', //Your API KEY

@@ -186,7 +186,7 @@
                                         <div class="col-lg-12">
                                             <div class="mb-3 available-container">
                                                 <span class="aunit">{{ $cottage->units }}</span>
-                                                unit available
+                                                unit{{ $cottage->units > 1 ? 's' : '' }} available
                                             </div>
                                             <div class="mb-3 notavailable-container d-none text-danger">
                                                 no available units

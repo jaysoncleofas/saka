@@ -500,7 +500,8 @@ class LandingPageController extends Controller
             return response()->json(['status' => 'not available', 'unit' => $test], 200);
         } else {
             $test = $cottage->units - $slot;
-            return response()->json(['status' => $test.' units available', 'unit' => $test], 200);
+            $unit_text =  $test > 1 ? 'units' : 'unit';
+            return response()->json(['status' => $test.' '.$unit_text.' available', 'unit' => $test], 200);
         }
     }
     
