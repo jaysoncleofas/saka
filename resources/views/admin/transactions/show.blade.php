@@ -53,7 +53,7 @@
                                         <strong>Type:</strong> {{ ucfirst($transaction->type) }} Use <br>
                                         <strong>Check In:</strong> {{ $transaction->checkIn_at->format('M d, Y h:i a') }} <br>
                                         <strong>Check Out:</strong> {{ $transaction->checkOut_at ? $transaction->checkOut_at->format('M d, Y h:i a') : '-' }} <br>
-                                        <strong>Type:</strong> {{ ucfirst($transaction->type) }} Use <br>
+                                        {{-- <strong>Type:</strong> {{ ucfirst($transaction->type) }} Use <br> --}}
                                         @if ($transaction->room_id)
                                         <strong>Entrance Fee:</strong> {{ $transaction->room->entrancefee }} <br>
                                         @endif

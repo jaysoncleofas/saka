@@ -164,7 +164,7 @@ class ReservationController extends Controller
         ]);
         $transaction->guest->notify(new ReservationCancelled($transaction));
         $msg = "Your reservation has been cancelled. Due to some reasons, we need to cancel your reservation: control#".$transaction->id;
-        // $smsResult = \App\Helpers\CustomSMS::send($transaction->guest->contact, $msg);
+        $smsResult = \App\Helpers\CustomSMS::send($transaction->guest->contact, $msg);
         return response('success', 200);
     }
 }

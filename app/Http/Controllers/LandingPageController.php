@@ -197,7 +197,7 @@ class LandingPageController extends Controller
     
         $guest->notify(new ReservationSent($transaction));
         $msg = "Thank you for checking us out. We are reviewing your reservation: control#".$transaction->id.". We sent the reservation link to your email.";
-        // $smsResult = \App\Helpers\CustomSMS::send($guest->contact, $msg);
+        $smsResult = \App\Helpers\CustomSMS::send($guest->contact, $msg);
         session()->flash('type', 'success');
         session()->flash('notification', 'Resevation was sent successfully. Please wait for the confirmation of your reservation.');
         return redirect()->route('landing.transaction_show', $controlCode);    
@@ -307,7 +307,7 @@ class LandingPageController extends Controller
 
         $guest->notify(new ReservationSent($transaction));
         $msg = "Thank you for checking us out. We are reviewing your reservation: control#".$transaction->id.". We sent the reservation link to your email.";
-        // $smsResult = \App\Helpers\CustomSMS::send($guest->contact, $msg);
+        $smsResult = \App\Helpers\CustomSMS::send($guest->contact, $msg);
         session()->flash('type', 'success');
         session()->flash('notification', 'Resevation was sent successfully. Please wait for the confirmation of your reservation.');
         return redirect()->route('landing.transaction_show', $controlCode);    
@@ -412,7 +412,7 @@ class LandingPageController extends Controller
 
         $guest->notify(new ReservationSent($transaction));
         $msg = "Thank you for checking us out. We are reviewing your reservation: control#".$transaction->id.". We sent the reservation link to your email.";
-        // $smsResult = \App\Helpers\CustomSMS::send($guest->contact, $msg);
+        $smsResult = \App\Helpers\CustomSMS::send($guest->contact, $msg);
         session()->flash('type', 'success');
         session()->flash('notification', 'Resevation was sent successfully. Please wait for the confirmation of your reservation.');
         return redirect()->route('landing.transaction_show', $controlCode);    
