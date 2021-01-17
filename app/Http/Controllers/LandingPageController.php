@@ -451,7 +451,7 @@ class LandingPageController extends Controller
   
         $checkin = Carbon::parse($request->checkin); 
         $checkout = Carbon::parse($request->checkout); 
-        $slot = Transaction::where('cottage_id', null)->whereBetween('checkIn_at', [$checkin, $checkout])->orWhereBetween('checkOut_at', [$checkin, $checkout])->where('status', '!=', 'cancelled')->pluck('id')->toArray();
+        $slot = Transaction::where('cottage_id', null)->where('status', '!=', 'cancelled')->whereBetween('checkIn_at', [$checkin, $checkout])->orWhereBetween('checkOut_at', [$checkin, $checkout])->pluck('id')->toArray();
 
         if(!empty($slot)) {
             $rooms = Room::whereNotIn('id', $slot)->get();
@@ -465,7 +465,7 @@ class LandingPageController extends Controller
     {
         $room = Room::findOrFail($id);
         $day3 = Carbon::now()->addDays(3);
-        $slot = Transaction::where('room_id', $room->id)->whereDate('checkIn_at', '>=', $day3)->orWhere('is_exclusive', 1)->where('status', '!=', 'cancelled')->pluck('checkIn_at')->toArray();
+        $slot = Transaction::where('room_id', $room->id)->where('status', '!=', 'cancelled')->whereDate('checkIn_at', '>=', $day3)->orWhere('is_exclusive', 1)->pluck('checkIn_at')->toArray();
         return response()->json(['dates' => $slot ], 200);
     }
 
@@ -510,7 +510,7 @@ class LandingPageController extends Controller
   
         $checkin = Carbon::parse($request->checkin); 
         $checkout = Carbon::parse($request->checkout); 
-        $slot = Transaction::where('room_id', null)->whereBetween('checkIn_at', [$checkin, $checkout])->orWhereBetween('checkOut_at', [$checkin, $checkout])->where('status', '!=', 'cancelled')->pluck('id')->toArray();
+        $slot = Transaction::where('room_id', null)->where('status', '!=', 'cancelled')->whereBetween('checkIn_at', [$checkin, $checkout])->orWhereBetween('checkOut_at', [$checkin, $checkout])->pluck('id')->toArray();
 
         if(!empty($slot)) {
             $cottages = Cottage::whereNotIn('id', $slot)->get();
@@ -528,7 +528,7 @@ class LandingPageController extends Controller
         $checkout = Carbon::parse($request->checkin)->endOfDay();
 
         $checkout = Carbon::parse($request->checkout); 
-        $slot = Transaction::where('cottage_id', null)->whereBetween('checkIn_at', [$checkin, $checkout])->orWhereBetween('checkOut_at', [$checkin, $checkout])->where('status', '!=', 'cancelled')->pluck('id')->toArray();
+        $slot = Transaction::where('cottage_id', null)->where('status', '!=', 'cancelled')->whereBetween('checkIn_at', [$checkin, $checkout])->orWhereBetween('checkOut_at', [$checkin, $checkout])->pluck('id')->toArray();
 
         if(!empty($slot)) {
             $rooms = Room::whereNotIn('id', $slot)->get();
