@@ -162,7 +162,7 @@
                                                     <div class="col-lg-6">
                                                         <p class=""><strong>Control#:</strong> <span
                                                                 class="">{{ $transaction->id }}</span></p>
-                                                        <p class=""><strong>Cottage:</strong> <span
+                                                        <p class=""><strong>Room:</strong> <span
                                                                 class="">{{ $transaction->room->name }}</span></p>
                                                     </div>
                                                     <div class="col-lg-6">

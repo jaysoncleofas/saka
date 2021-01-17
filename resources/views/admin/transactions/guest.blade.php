@@ -876,7 +876,6 @@
                     contactNumber: contactNumber,
                     email: email,
                     address: address,
-                    existing_guest: 2
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
