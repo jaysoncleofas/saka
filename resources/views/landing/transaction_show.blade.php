@@ -173,12 +173,12 @@
                                                 </tr>
                                             @endif
 
-                                            @if ($transaction->is_breakfast)
+                                            @if ($transaction->room_id && $transaction->type == 'overnight')
                                                 <tr>
-                                                    <td>Breakfast</td>
-                                                    <td>1</td>
-                                                    <td>P{{ ($transaction->is_freebreakfast == 0 ) ? number_format(config('yourconfig.resort')->breakfastPrice, 2) : 0 }}</td>
-                                                    <td>P<span class="totalprice">{{ ($transaction->is_freebreakfast == 0 ) ? number_format(config('yourconfig.resort')->breakfastPrice, 2) : 0 }}</span></td>
+                                                    <td>Breakfast Add ons:</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
                                                 </tr>
 
                                                 @foreach ($transaction->breakfasts as $breakfast)
