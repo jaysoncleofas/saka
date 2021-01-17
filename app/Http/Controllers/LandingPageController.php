@@ -474,7 +474,7 @@ class LandingPageController extends Controller
         $cottage = Cottage::findOrFail($id);
         $checkin = Carbon::parse($request->checkin); 
 
-        $slot = Transaction::where('cottage_id', $cottage->id)->whereDate('checkIn_at', $checkin)->where('status', '!=', 'cancelled')->pluck('checkIn_at')->toArray();
+        $slot = Transaction::where('cottage_id', $cottage->id)->where('status', '!=', 'cancelled')->whereDate('checkIn_at', $checkin)->pluck('checkIn_at')->toArray();
 
         $maxreservation = $cottage->units * 2;
         if(count($slot) >= $maxreservation) {
