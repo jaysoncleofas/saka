@@ -124,6 +124,66 @@
                                             @enderror
                                         </div>
 
+                                        <div class="form-group mb-0">
+                                            {{-- <label class="form-label">Select Type</label> --}}
+                                            <div
+                                                class="selectgroup selectgroup-pills @error('type') is-invalid @enderror">
+                                                <label class="selectgroup-item pb-0">
+                                                    <input type="radio" name="type" value="day"
+                                                        class="selectgroup-input"
+                                                        {{ old('type') == 'day' ? 'checked' : '' }}>
+                                                    <span class="selectgroup-button selectgroup-button-icon"><i
+                                                            class="fas fa-sun"></i> Day
+                                                        {{ config('yourconfig.resort')->day }}</span>
+                                                </label>
+                                                <label class="selectgroup-item pb-0">
+                                                    <input type="radio" name="type" value="night"
+                                                        class="selectgroup-input"
+                                                        {{ old('type') == 'night' ? 'checked' : '' }}>
+                                                    <span class="selectgroup-button selectgroup-button-icon"><i
+                                                            class="fas fa-moon"></i> Night
+                                                        {{ config('yourconfig.resort')->night }}</span>
+                                                </label>
+                                                <label class="selectgroup-item pb-0">
+                                                    <input type="radio" name="type" value="overnight"
+                                                        class="selectgroup-input overnight"
+                                                        {{ old('type') == 'overnight' ? 'checked' : '' }}>
+                                                    <span class="selectgroup-button selectgroup-button-icon"><i
+                                                            class="fas fa-cloud-moon"></i> Overnight
+                                                        {{ config('yourconfig.resort')->overnight }}</span>
+                                                </label>
+                                            </div>
+                                            @error('type')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="breakfast-container d-none">
+                                            <div class="row">
+                                                <div class="form-group col-lg-12 mb-0">
+                                                    <label class="form-label">Free Breakfast</label>
+                                                    <input type="hidden" name="isbreakfast" value="1">
+                                                </div>
+
+                                                <div class="form-group col-lg-12 breakfastaddons-container">
+                                                    <label class="form-label">Breakfast Add ons:</label>
+                                                    <div class="selectgroup selectgroup-pills">
+                                                        @foreach ($breakfasts as $breakfast)
+                                                        <label class="selectgroup-item mb-0">
+                                                            <input type="checkbox" name="breakfast[]"
+                                                                value="{{ $breakfast->id }}" class="selectgroup-input"
+                                                                {{ old('breakfast') ? (in_array($breakfast->id, old('breakfast')) ? 'checked' : '') : '' }}>
+                                                            <span
+                                                                class="selectgroup-button">{{ $breakfast->title.' P'.number_format($breakfast->price, 0).' ('.$breakfast->notes.')' }}</span>
+                                                        </label>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="row">
                                             <div class="col-lg-12 mb-2">
                                                 <span>{{ $room->entrancefee }} Entrance fee</span>
@@ -185,56 +245,24 @@
                                                 @enderror
                                             </div>
 
-                                            <div class="form-group col-lg-12 mb-0">
-                                                {{-- <label class="form-label">Select Type</label> --}}
-                                                <div
-                                                    class="selectgroup selectgroup-pills @error('type') is-invalid @enderror">
-                                                    <label class="selectgroup-item pb-0">
-                                                        <input type="radio" name="type" value="night"
-                                                            class="selectgroup-input"
-                                                            {{ old('type') == 'night' ? 'checked' : '' }}>
-                                                        <span class="selectgroup-button selectgroup-button-icon"><i
-                                                                class="fas fa-moon"></i> Night
-                                                            {{ config('yourconfig.resort')->night }}</span>
+                                            <div class="form-group col-lg-12 mt-2 mb-0">
+                                                <label class="form-label">Payment Method:</label>
+                                                <div class="selectgroup selectgroup-pills @error('payment') is-invalid @enderror">
+                                                    @foreach ($payments as $payment)
+                                                    <label class="selectgroup-item mb-0">
+                                                        <input type="radio" name="payment"
+                                                            value="{{ $payment->id }}" class="selectgroup-input"
+                                                            {{ old('payment') ? (in_array($payment->id, old('payment')) ? 'checked' : '') : '' }}>
+                                                        <span
+                                                            class="selectgroup-button">{{ $payment->name }}</span>
                                                     </label>
-                                                    <label class="selectgroup-item pb-0">
-                                                        <input type="radio" name="type" value="overnight"
-                                                            class="selectgroup-input overnight"
-                                                            {{ old('type') == 'overnight' ? 'checked' : '' }}>
-                                                        <span class="selectgroup-button selectgroup-button-icon"><i
-                                                                class="fas fa-cloud-moon"></i> Overnight
-                                                            {{ config('yourconfig.resort')->overnight }}</span>
-                                                    </label>
+                                                    @endforeach
                                                 </div>
-                                                @error('type')
+                                                @error('payment')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                                 @enderror
-                                            </div>
-
-                                            <div class="col-lg-12 breakfast-container d-none">
-                                                <div class="row">
-                                                    <div class="form-group col-lg-12 mb-0">
-                                                        <label class="form-label">Free Breakfast</label>
-                                                        <input type="hidden" name="isbreakfast" value="1">
-                                                    </div>
-
-                                                    <div class="form-group col-lg-12 breakfastaddons-container">
-                                                        <label class="form-label">Breakfast Add ons:</label>
-                                                        <div class="selectgroup selectgroup-pills">
-                                                            @foreach ($breakfasts as $breakfast)
-                                                            <label class="selectgroup-item mb-0">
-                                                                <input type="checkbox" name="breakfast[]"
-                                                                    value="{{ $breakfast->id }}" class="selectgroup-input"
-                                                                    {{ old('breakfast') ? (in_array($breakfast->id, old('breakfast')) ? 'checked' : '') : '' }}>
-                                                                <span
-                                                                    class="selectgroup-button">{{ $breakfast->title.' P'.number_format($breakfast->price, 0).' ('.$breakfast->notes.')' }}</span>
-                                                            </label>
-                                                            @endforeach
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
 
                                             {{-- <div class="row"> --}}
@@ -402,7 +430,7 @@
                 } // End if
             });
         });
-        var new_date = moment().add(3, 'days').format('MM-DD-YYYY');
+        var new_date = moment().add(1, 'days').format('MM-DD-YYYY');
 
         $(document).on('change', 'input:radio[name="type"]', function () {
             if ($(this).is(':checked') && $(this).val() == 'overnight') {
@@ -452,7 +480,15 @@
             } else if(!$('input:radio[name="type"]:checked').val()) {
                 swal({
                     title: 'Error!',
-                    text: 'Select Day use or Nigth use!',
+                    text: 'Select Day use or Night use!',
+                    icon: "error",
+                    button: true,
+                });
+                return false;
+            } else if(!$('input:radio[name="payment"]:checked').val()) {
+                swal({
+                    title: 'Error!',
+                    text: 'Select payment method!',
                     icon: "error",
                     button: true,
                 });

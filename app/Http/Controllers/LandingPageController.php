@@ -14,6 +14,7 @@ use DB;
 use Carbon\Carbon;
 use App\Notifications\ReservationSent;
 use App\Rules\ReCaptchaRule;
+use App\Models\Payment;
 
 class LandingPageController extends Controller
 {
@@ -55,6 +56,7 @@ class LandingPageController extends Controller
         $data['entranceFees'] = Entrancefee::all();
         $data['breakfasts'] = Breakfast::all();
         $data['room'] = Room::findOrFail($id);
+        $data['payments'] = Payment::all();
         return view('landing.roomshow', $data);
     }
 
@@ -67,6 +69,7 @@ class LandingPageController extends Controller
             'email' => 'required',
             'address' => 'required',
             'checkin' => 'required',
+            'payment' => 'required',
             'adults' => 'required|numeric',
             'kids' => 'required|numeric',
             'senior_citizen' => 'required|numeric',
@@ -189,6 +192,7 @@ class LandingPageController extends Controller
         $transaction->rentBill = $rentBill;
         $transaction->totalBill = $totalBill;
         $transaction->controlCode = $controlCode;
+        $transaction->payment_id = $request->payment;
         $transaction->save();
 
         if($isbreakfast == 1) {
@@ -215,7 +219,8 @@ class LandingPageController extends Controller
             'adults' => 'required|numeric',
             'kids' => 'required|numeric',
             'senior_citizen' => 'required|numeric',
-            'type' => 'required'
+            'type' => 'required',
+            'payment' => 'required'
         ]);
 
         $cottage = Cottage::findOrFail($id);
@@ -303,6 +308,7 @@ class LandingPageController extends Controller
         $transaction->rentBill = $rentBill;
         $transaction->totalBill = $totalBill;
         $transaction->controlCode = $controlCode;
+        $transaction->payment_id = $request->payment;
         $transaction->save();
 
         $guest->notify(new ReservationSent($transaction));
@@ -326,7 +332,8 @@ class LandingPageController extends Controller
             'adults' => 'required|numeric',
             'kids' => 'required|numeric',
             'senior_citizen' => 'required|numeric',
-            'type' => 'required'
+            'type' => 'required',
+            'payment' => 'required'
         ]);
 
         $checkIn_at = Carbon::parse($request->checkin);
@@ -408,6 +415,7 @@ class LandingPageController extends Controller
         $transaction->rentBill = $rentBill;
         $transaction->totalBill = $totalBill;
         $transaction->controlCode = $controlCode;
+        $transaction->payment_id = $request->payment;
         $transaction->save();
 
         $guest->notify(new ReservationSent($transaction));
@@ -433,6 +441,7 @@ class LandingPageController extends Controller
         $data['cottage'] = Cottage::findOrFail($id);
         $data['entranceFees'] = Entrancefee::all();
         $data['breakfasts'] = Breakfast::all();
+        $data['payments'] = Payment::all();
         return view('landing.cottageshow', $data);
     }
 
@@ -541,7 +550,8 @@ class LandingPageController extends Controller
 
     public function exclusive_rental()
     {
-        return view('landing.exclusiverental');
+        $data['payments'] = Payment::all();
+        return view('landing.exclusiverental', $data);
     }
 
     public function getexclusive_available(Request $request)

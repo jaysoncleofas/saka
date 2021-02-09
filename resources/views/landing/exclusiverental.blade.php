@@ -210,6 +210,26 @@
                                             @enderror
                                         </div>
 
+                                        <div class="form-group col-lg-12 mt-2 mb-0">
+                                            <label class="form-label">Payment Method:</label>
+                                            <div class="selectgroup selectgroup-pills @error('payment') is-invalid @enderror">
+                                                @foreach ($payments as $payment)
+                                                <label class="selectgroup-item mb-0">
+                                                    <input type="radio" name="payment"
+                                                        value="{{ $payment->id }}" class="selectgroup-input"
+                                                        {{ old('payment') ? (in_array($payment->id, old('payment')) ? 'checked' : '') : '' }}>
+                                                    <span
+                                                        class="selectgroup-button">{{ $payment->name }}</span>
+                                                </label>
+                                                @endforeach
+                                            </div>
+                                            @error('payment')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+
                                         {{-- <div class="row"> --}}
                                         <div class="form-group col-md-6">
                                             <label for="firstName">First Name</label>
@@ -341,7 +361,7 @@
         });
 
         var today = new Date().toISOString().split('T')[0];
-        var new_date = moment().add(3, 'days').format('MM-DD-YYYY');
+        var new_date = moment().add(1, 'days').format('MM-DD-YYYY');
 
         $('#datepicker').datepicker({
             startDate: new_date
@@ -410,7 +430,15 @@
             } else if(!$('input:radio[name="type"]:checked').val()) {
                 swal({
                     title: 'Error!',
-                    text: 'Select Day use or Nigth use!',
+                    text: 'Select Day use or Night use!',
+                    icon: "error",
+                    button: true,
+                });
+                return false;
+            } else if(!$('input:radio[name="payment"]:checked').val()) {
+                swal({
+                    title: 'Error!',
+                    text: 'Select payment method!',
                     icon: "error",
                     button: true,
                 });
