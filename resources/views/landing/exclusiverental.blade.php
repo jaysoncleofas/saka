@@ -113,6 +113,7 @@
                             <h3>Reserve Cottage/Room</h3>
                         </div>
                         <div class="reservate-room-content">
+                            <div class="reservation-summary"></div>
                             <div>
                                 <form class="room-reservation-form" action="{{ route('landing.exclusive_rental_store') }}"
                                     method="POST" autocomplete="off">
@@ -133,11 +134,6 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-lg-12 mb-2">
-                                            <span class="day-tour">Good for 60pax, 200php for extra person</span>
-                                            <span class="overnight-tour d-none">Good for 30pax, 250php for extra person</span>
-                                        </div>
-
                                         <div class="col-lg-12 mb-0">
                                             <div class="form-group">
                                                 <div
@@ -163,6 +159,11 @@
                                                 </span>
                                                 @enderror
                                             </div>
+                                        </div>
+
+                                        <div class="col-lg-12 mb-2">
+                                            <span class="day-tour">Good for 60pax, 200php for extra person</span>
+                                            <span class="overnight-tour d-none">Good for 30pax, 250php for extra person</span>
                                         </div>
 
                                         <div class="form-group col-lg-4">
@@ -230,6 +231,9 @@
                                             @enderror
                                         </div>
 
+                                        <div class="col-lg-12">
+                                            <label class="form-label mb-0">Guest:</label>
+                                        </div>
                                         {{-- <div class="row"> --}}
                                         <div class="form-group col-md-6">
                                             <label for="firstName">First Name</label>
@@ -486,8 +490,49 @@
             } else {
                 _this.attr("disabled", true);
                 _this.append('<span class="spinner-border spinner-border-sm ml-2" role="status" aria-hidden="true"></span>');
-                $('.room-reservation-form').submit();
+                // $('.room-reservation-form').submit();
+                $.ajax({
+                    type: 'post',
+                    url: "{{ route('landing.exclusive_rental_summary') }}",
+                    data: {
+                        checkin: $('#datepicker').val(),
+                        type: $('input[name=type]:checked').val(),
+                        adults: $('#adults').val(),
+                        kids: $('#kids').val(),
+                        senior_citizen: $('#senior_citizen').val(),
+                        payment: $('input[name=payment]:checked').val(),
+                        firstName: $('#firstName').val(),
+                        lastName: $('#lastName').val(),
+                        contactNumber: $('#contactNumber').val(),
+                        email: $('#email').val(),
+                        address: $('#address').val(),
+                        _token: $('input[name=_token]').val(),
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (result) {
+                        var _this = $(".btn-submit");
+                        $('.room-reservation-form').hide();
+                        $('.reservation-summary').show();
+                        $('.reservation-summary').html(result.data);
+                        _this.removeAttr("disabled");
+                        _this.find('.spinner-border').remove();
+                    }
+                });
             }
+        });
+
+        $(document).on('click', '.btn-back', function () {
+            $('.room-reservation-form').show();
+            $('.reservation-summary').hide();
+        });
+
+        $(document).on('click', '.btn-book', function () {
+            var _this = $(this);
+            _this.attr("disabled", true);
+            _this.append('<span class="spinner-border spinner-border-sm ml-2" role="status" aria-hidden="true"></span>');
+            $('.room-reservation-form').submit();
         });
     </script>
     @endsection

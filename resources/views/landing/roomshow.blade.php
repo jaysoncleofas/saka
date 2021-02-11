@@ -107,13 +107,10 @@
                                 <h3>Reserve Room</h3>
                             </div>
                             <div class="reservate-room-content">
+                                <div class="reservation-summary"></div>
                                 <div>
                                     <form class="room-reservation-form" action="{{ route('landing.room_reservation_store', $room->id) }}" method="POST" autocomplete="off">
                                         @csrf
-                                        <input type='hidden' name='recaptcha_token' id='recaptcha_token'
-                                        @if($errors->has('recaptcha_token'))
-                                            {{$errors->first('recaptcha_token')}}
-                                        @endif>
                                         <div class="form-group">
                                             <label for="datepicker">Check-in Date:</label>
                                             <input type="text" name="checkin" required class="form-control @error('checkin') is-invalid @enderror" id="datepicker" value="{{ old('checkin') }}">
@@ -130,25 +127,25 @@
                                                 class="selectgroup selectgroup-pills @error('type') is-invalid @enderror">
                                                 <label class="selectgroup-item pb-0">
                                                     <input type="radio" name="type" value="day"
-                                                        class="selectgroup-input"
+                                                        class="selectgroup-input day" disabled
                                                         {{ old('type') == 'day' ? 'checked' : '' }}>
-                                                    <span class="selectgroup-button selectgroup-button-icon"><i
+                                                    <span class="selectgroup-button selectgroup-button-icon span-day disabled"><i
                                                             class="fas fa-sun"></i> Day
                                                         {{ config('yourconfig.resort')->day }}</span>
                                                 </label>
                                                 <label class="selectgroup-item pb-0">
                                                     <input type="radio" name="type" value="night"
-                                                        class="selectgroup-input"
+                                                        class="selectgroup-input night" disabled
                                                         {{ old('type') == 'night' ? 'checked' : '' }}>
-                                                    <span class="selectgroup-button selectgroup-button-icon"><i
+                                                    <span class="selectgroup-button selectgroup-button-icon span-night disabled"><i
                                                             class="fas fa-moon"></i> Night
                                                         {{ config('yourconfig.resort')->night }}</span>
                                                 </label>
                                                 <label class="selectgroup-item pb-0">
                                                     <input type="radio" name="type" value="overnight"
-                                                        class="selectgroup-input overnight"
+                                                        class="selectgroup-input overnight" disabled
                                                         {{ old('type') == 'overnight' ? 'checked' : '' }}>
-                                                    <span class="selectgroup-button selectgroup-button-icon"><i
+                                                    <span class="selectgroup-button selectgroup-button-icon span-overnight disabled"><i
                                                             class="fas fa-cloud-moon"></i> Overnight
                                                         {{ config('yourconfig.resort')->overnight }}</span>
                                                 </label>
@@ -173,7 +170,7 @@
                                                         @foreach ($breakfasts as $breakfast)
                                                         <label class="selectgroup-item mb-0">
                                                             <input type="checkbox" name="breakfast[]"
-                                                                value="{{ $breakfast->id }}" class="selectgroup-input"
+                                                                value="{{ $breakfast->id }}" class="selectgroup-input breakfastaddonscheckbox"
                                                                 {{ old('breakfast') ? (in_array($breakfast->id, old('breakfast')) ? 'checked' : '') : '' }}>
                                                             <span
                                                                 class="selectgroup-button">{{ $breakfast->title.' P'.number_format($breakfast->price, 0).' ('.$breakfast->notes.')' }}</span>
@@ -185,8 +182,8 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-lg-12 mb-2">
-                                                <span>{{ $room->entrancefee }} Entrance fee</span>
+                                            <div class="col-lg-12 mb-2 mt-2">
+                                                {{-- <span>{{ $room->entrancefee }} Entrance fee</span>
                                                 @if ($room->entrancefee == 'Exclusive')
                                                 :
                                                 @foreach ($entranceFees as $item)
@@ -195,8 +192,8 @@
                                                 ,
                                                 @endif
                                                 @endforeach
-                                                @endif
-                                                <br>
+                                                @endif --}}
+                                                {{-- <br> --}}
                                                 @if ($room->extraPerson != 0)
                                                 <span>Good for {{ $room->min }}pax, {{ number_format($room->extraPerson, 0) }}php for extra person(max of {{ $room->max - $room->min }})</span>
                                                 @else
@@ -252,7 +249,7 @@
                                                     <label class="selectgroup-item mb-0">
                                                         <input type="radio" name="payment"
                                                             value="{{ $payment->id }}" class="selectgroup-input"
-                                                            {{ old('payment') ? (in_array($payment->id, old('payment')) ? 'checked' : '') : '' }}>
+                                                            {{ old('payment') == $payment->id ? 'checked' : '' }}>
                                                         <span
                                                             class="selectgroup-button">{{ $payment->name }}</span>
                                                     </label>
@@ -265,6 +262,9 @@
                                                 @enderror
                                             </div>
 
+                                            <div class="col-lg-12">
+                                                <label class="form-label mb-0">Guest:</label>
+                                            </div>
                                             {{-- <div class="row"> --}}
                                                 <div class="form-group col-md-6">
                                                     <label for="firstName">First Name</label>
@@ -325,9 +325,6 @@
                                                 <button type="submit"
                                                     class="btn btn-lg btn-dark button-primary large w-inline-block radius-zero mt-3 btn-submit">Book
                                                     Now</button>
-                                                    {{-- <p class="mt-4">This site is protected by ReCaptcha and the Google
-                                                        <a href="https://policies.google.com/privacy">Privacy Policy</a> and
-                                                        <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p> --}}
                                             </div>
                                         </div>
                                     </form>
@@ -431,6 +428,9 @@
             });
         });
         var new_date = moment().add(1, 'days').format('MM-DD-YYYY');
+        $('#datepicker').datepicker({
+            startDate: new_date
+        });
 
         $(document).on('change', 'input:radio[name="type"]', function () {
             if ($(this).is(':checked') && $(this).val() == 'overnight') {
@@ -448,23 +448,69 @@
             }
         });
 
-        var disabledDates = [];
-        $.ajax({
-            type: 'post',
-            url: "{{ route('landing.getrooms_available', $room->id) }}",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function (result) {
-                for (var i = 0; i < result.dates.length; i++) {
-                    var formatted_date = moment(result.dates[i]).format('MM/DD/YYYY');
-                    disabledDates.push(formatted_date);
+        // var disabledDates = [];
+        // $.ajax({
+        //     type: 'post',
+        //     url: "{{ route('landing.getrooms_available', $room->id) }}",
+        //     headers: {
+        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //     },
+        //     success: function (result) {
+        //         for (var i = 0; i < result.dates.length; i++) {
+        //             var formatted_date = moment(result.dates[i]).format('MM/DD/YYYY');
+        //             disabledDates.push(formatted_date);
+        //         }
+        //         $('#datepicker').datepicker({
+        //             datesDisabled: disabledDates,
+        //             startDate: new_date
+        //         });
+        //     }
+        // });
+        var getroom_available = function () {
+            $.ajax({
+                type: 'post',
+                url: "{{ route('landing.getroom_available', $room->id) }}",
+                data: {
+                    checkin: $('#datepicker').val(),
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (result) {
+                    // console.log(result);
+                    if(result.status.includes('overnight')) {
+                        $('.overnight').removeAttr('disabled');
+                        $('.span-overnight').removeClass('disabled');
+                    } else {
+                        $('.overnight').attr('disabled', true);
+                        $('.span-overnight').addClass('disabled');
+                    }
+                    if(result.status.includes('day')) {
+                        $('.day').removeAttr('disabled');
+                        $('.span-day').removeClass('disabled');
+                    } else {
+                        $('.day').attr('disabled', true);
+                        $('.span-day').addClass('disabled');
+                    }
+                    if(result.status.includes('night')) {
+                        $('.night').removeAttr('disabled');
+                        $('.span-night').removeClass('disabled');
+                    } else {
+                        $('.night').attr('disabled', true);
+                        $('.span-night').addClass('disabled');
+                    }
+                    $('.overnight').prop('checked', false);
+                    $('.day').prop('checked', false);
+                    $('.night').prop('checked', false);
                 }
-                $('#datepicker').datepicker({
-                    datesDisabled: disabledDates,
-                    startDate: new_date
-                });
-            }
+            });
+        }
+
+        if($('#datepicker').val() != ''){
+            getroom_available();
+        }
+        $(document).on('change', '#datepicker', function () {
+            getroom_available();
         });
 
         $(document).on('click', '.btn-submit', function () {
@@ -536,8 +582,57 @@
             } else {
                 _this.attr("disabled", true);
                 _this.append('<span class="spinner-border spinner-border-sm ml-2" role="status" aria-hidden="true"></span>');
-                $('.room-reservation-form').submit();
+                // $('.room-reservation-form').submit();
+                var ibreakfast = [];
+                $('.breakfastaddonscheckbox:checked').each(function () {
+                    var add = $(this).val();
+                    ibreakfast.push(add);
+                });
+
+                $.ajax({
+                    type: 'post',
+                    url: "{{ route('landing.room_reservation_summary', $room->id) }}",
+                    data: {
+                        checkin: $('#datepicker').val(),
+                        type: $('input[name=type]:checked').val(),
+                        isbreakfast: $('input[name=isbreakfast]').val(),
+                        breakfast: ibreakfast,
+                        adults: $('#adults').val(),
+                        kids: $('#kids').val(),
+                        senior_citizen: $('#senior_citizen').val(),
+                        payment: $('input[name=payment]:checked').val(),
+                        firstName: $('#firstName').val(),
+                        lastName: $('#lastName').val(),
+                        contactNumber: $('#contactNumber').val(),
+                        email: $('#email').val(),
+                        address: $('#address').val(),
+                        _token: $('input[name=_token]').val(),
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (result) {
+                        var _this = $(".btn-submit");
+                        $('.room-reservation-form').hide();
+                        $('.reservation-summary').show();
+                        $('.reservation-summary').html(result.data);
+                        _this.removeAttr("disabled");
+                        _this.find('.spinner-border').remove();
+                    }
+                });
             }
+        });
+
+        $(document).on('click', '.btn-back', function () {
+            $('.room-reservation-form').show();
+            $('.reservation-summary').hide();
+        });
+
+        $(document).on('click', '.btn-book', function () {
+            var _this = $(this);
+            _this.attr("disabled", true);
+            _this.append('<span class="spinner-border spinner-border-sm ml-2" role="status" aria-hidden="true"></span>');
+            $('.room-reservation-form').submit();
         });
     </script>
     @endsection

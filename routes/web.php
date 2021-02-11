@@ -20,6 +20,8 @@ Route::get('/rooms', [App\Http\Controllers\LandingPageController::class, 'rooms'
 Route::get('/room/{id}/show', [App\Http\Controllers\LandingPageController::class, 'room_show'])->name('room.show');
 // Route::post('room/{id}/available', [App\Http\Controllers\LandingPageController::class, 'available_rooms'])->name('landing.available_rooms');
 Route::post('room/{id}/reservation', [App\Http\Controllers\LandingPageController::class, 'room_reservation_store'])->name('landing.room_reservation_store');
+Route::post('room/{id}/reservation-summary', [App\Http\Controllers\LandingPageController::class, 'room_reservation_summary'])->name('landing.room_reservation_summary');
+
 Route::get('guest-transaction/{code}', [App\Http\Controllers\LandingPageController::class, 'transaction_show'])->name('landing.transaction_show');
 // Route::get('/room/{id}/book', [App\Http\Controllers\LandingPageController::class, 'room_book'])->name('room.book');
 Route::post('room/{id}/getrooms_available', [App\Http\Controllers\LandingPageController::class, 'getrooms_available'])->name('landing.getrooms_available');
@@ -33,9 +35,14 @@ Route::post('cottage/{id}/getcottages_available', [App\Http\Controllers\LandingP
 Route::post('cottage/{id}/check_cottage_available', [App\Http\Controllers\LandingPageController::class, 'check_cottage_available'])->name('landing.check_cottage_available');
 Route::post('cottage/{id}/reservation', [App\Http\Controllers\LandingPageController::class, 'cottage_reservation_store'])->name('landing.cottage_reservation_store');
 
+Route::post('cottage/{id}/reservation-summary', [App\Http\Controllers\LandingPageController::class, 'cottage_reservation_summary'])->name('landing.cottage_reservation_summary');
+
 Route::get('/exclusive-rental', [App\Http\Controllers\LandingPageController::class, 'exclusive_rental'])->name('landing.exclusive_rental');
 Route::post('/exclusive-rental/store', [App\Http\Controllers\LandingPageController::class, 'exclusive_rental_store'])->name('landing.exclusive_rental_store');
 Route::post('exclusive-rental/get_available', [App\Http\Controllers\LandingPageController::class, 'getexclusive_available'])->name('landing.getexclusive_available');
+
+Route::post('/exclusive-rental/reservation-summary', [App\Http\Controllers\LandingPageController::class, 'exclusive_rental_summary'])->name('landing.exclusive_rental_summary');
+Route::post('room-rental/get_available/{id}', [App\Http\Controllers\LandingPageController::class, 'getroom_available'])->name('landing.getroom_available');
 
 Route::get('/contact', [App\Http\Controllers\LandingPageController::class, 'contact'])->name('landing.contact');
 
