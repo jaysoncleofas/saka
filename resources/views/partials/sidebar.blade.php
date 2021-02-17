@@ -1,11 +1,11 @@
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="index.html">{{ config('yourconfig.resort')->name }}</a>
+            <a href="{{ route('dashboard.index') }}">{{ config('yourconfig.resort')->name }}</a>
         </div>
 
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="index.html">Saka</a>
+            <a href="{{ route('dashboard.index') }}">Saka</a>
         </div>
 
         <ul class="sidebar-menu">

@@ -24,6 +24,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}"  type='image/x-icon'>
 
     {{-- Libraries --}}
     {{-- <link href="{{ asset('stisla/assets/css/style.css') }}" rel="stylesheet"> --}}

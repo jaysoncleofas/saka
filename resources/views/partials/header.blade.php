@@ -20,6 +20,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}"  type='image/x-icon'>
 
     {{-- Libraries --}}
     {{-- <link href="{{ asset('select2/dist/css/select2.min.css') }}" rel="stylesheet"> --}}
