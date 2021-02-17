@@ -56,7 +56,7 @@
 
         <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
             <a href="{{ route('transaction.create') }}" class="btn btn-primary btn-lg btn-block btn-icon-split">
-                <i class="fas fa-rocket"></i> Add Transaction
+                <i class="fas fa-plus"></i> Add Transaction
             </a>
         </div>
     </aside>

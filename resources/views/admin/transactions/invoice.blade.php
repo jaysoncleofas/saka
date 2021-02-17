@@ -64,6 +64,23 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @if ($transaction->cottage)
+                                            <tr>
+                                                <td>Cottage: {{ $transaction->cottage->name }}</td>
+                                                <td>1</td>
+                                                <td>P{{ number_format($transaction->type != 'day' ? $transaction->cottage->nightPrice : $transaction->cottage->price, 2) }}</td>
+                                                <td>P<span class="totalprice">{{  number_format($transaction->type != 'day' ? $transaction->cottage->nightPrice : $transaction->cottage->price, 2) }}</span></td>
+                                            </tr>
+                                            @endif
+
+                                            @if ($transaction->room)
+                                                <tr>
+                                                    <td>Room: {{ $transaction->room->name }}</td>
+                                                    <td>1</td>
+                                                    <td>P{{ number_format($transaction->room->price, 2) }}</td>
+                                                    <td>P<span class="totalprice">{{  number_format($transaction->room->price, 2) }}</span></td>
+                                                </tr>
+                                            @endif
                                             @if ($transaction->is_exclusive == 1)
                                                 <tr>
                                                     <td>Exclusive Rental</td>
@@ -112,24 +129,6 @@
                                                     </tr>
                                                     @endif
                                                 @endif
-                                            @endif
-
-                                            @if ($transaction->cottage)
-                                            <tr>
-                                                <td>Cottage: {{ $transaction->cottage->name }}</td>
-                                                <td>1</td>
-                                                <td>P{{ number_format($transaction->type != 'day' ? $transaction->cottage->nightPrice : $transaction->cottage->price, 2) }}</td>
-                                                <td>P<span class="totalprice">{{  number_format($transaction->type != 'day' ? $transaction->cottage->nightPrice : $transaction->cottage->price, 2) }}</span></td>
-                                            </tr>
-                                            @endif
-
-                                            @if ($transaction->room)
-                                                <tr>
-                                                    <td>Room: {{ $transaction->room->name }}</td>
-                                                    <td>1</td>
-                                                    <td>P{{ number_format($transaction->room->price, 2) }}</td>
-                                                    <td>P<span class="totalprice">{{  number_format($transaction->room->price, 2) }}</span></td>
-                                                </tr>
                                             @endif
 
                                             @if ($transaction->extraPerson && $transaction->room)

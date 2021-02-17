@@ -160,8 +160,9 @@
                                         <thead>
                                             <tr>
                                                 <th>Title</th>
-                                                <th>Price</th>
-                                                <th>Night Price</th>
+                                                <th>Day</th>
+                                                <th>Night</th>
+                                                <th>Overnight</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -171,6 +172,7 @@
                                                 <td>{{ $entrance->title }}</td>
                                                 <td>P{{ number_format($entrance->price, 0) }}</td>
                                                 <td>P{{ number_format($entrance->nightPrice, 0) }}</td>
+                                                <td>P{{ number_format($entrance->overnightPrice, 0) }}</td>
                                                 <td><a href="{{ route('entrancefee.edit', $entrance->id) }}" class="btn btn-primary btn-action mr-1" title="Edit"><i class="fas fa-pencil-alt"></i></a></td>
                                             </tr>
                                             @endforeach
@@ -208,7 +210,8 @@
                                                 <td>P{{ number_format($breakfast->price, 0) }}</td>
                                                 <td>{{ $breakfast->notes }}</td>
                                                 <td>{{ $breakfast->is_active ? 'Active' : 'Inactive' }}</td>
-                                                <td><a href="{{ route('breakfast.edit', $breakfast->id) }}" class="btn btn-primary btn-action mr-1 mb-1" title="Edit"><i class="fas fa-pencil-alt"></i></a> <a class="btn btn-danger btn-action trigger-delete mb-1" title="Delete" data-action="{{ route('breakfast.destroy', $breakfast->id) }}" data-model="breakfast"><i class="fas fa-trash"></i></a></td>
+                                                <td><a href="{{ route('breakfast.edit', $breakfast->id) }}" class="btn btn-primary btn-action mr-1 mb-1" title="Edit"><i class="fas fa-pencil-alt"></i></a></td>
+                                                {{-- <a class="btn btn-danger btn-action trigger-delete mb-1" title="Delete" data-action="{{ route('breakfast.destroy', $breakfast->id) }}" data-model="breakfast"><i class="fas fa-trash"></i></a> --}}
                                             </tr>
                                             @endforeach
                                         </tbody>

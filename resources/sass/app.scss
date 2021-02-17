@@ -28,3 +28,11 @@
 @import '~daterangepicker/daterangepicker';
 
 @import '~bootstrap-datepicker/dist/css/bootstrap-datepicker.css';
+
+.border-top {
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.border-bottom {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}

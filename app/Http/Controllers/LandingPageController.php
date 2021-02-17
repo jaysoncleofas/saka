@@ -132,9 +132,7 @@ class LandingPageController extends Controller
 
         $resort = Resort::findOrFail(1);
         $breakfastfees = 0;
-        $isbreakfast = $request->type != 'overnight' ? 0 : $request->isbreakfast;
-        if($request->isbreakfast) {
-            $breakfastfees = $resort->is_promo ? 0 : $resort->breakfastPrice;
+        if($request->type == 'overnight') {
             if($request->breakfast) {
                 foreach($request->breakfast as $breakfast_id) {
                     $breakfastP = Breakfast::findOrfail($breakfast_id);
@@ -388,9 +386,9 @@ class LandingPageController extends Controller
         $resort = Resort::findOrFail(1);
         $breakfastfees = 0;
         $isbreakfast = $request->type != 'overnight' ? 0 : $request->isbreakfast;
-        if($request->isbreakfast) {
-            $breakfastfees = $resort->is_promo ? 0 : $resort->breakfastPrice;
-            if($isbreakfast) {
+        $breakfastfees = 0;
+        if($request->type == 'overnight') {
+            if($request->breakfast) {
                 foreach($request->breakfast as $breakfast_id) {
                     $breakfastP = Breakfast::findOrfail($breakfast_id);
                     $breakfastfees = $breakfastfees + $breakfastP->price;

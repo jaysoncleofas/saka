@@ -15,9 +15,9 @@ class EntranceFeeSeeder extends Seeder
     public function run()
     {
         DB::table('entrancefees')->insert([
-            ['title' => 'Adults', 'price' => 100, 'nightPrice' => 150],
-            ['title' => 'Kids', 'price' => 100, 'nightPrice' => 150],
-            ['title' => 'Senior Citizen', 'price' => 80, 'nightPrice' => 130],
+            ['title' => 'Adults', 'price' => 100, 'nightPrice' => 150, 'overnightPrice' => 180],
+            ['title' => 'Kids', 'price' => 100, 'nightPrice' => 150, 'overnightPrice' => 180],
+            ['title' => 'Senior Citizen', 'price' => 80, 'nightPrice' => 130, 'overnightPrice' => 150],
         ]);
     }
 }

@@ -260,6 +260,16 @@
                                                         <div
                                                             class="selectgroup selectgroup-pills @error('type') is-invalid @enderror">
                                                             <label class="selectgroup-item pb-0">
+                                                                <input type="radio" name="type" value="day"
+                                                                    data-sched="{{ config('yourconfig.resort')->day }}"
+                                                                    class="selectgroup-input day"
+                                                                    {{ old('type') == 'day' ? 'checked' : '' }}>
+                                                                <span
+                                                                    class="selectgroup-button selectgroup-button-icon"><i
+                                                                        class="fas fa-sun"></i> Day
+                                                                    {{ config('yourconfig.resort')->day }}</span>
+                                                            </label>
+                                                            <label class="selectgroup-item pb-0">
                                                                 <input type="radio" name="type" value="night"
                                                                     data-sched="{{ config('yourconfig.resort')->night }}"
                                                                     class="selectgroup-input room-dn"
@@ -561,48 +571,12 @@
                                             <input type="button" name="previous"
                                                 class="previous action-button-previous btn btn-secondary"
                                                 value="Previous" />
-                                            <input type="button" name="make_payment"
-                                                class="next action-button btn btn-primary third-next" value="Confirm" />
+                                            <button name="text" class="third-next next action-button btn btn-primary">Next Step</button>
                                         </fieldset>
                                         <fieldset>
                                             <div class="form-card text-left">
                                                 <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <p><strong>Is Reservation:</strong> <span
-                                                                class="reservation-text"></span></p>
-                                                        <p><strong>Check-in Date:</strong> <span
-                                                                class="checkindate-text"></span></p>
-                                                        <p><strong>Check-in & Check-out time:</strong> <span
-                                                                class="checkincheckouttime-text text-capitalize"></span>
-                                                        </p>
-                                                        <p><strong>Rental:</strong> <span
-                                                                class="rental-text text-capitalize"></span></p>
-                                                        <p class="p-rent-text"><strong>Rent:</strong> <span
-                                                                class="rent-text"></span></p>
-                                                        <p class="p-breakfast-text"><strong>Breakfast:</strong> <span
-                                                                class="breakfast-text"></span></p>
-                                                        <p class="p-breakfastaddons-text"><strong>Breakfast add
-                                                                ons:</strong> <span class="breakfastaddons-text"></span>
-                                                        </p>
-                                                        <p><strong>Adults:</strong> <span class="adults-text"></span>
-                                                        </p>
-                                                        <p><strong>Kids:</strong> <span class="kids-text"></span></p>
-                                                        <p><strong>Senior Citizen:</strong> <span
-                                                                class="seniorcitizen-text"></span></p>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <p class="p-existingguest-text"><strong>Existing Guest:</strong>
-                                                            <span class="existingguest-text"></span></p>
-                                                        <p class="p-guestname-text"><strong>Guest Name:</strong> <span
-                                                                class="guestname-text"></span></p>
-                                                        <p class="p-guestcontact-text"><strong>Contact:</strong> <span
-                                                                class="guestcontact-text"></span></p>
-                                                        <p class="p-guestemail-text"><strong>Email:</strong> <span
-                                                                class="guestemail-text"></span></p>
-                                                        <p class="p-guestaddress-text"><strong>Address:</strong> <span
-                                                                class="guestaddress-text"></span></p>
-                                                        <p><strong>Notes:</strong> <span class="notes-text"></span></p>
-                                                    </div>
+                                                    <div class="col-lg-12 reservation-summary"></div>
                                                 </div>
                                             </div>
                                             <input type="button" name="previous" class="previous action-button-previous btn btn-secondary"
@@ -790,6 +764,9 @@
         });
 
         $(".third-next").click(function () {
+            // edit 
+            var rent_type = $('input:radio[name="rent_type"]:checked').val();
+            // edit 
             var existing_guest = $('input:radio[name="existing_guest"]:checked').val();
             var existing_guest_id = $('#guest').val();
             var existing_guest_name = $('#select2-guest-container').attr('title');
@@ -799,6 +776,11 @@
             var contactNumber = $('#contactNumber').val();
             var email = $('#email').val();
             var address = $('#address').val();
+            var addons = [];
+            $('.breakfastaddonscheckbox:checked').each(function () {
+                var add = $(this).val();
+                addons.push(add);
+            });
 
             var guestname = firstName + ' ' + lastName;
 
@@ -872,9 +854,43 @@
                 $('.guestemail-text').text(email);
                 $('.guestaddress-text').text(address);
 
-                current_fs = $(this).parent();
-                next_fs = $(this).parent().next();
-                next_fieldset(current_fs, next_fs);
+                var _this = $(this);
+                _this.attr("disabled", true);
+                _this.append('<span class="spinner-border spinner-border-sm ml-2" role="status" aria-hidden="true"></span>');
+                    $.ajax({
+                        type: 'post',
+                        url: "{{ route('transaction.summary') }}",
+                        data: {
+                            is_reservation: $('.is_reservation:checked').val(),
+                            checkin: $('[name="checkin"]').val(),
+                            rent_type: $('input:radio[name="rent_type"]:checked').val(),
+                            type: $('input:radio[name="type"]:checked').val(),
+                            roomcottageid: $('input:radio.radio-cottage:checked').val(),
+                            adults: $('#adults').val(),
+                            kids: $('#kids').val(),
+                            senior_citizen: $('#senior_citizen').val(),
+                            notes: $('#notes').val(),
+                            firstName: $('#firstName').val(),
+                            lastName: $('#lastName').val(),
+                            contactNumber: $('#contactNumber').val(),
+                            email: $('#email').val(),
+                            address: $('#address').val(),
+                            existing_guest: $('input:radio[name="existing_guest"]:checked').val(),
+                            existing_guest_id: $('#guest').val(),
+                            breakfast: addons,
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (result) {
+                            $('.reservation-summary').html(result.data);
+                            _this.removeAttr("disabled");
+                            _this.find('.spinner-border').remove();
+                            current_fs = _this.parent();
+                            next_fs = _this.parent().next();
+                            next_fieldset(current_fs, next_fs);
+                        }
+                    });
             } 
         });
 

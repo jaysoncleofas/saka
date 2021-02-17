@@ -113,3 +113,4 @@ Route::get('/transaction/{id}/edit/exclusive', [App\Http\Controllers\Transaction
 Route::put('/transaction/{id}/edit/cottage', [App\Http\Controllers\TransactionController::class, 'update_cottage'])->name('transaction.update_cottage');
 Route::put('/transaction/{id}/edit/room', [App\Http\Controllers\TransactionController::class, 'update_room'])->name('transaction.update_room');
 Route::put('/transaction/{id}/edit/exclusive', [App\Http\Controllers\TransactionController::class, 'update_exclusive'])->name('transaction.update_exclusive');
+Route::post('/transaction/summary', [App\Http\Controllers\TransactionController::class, 'summary'])->name('transaction.summary');

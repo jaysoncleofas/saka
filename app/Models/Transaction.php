@@ -36,4 +36,9 @@ class Transaction extends Model
     {
     	return $this->belongsTo('App\Models\User', 'receivedby_id');
     }
+
+    public function payment()
+    {
+    	return $this->belongsTo('App\Models\Payment', 'payment_id');
+    }
 }

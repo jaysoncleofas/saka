@@ -299,21 +299,7 @@
                                         <fieldset>
                                             <div class="form-card text-left">
                                                 <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <p><strong>Check-in Date:</strong> <span class="checkindate-text"></span></p>
-                                                        <p><strong>Check-in & Check-out time:</strong> <span class="checkincheckouttime-text text-capitalize"></span></p>
-                                                        <p class="p-rent-text"><strong>Rent:</strong> <span class="rent-text">Exclusive Rental</span></p>
-                                                        <p><strong>Adults:</strong> <span class="adults-text"></span></p>
-                                                        <p><strong>Kids:</strong> <span class="kids-text"></span></p>
-                                                        <p><strong>Senior Citizen:</strong> <span class="seniorcitizen-text"></span></p>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <p class="p-guestname-text"><strong>Guest Name:</strong> <span class="guestname-text">{{ $transaction->guest->fullname }}</span></p>
-                                                        <p class="p-guestcontact-text"><strong>Contact:</strong> <span class="guestcontact-text">{{ $transaction->guest->contact }}</span></p>
-                                                        <p class="p-guestemail-text"><strong>Email:</strong> <span class="guestemail-text">{{ $transaction->guest->email }}</span></p>
-                                                        <p class="p-guestaddress-text"><strong>Address:</strong> <span class="guestaddress-text">{{ $transaction->guest->address }}</span></p>
-                                                        <p><strong>Notes:</strong> <span class="notes-text"></span></p>
-                                                    </div>
+                                                    <div class="col-lg-12 reservation-summary"></div>
                                                 </div>
                                             </div>
                                             <input type="button" name="previous" class="previous action-button-previous btn btn-secondary"
@@ -398,16 +384,36 @@
             var senior = $('#Senior_Citizen').val();
             var notes = $('#notes').val();
             
-            $('.checkindate-text').text(checkin);
-            $('.checkincheckouttime-text').text(type+' '+type_sched);
-            $('.adults-text').text(adults);
-            $('.kids-text').text(kids);
-            $('.seniorcitizen-text').text(senior);
-            $('.notes-text').text(notes);
-
-            current_fs = $(this).parent();
-            next_fs = $(this).parent().next();
-            next_fieldset(current_fs, next_fs);
+            var _this = $(this);
+                _this.attr("disabled", true);
+                _this.append('<span class="spinner-border spinner-border-sm ml-2" role="status" aria-hidden="true"></span>');
+                    $.ajax({
+                        type: 'post',
+                        url: "{{ route('transaction.summary') }}",
+                        data: {
+                            is_reservation: "{{ $transaction->is_reservation }}",
+                            checkin: checkin,
+                            rent_type: rent_type,
+                            type: type,
+                            adults: adults,
+                            kids: kids,
+                            senior_citizen: senior,
+                            notes: notes,
+                            existing_guest: 1,
+                            existing_guest_id: "{{ $transaction->guest_id }}",
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (result) {
+                            $('.reservation-summary').html(result.data);
+                            _this.removeAttr("disabled");
+                            _this.find('.spinner-border').remove();
+                            current_fs = _this.parent();
+                            next_fs = _this.parent().next();
+                            next_fieldset(current_fs, next_fs);
+                        }
+                    });
         });
 
         $(".third-next").click(function () {
