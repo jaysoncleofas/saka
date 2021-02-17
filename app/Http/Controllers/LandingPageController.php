@@ -442,7 +442,13 @@ class LandingPageController extends Controller
         $msg = "Thank you for checking us out. We are reviewing your reservation: control#".$transaction->id.". We sent the reservation link to your email.";
         $smsResult = \App\Helpers\CustomSMS::send($guest->contact, $msg);
         session()->flash('type', 'success');
-        session()->flash('notification', 'Resevation was sent successfully. Please wait for the confirmation of your reservation.');
+        if($transaction->payment_id == 1) {
+            session()->flash('notification', 'Resevation was sent successfully.');
+        } elseif($transaction->payment_id == 2) {
+            session()->flash('notification', 'We have sent an email with instructions for GCash payment. We will message you as soon as we receive your payment.');
+        }elseif($transaction->payment_id == 3) {
+            session()->flash('notification', 'We have sent an email with instructions for online bank deposit. We will message you as soon as we receive your payment.');
+        }
         return redirect()->route('landing.transaction_show', $controlCode);    
     }
 
