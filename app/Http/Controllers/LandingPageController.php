@@ -47,14 +47,14 @@ class LandingPageController extends Controller
         $data['cottages'] = Cottage::all();
         $data['rooms'] = Room::all();
         $data['entranceFees'] = Entrancefee::all();
-        $data['breakfasts'] = Breakfast::all();
+        $data['breakfasts'] = Breakfast::where('is_active', 1)->get();
         return view('landing.contact', $data);
     }
 
     public function room_show($id)
     {
         $data['entranceFees'] = Entrancefee::all();
-        $data['breakfasts'] = Breakfast::all();
+        $data['breakfasts'] = Breakfast::where('is_active', 1)->get();
         $data['room'] = Room::findOrFail($id);
         $data['payments'] = Payment::all();
         return view('landing.roomshow', $data);
@@ -971,7 +971,7 @@ class LandingPageController extends Controller
     {
         $data['cottage'] = Cottage::findOrFail($id);
         $data['entranceFees'] = Entrancefee::all();
-        $data['breakfasts'] = Breakfast::all();
+        $data['breakfasts'] = Breakfast::where('is_active', 1)->get();
         $data['payments'] = Payment::all();
         return view('landing.cottageshow', $data);
     }

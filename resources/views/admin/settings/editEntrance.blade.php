@@ -29,7 +29,7 @@
                             </div>
                             
                             <div class="form-group">
-                                <label for="price">Price</label>
+                                <label for="price">Day</label>
                                 <input type="text" class="form-control digit_only2 @error('price') is-invalid @enderror"
                                     name="price" id="price" value="{{ number_format($entranceFee->price, 0) }}">
                                 @error('price')
@@ -40,10 +40,21 @@
                             </div>
                             
                             <div class="form-group">
-                                <label for="nightPrice">Night Price</label>
+                                <label for="nightPrice">Night</label>
                                 <input type="text" class="form-control digit_only2 @error('nightPrice') is-invalid @enderror"
                                     name="nightPrice" id="nightPrice" value="{{ number_format($entranceFee->nightPrice, 0) }}">
                                 @error('nightPrice')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="overnightPrice">Overnight</label>
+                                <input type="text" class="form-control digit_only2 @error('overnightPrice') is-invalid @enderror"
+                                    name="overnightPrice" id="overnightPrice" value="{{ number_format($entranceFee->overnightPrice, 0) }}">
+                                @error('overnightPrice')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

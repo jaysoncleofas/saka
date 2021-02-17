@@ -405,7 +405,7 @@ class TransactionController extends Controller
         $data['cottages'] = Cottage::all();
         $data['rooms'] = Room::all();
         $data['entranceFees'] = Entrancefee::all();
-        $data['breakfasts'] = Breakfast::all();
+        $data['breakfasts'] = Breakfast::where('is_active', 1)->get();
         return view('admin.transactions.edit', $data);
     }
 
@@ -702,7 +702,7 @@ class TransactionController extends Controller
         $data['transaction'] = Transaction::findOrFail($id);
         $data['rooms'] = Room::all();
         $data['entranceFees'] = Entrancefee::all();
-        $data['breakfasts'] = Breakfast::all();
+        $data['breakfasts'] = Breakfast::where('is_active', 1)->get();
         $data['transactionbreakfasts'] = [];
         foreach($data['transaction']->breakfasts as $item) 
         {

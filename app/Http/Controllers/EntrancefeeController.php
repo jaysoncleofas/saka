@@ -31,6 +31,7 @@ class EntrancefeeController extends Controller
         $entrance->title = $request->title;
         $entrance->price = $request->price;
         $entrance->nightPrice = $request->nightPrice;
+        $entrance->overnightPrice = $request->overnightPrice;
         $entrance->save();
 
         session()->flash('notification', 'Successfully updated!');
