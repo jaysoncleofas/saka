@@ -218,7 +218,7 @@
                                                 <label class="selectgroup-item mb-0">
                                                     <input type="radio" name="payment"
                                                         value="{{ $payment->id }}" class="selectgroup-input"
-                                                        {{ old('payment') ? (in_array($payment->id, old('payment')) ? 'checked' : '') : '' }}>
+                                                        {{ old('payment') ? ($payment->id == old('payment') ? 'checked' : '') : '' }}>
                                                     <span
                                                         class="selectgroup-button">{{ $payment->name }}</span>
                                                 </label>

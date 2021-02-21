@@ -323,8 +323,8 @@ class TransactionController extends Controller
 
         $rentBill = 0;
         $extraPersonTotal = 0;
-        if(!empty($room->min) && $totalpax > $room->min) {
-            $extraPerson = $totalpax - $room->min;
+        if(!empty($room->extraPerson) && $totalpax > $room->min && $room->entrancefee == 'Inclusive') {
+            $extraPerson = ($room->min && $room->max ? ($totalpax - $room->max) : ($room->min ? ($totalpax - $room->min) : ($totalpax - $room->max)));
             $extraPersonTotal = $extraPerson * $room->extraPerson;
         }
         if($room->entrancefee == 'Inclusive') {
@@ -842,8 +842,8 @@ class TransactionController extends Controller
 
         $rentBill = 0;
         $extraPersonTotal = 0;
-        if(!empty($room->min) && $totalpax > $room->min) {
-            $extraPerson = $totalpax - $room->min;
+        if(!empty($room->extraPerson) && $totalpax > $room->min && $room->entrancefee == 'Inclusive') {
+            $extraPerson = ($room->min && $room->max ? ($totalpax - $room->max) : ($room->min ? ($totalpax - $room->min) : ($totalpax - $room->max)));
             $extraPersonTotal = $extraPerson * $room->extraPerson;
         }
         if($room->entrancefee == 'Inclusive') {
@@ -1014,8 +1014,8 @@ class TransactionController extends Controller
             $rent_name = 'Room - '.$room->name;
             $rentBill = 0;
             $extraPersonTotal = 0;
-            if(!empty($room->min) && $totalpax > $room->min) {
-                $extraPerson = $totalpax - $room->min;
+            if(!empty($room->extraPerson) && $totalpax > $room->min && $room->entrancefee == 'Inclusive') {
+                $extraPerson = ($room->min && $room->max ? ($totalpax - $room->max) : ($room->min ? ($totalpax - $room->min) : ($totalpax - $room->max)));
                 $extraPersonTotal = $extraPerson * $room->extraPerson;
             }
             if($room->entrancefee == 'Inclusive') {
@@ -1092,7 +1092,7 @@ class TransactionController extends Controller
                                                 <td>P<span class="totalprice">'.number_format($request->type == 'day' ? $cottage->price : $cottage->nightPrice).'</span></td>
                                             </tr>';
             foreach ($entranceFees as $entrancefee) {
-                if ($entrancefee->title == 'Adults') {
+                if ($entrancefee->title == 'Adults' && $request->adults > 0) {
                 $html .='           <tr>
                                         <td>Adults</td>
                                         <td>'.$request->adults.'</td>
@@ -1110,7 +1110,7 @@ class TransactionController extends Controller
                                         <td>P'.number_format($adultfees, 2).'</td>
                                     </tr>';
                 }
-                if ($entrancefee->title == 'Kids') {
+                if ($entrancefee->title == 'Kids' && $request->kids > 0) {
                     $html .='           <tr>
                                             <td>Kids</td>
                                             <td>'.$request->kids.'</td>
@@ -1128,7 +1128,7 @@ class TransactionController extends Controller
                                             <td>P'.number_format($kidfees, 2).'</td>
                                         </tr>';
                 }
-                if ($entrancefee->title == 'Senior Citizen') {
+                if ($entrancefee->title == 'Senior Citizen' && $request->senior_citizen > 0) {
                     $html .='           <tr>
                                             <td>Senior Citizens</td>
                                             <td>'.$request->senior_citizen.'</td>
@@ -1175,7 +1175,7 @@ class TransactionController extends Controller
                                             </tr>';
                 if($room->entrancefee == 'Exclusive') {
                 foreach ($entranceFees as $entrancefee) {
-                    if ($entrancefee->title == 'Adults') {
+                    if ($entrancefee->title == 'Adults' && $request->adults > 0) {
                     $html .='           <tr>
                                             <td>Adults</td>
                                             <td>'.$request->adults.'</td>
@@ -1193,7 +1193,7 @@ class TransactionController extends Controller
                                             <td>P'.number_format($adultfees, 2).'</td>
                                         </tr>';
                     }
-                    if ($entrancefee->title == 'Kids') {
+                    if ($entrancefee->title == 'Kids' && $request->kids > 0) {
                         $html .='           <tr>
                                                 <td>Kids</td>
                                                 <td>'.$request->kids.'</td>
@@ -1211,7 +1211,7 @@ class TransactionController extends Controller
                                                 <td>P'.number_format($kidfees, 2).'</td>
                                             </tr>';
                     }
-                    if ($entrancefee->title == 'Senior Citizen') {
+                    if ($entrancefee->title == 'Senior Citizen' && $request->senior_citizen > 0) {
                         $html .='           <tr>
                                                 <td>Senior Citizens</td>
                                                 <td>'.$request->senior_citizen.'</td>

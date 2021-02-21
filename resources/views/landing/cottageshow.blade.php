@@ -167,6 +167,7 @@
                                             no available units
                                         </div>
                                     </div>
+                                    <input type="hidden" name="units" id="units">
                                     
                                     <div class="row">
                                         {{-- <div class="col-lg-12 mb-2 entrance-day">
@@ -488,6 +489,7 @@
                         $('.notavailable-container').addClass('d-none');
                         $('.aunit').text(result.unit);
                     }
+                    $('#units').val(result.unit);
                 }
             });
 
@@ -639,6 +641,14 @@
                 swal({
                     title: 'Error!',
                     text: 'Address field is required!',
+                    icon: "error",
+                    button: true,
+                });
+                return false;
+            } else if($('#units').val() == 0) {
+                swal({
+                    title: 'Error!',
+                    text: 'No Available Units!',
                     icon: "error",
                     button: true,
                 });

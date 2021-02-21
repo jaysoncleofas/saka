@@ -12,9 +12,11 @@ use App\Models\Transaction;
 use App\Models\Resort;
 use DB;
 use Carbon\Carbon;
-use App\Notifications\ReservationSent;
+// use App\Notifications\ReservationSent;
 use App\Rules\ReCaptchaRule;
 use App\Models\Payment;
+use App\Mail\ReservationSent;
+use Illuminate\Support\Facades\Mail;
 
 class LandingPageController extends Controller
 {
@@ -78,11 +80,10 @@ class LandingPageController extends Controller
 
         $room = Room::findOrFail($id);
         $totalpax = $request->adults + $request->kids + $request->senior_citizen;
-        // if($room->max < $totalpax) {
-        //     session()->flash('notification', 'The Maximum capacity for this room is '.$room->max.'pax');
-        //     session()->flash('type', 'error');
-        //     return redirect()->back()->withInput($request->input());
-        // }
+        if($room->max < $totalpax) {
+            session()->flash('notification', 'The Maximum capacity for this room is '.$room->max.'pax');
+            return response()->json(['status' => 'error', 'message' => 'The Maximum capacity for this room is '.$room->max.'pax'], 200); 
+        }
         $checkIn_at = Carbon::parse($request->checkin);
         if($request->type == 'day') {
             $checkin = Carbon::parse($request->checkin)->setHour(9);  
@@ -121,8 +122,8 @@ class LandingPageController extends Controller
 
         $rentBill = 0;
         $extraPersonTotal = 0;
-        if(!empty($room->min) && $totalpax > $room->min) {
-            $extraPerson = $totalpax - $room->min;
+        if(!empty($room->extraPerson) && $totalpax > $room->min && $room->entrancefee == 'Inclusive') {
+            $extraPerson = ($room->min && $room->max ? ($totalpax - $room->max) : ($room->min ? ($totalpax - $room->min) : ($totalpax - $room->max)));
             $extraPersonTotal = $extraPerson * $room->extraPerson;
         }
         if($room->entrancefee == 'Inclusive') {
@@ -189,7 +190,7 @@ class LandingPageController extends Controller
                                         </tr>';
         if($room->entrancefee == 'Exclusive') {
             foreach ($entranceFees as $entrancefee) {
-                if ($entrancefee->title == 'Adults') {
+                if ($entrancefee->title == 'Adults' && $request->adults > 0) {
                 $html .='           <tr>
                                         <td>Adults</td>
                                         <td>'.$request->adults.'</td>
@@ -207,7 +208,7 @@ class LandingPageController extends Controller
                                         <td>P'.number_format($adultfees, 2).'</td>
                                     </tr>';
                 }
-                if ($entrancefee->title == 'Kids') {
+                if ($entrancefee->title == 'Kids' && $request->kids > 0) {
                     $html .='           <tr>
                                             <td>Kids</td>
                                             <td>'.$request->kids.'</td>
@@ -225,7 +226,7 @@ class LandingPageController extends Controller
                                             <td>P'.number_format($kidfees, 2).'</td>
                                         </tr>';
                 }
-                if ($entrancefee->title == 'Senior Citizen') {
+                if ($entrancefee->title == 'Senior Citizen' && $request->senior_citizen > 0) {
                     $html .='           <tr>
                                             <td>Senior Citizens</td>
                                             <td>'.$request->senior_citizen.'</td>
@@ -374,8 +375,8 @@ class LandingPageController extends Controller
 
         $rentBill = 0;
         $extraPersonTotal = 0;
-        if(!empty($room->min) && $totalpax > $room->min) {
-            $extraPerson = $totalpax - $room->min;
+        if(!empty($room->extraPerson) && $totalpax > $room->min && $room->entrancefee == 'Inclusive') {
+            $extraPerson = ($room->min && $room->max ? ($totalpax - $room->max) : ($room->min ? ($totalpax - $room->min) : ($totalpax - $room->max)));
             $extraPersonTotal = $extraPerson * $room->extraPerson;
         }
         if($room->entrancefee == 'Inclusive') {
@@ -437,8 +438,11 @@ class LandingPageController extends Controller
         if($isbreakfast == 1) {
             $transaction->breakfasts()->sync($request->breakfast);
         }
-    
-        $guest->notify(new ReservationSent($transaction));
+        
+        $resort = Resort::find(1);
+        $entranceFees = Entrancefee::all();
+        Mail::to($guest)->send(new ReservationSent($transaction, $resort));
+        // $guest->notify(new ReservationSent($transaction));
         $msg = "Thank you for checking us out. We are reviewing your reservation: control#".$transaction->id.". We sent the reservation link to your email.";
         $smsResult = \App\Helpers\CustomSMS::send($guest->contact, $msg);
         session()->flash('type', 'success');
@@ -552,7 +556,7 @@ class LandingPageController extends Controller
                                             <td>P<span class="totalprice">'.number_format($cottage->price, 2).'</span></td>
                                         </tr>';
         foreach ($entranceFees as $entrancefee) {
-            if ($entrancefee->title == 'Adults') {
+            if ($entrancefee->title == 'Adults' && $request->adults > 0) {
             $html .='           <tr>
                                     <td>Adults</td>
                                     <td>'.$request->adults.'</td>
@@ -570,7 +574,7 @@ class LandingPageController extends Controller
                                     <td>P'.number_format($adultfees, 2).'</td>
                                 </tr>';
             }
-            if ($entrancefee->title == 'Kids') {
+            if ($entrancefee->title == 'Kids' && $request->kids > 0) {
                 $html .='           <tr>
                                         <td>Kids</td>
                                         <td>'.$request->kids.'</td>
@@ -588,7 +592,7 @@ class LandingPageController extends Controller
                                         <td>P'.number_format($kidfees, 2).'</td>
                                     </tr>';
             }
-            if ($entrancefee->title == 'Senior Citizen') {
+            if ($entrancefee->title == 'Senior Citizen' && $request->senior_citizen > 0) {
                 $html .='           <tr>
                                         <td>Senior Citizens</td>
                                         <td>'.$request->senior_citizen.'</td>
@@ -731,7 +735,10 @@ class LandingPageController extends Controller
         $transaction->payment_id = $request->payment;
         $transaction->save();
 
-        $guest->notify(new ReservationSent($transaction));
+        $resort = Resort::find(1);
+        $entranceFees = Entrancefee::all();
+        Mail::to($guest)->send(new ReservationSent($transaction, $resort));
+        // $guest->notify(new ReservationSent($transaction));
         $msg = "Thank you for checking us out. We are reviewing your reservation: control#".$transaction->id.". We sent the reservation link to your email.";
         $smsResult = \App\Helpers\CustomSMS::send($guest->contact, $msg);
         session()->flash('type', 'success');
@@ -957,7 +964,10 @@ class LandingPageController extends Controller
         $transaction->payment_id = $request->payment;
         $transaction->save();
 
-        $guest->notify(new ReservationSent($transaction));
+        $resort = Resort::find(1);
+        $entranceFees = Entrancefee::all();
+        Mail::to($guest)->send(new ReservationSent($transaction, $resort));
+        // $guest->notify(new ReservationSent($transaction));
         $msg = "Thank you for checking us out. We are reviewing your reservation: control#".$transaction->id.". We sent the reservation link to your email.";
         $smsResult = \App\Helpers\CustomSMS::send($guest->contact, $msg);
         session()->flash('type', 'success');

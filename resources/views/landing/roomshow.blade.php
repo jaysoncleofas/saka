@@ -612,10 +612,19 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function (result) {
+                        if(result.status == 'error') {
+                            swal({
+                                title: 'Error!',
+                                text: result.message,
+                                icon: "error",
+                                button: true,
+                            });
+                        } else {
+                            $('.room-reservation-form').hide();
+                            $('.reservation-summary').show();
+                            $('.reservation-summary').html(result.data);
+                        }
                         var _this = $(".btn-submit");
-                        $('.room-reservation-form').hide();
-                        $('.reservation-summary').show();
-                        $('.reservation-summary').html(result.data);
                         _this.removeAttr("disabled");
                         _this.find('.spinner-border').remove();
                     }
