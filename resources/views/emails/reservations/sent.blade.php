@@ -11,14 +11,14 @@ Thank you for booking. Here's a reminder of what you booked:<br>
 
 @if ($transaction->payment_id == 2)
 # Our gcash details:
-GCASH Account: <strong>John Doe</strong><br>
-Number: <strong>004358012183</strong><br>
+GCASH Account: <strong>{{ $resort->gcash_account }}</strong><br>
+Number: <strong>{{ $resort->gcash_number }}</strong><br>
 @endif
 @if ($transaction->payment_id == 3)
 # Our bank details:
-Account Name: <strong>John Doe</strong><br>
-Bank: <strong>BDO</strong><br>
-Account number: <strong>004358012183</strong><br>
+Account Name: <strong>{{ $resort->bank_account }}</strong><br>
+Bank: <strong>{{ $resort->bank }}</strong><br>
+Account number: <strong>{{ $resort->bank_accountnumber }}</strong><br>
 @endif
 
 # Reservation Details:

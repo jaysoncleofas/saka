@@ -40,6 +40,17 @@ class ResortController extends Controller
         $resort->facebook = $request->facebook;
         $resort->instagram = $request->instagram;
         $resort->twitter = $request->twitter;
+        $resort->sms_on = $request->sms_notification ? 1 : 0;
+
+        $resort->exclusive_dayprice = $request->exclusive_dayprice;
+        $resort->exclusive_daycapacity = $request->exclusive_daycapacity;
+        $resort->exclusive_overnightprice = $request->exclusive_overnightprice;
+        $resort->exclusive_overnightcapacity = $request->exclusive_overnightcapacity;
+        $resort->bank_account = $request->bank_account;
+        $resort->bank = $request->bank;
+        $resort->bank_accountnumber = $request->bank_accountnumber;
+        $resort->gcash_account = $request->gcash_account;
+        $resort->gcash_number = $request->gcash_number;
         $resort->save();
 
         session()->flash('notification', 'Successfully updated!');

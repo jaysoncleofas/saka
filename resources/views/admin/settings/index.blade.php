@@ -138,6 +138,149 @@
                             </div>
 
                             <div class="form-group">
+                                <div class="control-label">SMS Notification ({{ number_format($resort->points, 0) }} Credits)</div>
+                                <label for="sms_notification" class="custom-switch mt-2 pl-0">
+                                    <input type="checkbox" name="sms_notification" id="sms_notification" value="1" class="custom-switch-input" {{ $resort->sms_on ? 'checked' : '' }}>
+                                    <span class="custom-switch-indicator"></span>
+                                    <span class="custom-switch-description">On</span>
+                                </label>
+                            </div>
+
+                            <span>Exclusive Day Use:</span>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="exclusive_dayprice">Price</label>
+                                        <input type="text" class="form-control digit_only2 @error('exclusive_dayprice') is-invalid @enderror"
+                                            name="exclusive_dayprice" id="exclusive_dayprice" value="{{ number_format($resort->exclusive_dayprice, 0) }}">
+                                        @error('exclusive_dayprice')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="exclusive_daycapacity">Capacity</label>
+                                        <input type="text"
+                                            class="form-control digit_only2 @error('exclusive_daycapacity') is-invalid @enderror"
+                                            name="exclusive_daycapacity" id="exclusive_daycapacity" value="{{ $resort->exclusive_daycapacity }}">
+                                        @error('exclusive_daycapacity')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span>Exclusive Overnight Use:</span>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="exclusive_overnightprice">Price</label>
+                                        <input type="text" class="form-control digit_only2 @error('exclusive_overnightprice') is-invalid @enderror"
+                                            name="exclusive_overnightprice" id="exclusive_overnightprice" value="{{ number_format($resort->exclusive_overnightprice, 0) }}">
+                                        @error('exclusive_overnightprice')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="exclusive_overnightcapacity">Capacity</label>
+                                        <input type="text"
+                                            class="form-control digit_only2 @error('exclusive_overnightcapacity') is-invalid @enderror"
+                                            name="exclusive_overnightcapacity" id="exclusive_overnightcapacity" value="{{ $resort->exclusive_overnightcapacity }}">
+                                        @error('exclusive_overnightcapacity')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span>Bank Account Details:</span>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="bank_account">Account Name</label>
+                                        <input type="text" class="form-control @error('bank_account') is-invalid @enderror"
+                                            name="bank_account" id="bank_account" value="{{ $resort->bank_account }}">
+                                        @error('bank_account')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="bank">Bank</label>
+                                        <input type="text"
+                                            class="form-control @error('bank') is-invalid @enderror"
+                                            name="bank" id="bank" value="{{ $resort->bank }}">
+                                        @error('bank')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="bank_accountnumber">Account Number</label>
+                                        <input type="text"
+                                            class="form-control @error('bank_accountnumber') is-invalid @enderror"
+                                            name="bank_accountnumber" id="bank_accountnumber" value="{{ $resort->bank_accountnumber }}">
+                                        @error('bank_accountnumber')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span>GCash Details:</span>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="gcash_account">GCash Account</label>
+                                        <input type="text" class="form-control @error('gcash_account') is-invalid @enderror"
+                                            name="gcash_account" id="gcash_account" value="{{ $resort->gcash_account }}">
+                                        @error('gcash_account')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="gcash_number">Number</label>
+                                        <input type="text"
+                                            class="form-control @error('gcash_number') is-invalid @enderror"
+                                            name="gcash_number" id="gcash_number" value="{{ $resort->gcash_number }}">
+                                        @error('gcash_number')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <button type="submit" class="btn btn-primary">
                                     Submit
                                 </button>
@@ -187,9 +330,9 @@
                         <div class="card">
                             <div class="card-header">
                                 <h4>Breakfast Add ons</h4>
-                                <div class="card-header-action">
+                                {{-- <div class="card-header-action">
                                     <a href="{{ route('breakfast.create') }}" class="btn btn-primary">Add</a>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
