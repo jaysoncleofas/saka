@@ -98,7 +98,7 @@
             <div class="row">
                 <div class="col-lg-4">
                     <h1 class="title room">{{ $cottage->name }}</h1>
-                    <div class="price">{{ number_format($cottage->price) }}&nbsp;PHP</div>
+                    <div class="price">{{ number_format($cottage->price) }}&nbsp;PHP - {{ number_format($cottage->nightPrice) }}&nbsp;PHP</div>
                     <div class="divider room-page"></div>
                     <p class="paragraph room">{{ $cottage->descriptions }}</p>
                     <a href="#Gallery"

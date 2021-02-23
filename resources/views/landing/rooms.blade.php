@@ -35,7 +35,7 @@
                             <p>{{ $room->descriptions }}</p>
                             <div class="divider room-page"></div>
                             <div class="about-room-page">
-                                <div class="split-content card-about-room-left">
+                                <div class="">
                                     <div class="from-text">From</div>
                                     <div class="card-price-wrapper">
                                         <div class="price">{{ number_format($room->price) }}&nbsp;PHP</div>

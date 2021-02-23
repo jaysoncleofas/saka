@@ -122,8 +122,8 @@ class LandingPageController extends Controller
 
         $rentBill = 0;
         $extraPersonTotal = 0;
-        if(!empty($room->extraPerson) && $totalpax > $room->min && $room->entrancefee == 'Inclusive') {
-            $extraPerson = ($room->min && $room->max ? ($totalpax - $room->max) : ($room->min ? ($totalpax - $room->min) : ($totalpax - $room->max)));
+        if($totalpax > $room->max) {
+            $extraPerson = $totalpax - $room->max;
             $extraPersonTotal = $extraPerson * $room->extraPerson;
         }
         if($room->entrancefee == 'Inclusive') {
@@ -157,6 +157,9 @@ class LandingPageController extends Controller
                                     <strong>Check Out:</strong> '.date('m/d/Y h:i a', strtotime($checkout)).' <br>
                                     <strong>Entrance Fee:</strong> '.$room->entrancefee.' <br>
                                     <strong>Payment:</strong> '.$payment->name.' <br>
+                                    <strong>Adults:</strong> '.$request->adults.' <br>
+                                    <strong>Kids:</strong> '.$request->kids.' <br>
+                                    <strong>Senior Citizens:</strong> '.$request->senior_citizen.' <br>
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <strong>Guest:</strong> '.$request->firstName.' '.$request->lastName.' <br>
@@ -170,7 +173,7 @@ class LandingPageController extends Controller
 
                     <div class="row">
                         <div class="col-lg-12 mt-5">
-                            <strong>Bills Summary</strong>
+                            <strong>Bill Summary</strong>
                             <div class="table-responsive mt-2">
                                 <table class="table table-bordered table-md">
                                     <thead>
@@ -375,8 +378,8 @@ class LandingPageController extends Controller
 
         $rentBill = 0;
         $extraPersonTotal = 0;
-        if(!empty($room->extraPerson) && $totalpax > $room->min && $room->entrancefee == 'Inclusive') {
-            $extraPerson = ($room->min && $room->max ? ($totalpax - $room->max) : ($room->min ? ($totalpax - $room->min) : ($totalpax - $room->max)));
+        if($totalpax > $room->max) {
+            $extraPerson = $totalpax - $room->max;
             $extraPersonTotal = $extraPerson * $room->extraPerson;
         }
         if($room->entrancefee == 'Inclusive') {
@@ -524,6 +527,9 @@ class LandingPageController extends Controller
                                     <strong>Check In:</strong> '.date('m/d/Y h:i a', strtotime($checkin)).' <br>
                                     <strong>Check Out:</strong> '.date('m/d/Y h:i a', strtotime($checkout)).' <br>
                                     <strong>Payment:</strong> '.$payment->name.' <br>
+                                    <strong>Adults:</strong> '.$request->adults.' <br>
+                                    <strong>Kids:</strong> '.$request->kids.' <br>
+                                    <strong>Senior Citizens:</strong> '.$request->senior_citizen.' <br>
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <strong>Guest:</strong> '.$request->firstName.' '.$request->lastName.' <br>
@@ -537,7 +543,7 @@ class LandingPageController extends Controller
 
                     <div class="row">
                         <div class="col-lg-12 mt-5">
-                            <strong>Bills Summary</strong>
+                            <strong>Bill Summary</strong>
                             <div class="table-responsive mt-2">
                                 <table class="table table-bordered table-md">
                                     <thead>
@@ -552,8 +558,8 @@ class LandingPageController extends Controller
                                         <tr>
                                             <td>'.$cottage->name.'</td>
                                             <td>1</td>
-                                            <td>P'.number_format($cottage->price, 2).'</td>
-                                            <td>P<span class="totalprice">'.number_format($cottage->price, 2).'</span></td>
+                                            <td>P'.number_format($rentBill, 2).'</td>
+                                            <td>P<span class="totalprice">'.number_format($rentBill, 2).'</span></td>
                                         </tr>';
         foreach ($entranceFees as $entrancefee) {
             if ($entrancefee->title == 'Adults' && $request->adults > 0) {
@@ -687,12 +693,20 @@ class LandingPageController extends Controller
         $kidfees = 0;
         $seniorfees = 0;
         foreach($entranceFees as $fee) {
+            $fees = 0;
+            if($request->type == 'day') {
+                $fees = $fee->price;
+            } elseif($request->type == 'night') {
+                $fees = $fee->nightPrice;
+            } else {
+                $fees = $fee->overnightPrice;
+            }
             if($fee->title == 'Adults') {
-                $adultfees = $request->adults * $fee->price;
+                $adultfees = $request->adults * $fees;
             } elseif ($fee->title == 'Kids') {
-                $kidfees = $request->kids * $fee->price;
+                $kidfees = $request->kids * $fees;
             } elseif ($fee->title == 'Senior Citizen') {
-                $seniorfees = $request->senior_citizen * $fee->price;
+                $seniorfees = $request->senior_citizen * $fees;
             }
         }
         $totalEntranceFee = $adultfees + $kidfees + $seniorfees;
@@ -806,6 +820,9 @@ class LandingPageController extends Controller
                                     <strong>Check In:</strong> '.date('m/d/Y h:i a', strtotime($checkin)).' <br>
                                     <strong>Check Out:</strong> '.date('m/d/Y h:i a', strtotime($checkout)).' <br>
                                     <strong>Payment:</strong> '.$payment->name.' <br>
+                                    <strong>Adults:</strong> '.$request->adults.' <br>
+                                    <strong>Kids:</strong> '.$request->kids.' <br>
+                                    <strong>Senior Citizens:</strong> '.$request->senior_citizen.' <br>
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <strong>Guest:</strong> '.$request->firstName.' '.$request->lastName.' <br>
@@ -819,7 +836,7 @@ class LandingPageController extends Controller
 
                     <div class="row">
                         <div class="col-lg-12 mt-5">
-                            <strong>Bills Summary</strong>
+                            <strong>Bill Summary</strong>
                             <div class="table-responsive mt-2">
                                 <table class="table table-bordered table-md">
                                     <thead>

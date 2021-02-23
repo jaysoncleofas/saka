@@ -99,7 +99,7 @@
                         <div class="price">{{ number_format($room->price) }}&nbsp;PHP</div>
                         <div class="divider room-page"></div>
                         <p class="paragraph room">{{ $room->descriptions }}</p>
-                        <a href="#Gallery" class="btn btn-lg btn-outline-dark button-secondary large w-inline-block radius-zero view-gallery">View Gallery</a>
+                        <a href="#Gallery" class="btn btn-lg mb-3 btn-outline-dark button-secondary large w-inline-block radius-zero view-gallery">View Gallery</a>
                     </div>
                     <div class="col-lg-8">
                         <div class="card reservate-room">

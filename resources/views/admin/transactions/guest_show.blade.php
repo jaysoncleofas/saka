@@ -94,7 +94,7 @@
 
                         <div class="row">
                             <div class="col-lg-12 mt-5">
-                                <strong>Bills Summary</strong>
+                                <strong>Bill Summary</strong>
                                 <div class="table-responsive mt-2">
                                     <!-- Item list -->
                                     <table class="table table-bordered table-md">

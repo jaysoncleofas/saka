@@ -45,13 +45,9 @@
                                         <strong>Entrance Fee:</strong> {{ $transaction->room->entrancefee }} <br>
                                         @endif
                                         <strong>Payment Method:</strong> {{ $transaction->payment->name }} <br>
-                                        <strong>Adults:</strong> {{ $transaction->adults }} <br>
-                                        <strong>Kids:</strong> {{ $transaction->kids }} <br>
-                                        <strong>Senior Citizens:</strong> {{ $transaction->senior }} <br>
                                         @if ($transaction->is_breakfast)
-                                        <strong>Breakfast:</strong> {{ $transaction->is_breakfast == 1 ? 'Yes' : 'No' }}
-                                        <span class="ml-5">
-                                            <strong>Add ons:</strong>
+                                        <strong>Breakfast:</strong> Free <br>
+                                        <strong>Add ons:</strong>
                                             @php
                                                 $breakfasts_array = [];
                                                 foreach ($transaction->breakfasts as $breakfast) {
@@ -59,11 +55,13 @@
                                                 }
                                                 echo implode(', ', $breakfasts_array);
                                             @endphp
-                                        </span>
                                         @endif
                                     </div>
 
                                     <div class="col-lg-6">
+                                        <strong>Adults:</strong> {{ $transaction->adults }} <br>
+                                        <strong>Kids:</strong> {{ $transaction->kids }} <br>
+                                        <strong>Senior Citizens:</strong> {{ $transaction->senior }} <br>
                                         <strong>Guest:</strong> {{ $transaction->guest->fullname }} <br>
                                         <strong>Contact Number:</strong> {{ $transaction->guest->contact }} <br>
                                         <strong>Email:</strong> {{ $transaction->guest->email }} <br>
@@ -77,7 +75,7 @@
 
                         <div class="row">
                             <div class="col-lg-12 mt-5">
-                                <strong>Bills Summary</strong>
+                                <strong>Bill Summary</strong>
                                 <div class="table-responsive mt-2">
                                     <!-- Item list -->
                                     <table class="table table-bordered table-md">
@@ -173,7 +171,7 @@
                                                 </tr>
                                             @endif
 
-                                            @if ($transaction->room_id && $transaction->type == 'overnight')
+                                            @if (count($transaction->breakfasts) > 0 && $transaction->type == 'overnight')
                                                 <tr>
                                                     <td>Breakfast Add ons:</td>
                                                     <td></td>

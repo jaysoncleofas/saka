@@ -323,8 +323,8 @@ class TransactionController extends Controller
 
         $rentBill = 0;
         $extraPersonTotal = 0;
-        if(!empty($room->extraPerson) && $totalpax > $room->min && $room->entrancefee == 'Inclusive') {
-            $extraPerson = ($room->min && $room->max ? ($totalpax - $room->max) : ($room->min ? ($totalpax - $room->min) : ($totalpax - $room->max)));
+        if($totalpax > $room->max) {
+            $extraPerson = $totalpax - $room->max;
             $extraPersonTotal = $extraPerson * $room->extraPerson;
         }
         if($room->entrancefee == 'Inclusive') {
@@ -842,8 +842,8 @@ class TransactionController extends Controller
 
         $rentBill = 0;
         $extraPersonTotal = 0;
-        if(!empty($room->extraPerson) && $totalpax > $room->min && $room->entrancefee == 'Inclusive') {
-            $extraPerson = ($room->min && $room->max ? ($totalpax - $room->max) : ($room->min ? ($totalpax - $room->min) : ($totalpax - $room->max)));
+        if($totalpax > $room->max) {
+            $extraPerson = $totalpax - $room->max;
             $extraPersonTotal = $extraPerson * $room->extraPerson;
         }
         if($room->entrancefee == 'Inclusive') {
@@ -1014,8 +1014,8 @@ class TransactionController extends Controller
             $rent_name = 'Room - '.$room->name;
             $rentBill = 0;
             $extraPersonTotal = 0;
-            if(!empty($room->extraPerson) && $totalpax > $room->min && $room->entrancefee == 'Inclusive') {
-                $extraPerson = ($room->min && $room->max ? ($totalpax - $room->max) : ($room->min ? ($totalpax - $room->min) : ($totalpax - $room->max)));
+            if($totalpax > $room->max) {
+                $extraPerson = $totalpax - $room->max;
                 $extraPersonTotal = $extraPerson * $room->extraPerson;
             }
             if($room->entrancefee == 'Inclusive') {
@@ -1060,6 +1060,9 @@ class TransactionController extends Controller
                                     <strong>Use:</strong> '.ucfirst($request->type).' Use<br>
                                     <strong>Check In:</strong> '.date('m/d/Y h:i a', strtotime($checkin)).' <br>
                                     <strong>Check Out:</strong> '.date('m/d/Y h:i a', strtotime($checkout)).' <br>
+                                    <strong>Adults:</strong> '.$request->adults.' <br>
+                                    <strong>Kids:</strong> '.$request->kids.' <br>
+                                    <strong>Senior Citizens:</strong> '.$request->senior_citizen.' <br>
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <strong>Guest:</strong> '.(!empty($guest) ? $guest->firstName : $request->firstName).' '.(!empty($guest) ? $guest->lastName : $request->lastName).' <br>
@@ -1073,7 +1076,7 @@ class TransactionController extends Controller
         if($request->rent_type == 'cottage') {
             $html .='   <div class="row">
                             <div class="col-lg-12 mt-5">
-                                <strong>Bills Summary</strong>
+                                <strong>Bill Summary</strong>
                                 <div class="table-responsive mt-2">
                                     <table class="table table-bordered table-md">
                                         <thead>
@@ -1155,7 +1158,7 @@ class TransactionController extends Controller
         } elseif($request->rent_type == 'room') {
             $html .='   <div class="row">
                             <div class="col-lg-12 mt-5">
-                                <strong>Bills Summary</strong>
+                                <strong>Bill Summary</strong>
                                 <div class="table-responsive mt-2">
                                     <table class="table table-bordered table-md">
                                         <thead>
@@ -1265,7 +1268,7 @@ class TransactionController extends Controller
         } else {
             $html .='   <div class="row">
                             <div class="col-lg-12 mt-5">
-                                <strong>Bills Summary</strong>
+                                <strong>Bill Summary</strong>
                                 <div class="table-responsive mt-2">
                                     <table class="table table-bordered table-md">
                                         <thead>
