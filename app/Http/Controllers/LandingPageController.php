@@ -80,10 +80,10 @@ class LandingPageController extends Controller
 
         $room = Room::findOrFail($id);
         $totalpax = $request->adults + $request->kids + $request->senior_citizen;
-        if($room->max < $totalpax) {
-            session()->flash('notification', 'The Maximum capacity for this room is '.$room->max.'pax');
-            return response()->json(['status' => 'error', 'message' => 'The Maximum capacity for this room is '.$room->max.'pax'], 200); 
-        }
+        // if($room->max < $totalpax) {
+        //     session()->flash('notification', 'The Maximum capacity for this room is '.$room->max.'pax');
+        //     return response()->json(['status' => 'error', 'message' => 'The Maximum capacity for this room is '.$room->max.'pax'], 200); 
+        // }
         $checkIn_at = Carbon::parse($request->checkin);
         if($request->type == 'day') {
             $checkin = Carbon::parse($request->checkin)->setHour(9);  
@@ -313,11 +313,11 @@ class LandingPageController extends Controller
 
         $room = Room::findOrFail($id);
         $totalpax = $request->adults + $request->kids + $request->senior_citizen;
-        if($room->max < $totalpax) {
-            session()->flash('notification', 'The Maximum capacity for this room is '.$room->max.'pax');
-            session()->flash('type', 'error');
-            return redirect()->back()->withInput($request->input());
-        }
+        // if($room->max < $totalpax) {
+        //     session()->flash('notification', 'The Maximum capacity for this room is '.$room->max.'pax');
+        //     session()->flash('type', 'error');
+        //     return redirect()->back()->withInput($request->input());
+        // }
         $checkIn_at = Carbon::parse($request->checkin);
         if($request->type == 'night') {
             $checkin = Carbon::parse($request->checkin)->setHour(17);  

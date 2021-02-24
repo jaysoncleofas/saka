@@ -194,16 +194,16 @@
                                                 @endforeach
                                                 @endif --}}
                                                 {{-- <br> --}}
-                                                @if ($room->extraPerson != 0)
-                                                <span>Good for {{ $room->min }}pax, {{ number_format($room->extraPerson, 0) }}php for extra person(max of {{ $room->max - $room->min }})</span>
-                                                @else
-                                                <span>Room max capacity is {{ $room->max }}pax</span>
-                                                @endif
+                                                {{-- @if ($room->min != 1) --}}
+                                                <span>Good for {{ ($room->max) }}pax, {{ number_format($room->extraPerson, 0) }}php for extra person</span>
+                                                {{-- @else --}}
+                                                {{-- <span>Good for {{ $room->max }}pax</span> --}}
+                                                {{-- @endif --}}
                                             </div>
                                             
                                             <div class="form-group col-lg-4">
                                                 <select name="adults" id="adults" class="form-control">
-                                                    @for ($i = 1; $i <= $room->max; $i++) 
+                                                    @for ($i = 1; $i <= ($room->max * 2); $i++) 
                                                     <option {{ old('adults') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $i }} {{ $i > 1 ? 'Adults' : 'Adult' }}</option>
                                                     @endfor
                                                 </select>
@@ -217,7 +217,7 @@
                                             <div class="form-group col-lg-4">
                                                 <select name="kids" id="kids" class="form-control">
                                                     <option value="0">No Kids</option>
-                                                    @for ($i = 1; $i <= $room->max; $i++) 
+                                                    @for ($i = 1; $i <= ($room->max * 2); $i++) 
                                                     <option {{ old('kids') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $i }} {{ $i > 1 ? 'Kids' : 'Kid' }}</option>
                                                     @endfor
                                                 </select>
@@ -231,7 +231,7 @@
                                             <div class="form-group col-lg-4">
                                                 <select name="senior_citizen" id="senior_citizen" class="form-control">
                                                     <option value="0">No Senior Citizen</option>
-                                                    @for ($i = 1; $i <= $room->max; $i++) 
+                                                    @for ($i = 1; $i <= ($room->max * 2); $i++) 
                                                     <option {{ old('senior_citizen') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $i }} {{ $i > 1 ? 'Senior Citizens' : 'Senior Citizen' }}</option>
                                                     @endfor
                                                 </select>
