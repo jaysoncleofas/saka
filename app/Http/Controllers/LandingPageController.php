@@ -999,6 +999,8 @@ class LandingPageController extends Controller
     public function transaction_show($code) 
     {
         $data['transaction'] = Transaction::where('controlCode', $code)->first();
+        // $data['cottages'] = Cottage::all();
+        // $data['rooms'] = Room::all();
         if($data['transaction']) {
             $data['entranceFees'] = Entrancefee::all();
             return view('landing.transaction_show', $data);

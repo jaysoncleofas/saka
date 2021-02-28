@@ -12,7 +12,7 @@
 @section('content')
 @include('landing.nav2')
 
-<div class="section rooms">
+<div class="section show-reservation">
     <div class="container-small-616px text-center w-container">
         <h2 class="title request-info mb-5">Reservation</h2>
         {{-- <p>Find and reserve your selected room and get the lowest prices.</p> --}}
@@ -205,6 +205,18 @@
                     </div>
                 </div>
             </div>
+
+            @if ($transaction->room_id)
+            <div class="col-lg-12 mt-5 text-center">
+                <a href="{{ route('landing.rooms') }}" class="btn btn-lg btn-outline-dark button-secondary large radius-zero">would you like to book another room?</a>
+            </div>
+            @endif
+
+            @if ($transaction->cottage_id)
+            <div class="col-lg-12 mt-5 text-center">
+                <a href="{{ route('landing.rooms') }}" class="btn btn-lg btn-outline-dark button-secondary large radius-zero">would you like to book another cottage?</a>
+            </div>
+            @endif
         </div>
     </div>
 </div>
