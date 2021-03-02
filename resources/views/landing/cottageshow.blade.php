@@ -106,7 +106,7 @@
                         Gallery</a>
                 </div>
                 <div class="col-lg-8">
-                    <div class="card reservate-room">
+                    <div class="card reservate-room" id="reservation-summary">
                         <div class="reservate-room-title-wrapper">
                             <h3>Reserve Cottage</h3>
                         </div>
@@ -678,10 +678,20 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function (result) {
+                        if(result.status == 'error') {
+                            swal({
+                                title: 'Error!',
+                                text: result.message,
+                                icon: "error",
+                                button: true,
+                            });
+                        } else {
+                            $('.room-reservation-form').hide();
+                            $('.reservation-summary').show();
+                            $('.reservation-summary').html(result.data);
+                            document.getElementById('reservation-summary').scrollIntoView();
+                        }
                         var _this = $(".btn-submit");
-                        $('.room-reservation-form').hide();
-                        $('.reservation-summary').show();
-                        $('.reservation-summary').html(result.data);
                         _this.removeAttr("disabled");
                         _this.find('.spinner-border').remove();
                     }

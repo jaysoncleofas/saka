@@ -146,8 +146,8 @@
                                 </label>
                             </div>
 
-                            <span>Exclusive Day Use:</span>
-                            <div class="row">
+                            <span class="d-none">Exclusive Day Use:</span>
+                            <div class="row d-none">
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="exclusive_dayprice">Price</label>
@@ -176,8 +176,8 @@
                                 </div>
                             </div>
 
-                            <span>Exclusive Overnight Use:</span>
-                            <div class="row">
+                            <span class="d-none">Exclusive Overnight Use:</span>
+                            <div class="row d-none">
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="exclusive_overnightprice">Price</label>

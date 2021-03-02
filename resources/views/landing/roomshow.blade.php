@@ -102,7 +102,7 @@
                         <a href="#Gallery" class="btn btn-lg mb-3 btn-outline-dark button-secondary large w-inline-block radius-zero view-gallery">View Gallery</a>
                     </div>
                     <div class="col-lg-8">
-                        <div class="card reservate-room">
+                        <div class="card reservate-room" id="reservation-summary">
                             <div class="reservate-room-title-wrapper">
                                 <h3>Reserve Room</h3>
                             </div>
@@ -623,6 +623,7 @@
                             $('.room-reservation-form').hide();
                             $('.reservation-summary').show();
                             $('.reservation-summary').html(result.data);
+                            document.getElementById('reservation-summary').scrollIntoView();
                         }
                         var _this = $(".btn-submit");
                         _this.removeAttr("disabled");
