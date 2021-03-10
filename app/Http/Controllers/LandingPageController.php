@@ -797,15 +797,16 @@ class LandingPageController extends Controller
         //     session()->flash('type', 'error');
         //     return redirect()->back()->withInput($request->input());
         // }
+        $resort = Resort::find(1);
         $extraPerson = null;
         $totalpax = $request->adults + $request->kids + $request->senior_citizen;
-        $maxpax = $request->type == 'day' ? 60 : 30;
+        $maxpax = $request->type == 'day' ? $resort->exclusive_daycapacity : $resort->exclusive_overnightcapacity;
         $extraPersonTotal = 0;
         if($totalpax > $maxpax) {
             $extraPerson = $totalpax - $maxpax;
-            $extraPersonTotal = $extraPerson * ($request->type == 'day' ? 200 : 250);
+            $extraPersonTotal = $extraPerson * ($request->type == 'day' ? $resort->exclusive_day_extra : $resort->exclusive_overnight_extra);
         }
-        $rentBill = $request->type == 'day' ? 15000 : 25000;
+        $rentBill = $request->type == 'day' ? $resort->exclusive_dayprice : $resort->exclusive_overnightprice;
         $totalBill = $extraPersonTotal + $rentBill;
         $payment = Payment::findOrFail($request->payment);
 
@@ -933,15 +934,16 @@ class LandingPageController extends Controller
                 'address' => $request->address,
             ]);
         }
+        $resort = Resort::find(1);
         $extraPerson = null;
         $totalpax = $request->adults + $request->kids + $request->senior_citizen;
-        $maxpax = $request->type == 'day' ? 60 : 30;
+        $maxpax = $request->type == 'day' ? $resort->exclusive_daycapacity : $resort->exclusive_overnightcapacity;
         $extraPersonTotal = 0;
         if($totalpax > $maxpax) {
             $extraPerson = $totalpax - $maxpax;
-            $extraPersonTotal = $extraPerson * ($request->type == 'day' ? 200 : 250);
+            $extraPersonTotal = $extraPerson * ($request->type == 'day' ? $resort->exclusive_day_extra : $resort->exclusive_overnight_extra);
         }
-        $rentBill = $request->type == 'day' ? 15000 : 25000;
+        $rentBill = $request->type == 'day' ? $resort->exclusive_dayprice : $resort->exclusive_overnightprice;
         $totalBill = $extraPersonTotal + $rentBill;
 
         do {
@@ -981,7 +983,6 @@ class LandingPageController extends Controller
         $transaction->payment_id = $request->payment;
         $transaction->save();
 
-        $resort = Resort::find(1);
         $entranceFees = Entrancefee::all();
         Mail::to($guest)->send(new ReservationSent($transaction, $resort));
         // $guest->notify(new ReservationSent($transaction));

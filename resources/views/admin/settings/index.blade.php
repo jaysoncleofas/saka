@@ -146,9 +146,9 @@
                                 </label>
                             </div>
 
-                            <span class="d-none">Exclusive Day Use:</span>
-                            <div class="row d-none">
-                                <div class="col-lg-6">
+                            <span class="">Exclusive Day Use:</span>
+                            <div class="row ">
+                                <div class="col-lg-4">
                                     <div class="form-group">
                                         <label for="exclusive_dayprice">Price</label>
                                         <input type="text" class="form-control digit_only2 @error('exclusive_dayprice') is-invalid @enderror"
@@ -161,7 +161,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     <div class="form-group">
                                         <label for="exclusive_daycapacity">Capacity</label>
                                         <input type="text"
@@ -174,11 +174,24 @@
                                         @enderror
                                     </div>
                                 </div>
+
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="exclusive_day_extra">Extra Person</label>
+                                        <input type="text" class="form-control digit_only2 @error('exclusive_day_extra') is-invalid @enderror"
+                                            name="exclusive_day_extra" id="exclusive_day_extra" value="{{ number_format($resort->exclusive_day_extra, 0) }}">
+                                        @error('exclusive_day_extra')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
 
-                            <span class="d-none">Exclusive Overnight Use:</span>
-                            <div class="row d-none">
-                                <div class="col-lg-6">
+                            <span class="">Exclusive Overnight Use:</span>
+                            <div class="row ">
+                                <div class="col-lg-4">
                                     <div class="form-group">
                                         <label for="exclusive_overnightprice">Price</label>
                                         <input type="text" class="form-control digit_only2 @error('exclusive_overnightprice') is-invalid @enderror"
@@ -191,13 +204,26 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     <div class="form-group">
                                         <label for="exclusive_overnightcapacity">Capacity</label>
                                         <input type="text"
                                             class="form-control digit_only2 @error('exclusive_overnightcapacity') is-invalid @enderror"
                                             name="exclusive_overnightcapacity" id="exclusive_overnightcapacity" value="{{ $resort->exclusive_overnightcapacity }}">
                                         @error('exclusive_overnightcapacity')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="exclusive_overnight_extra">Extra Person</label>
+                                        <input type="text" class="form-control digit_only2 @error('exclusive_overnight_extra') is-invalid @enderror"
+                                            name="exclusive_overnight_extra" id="exclusive_overnight_extra" value="{{ number_format($resort->exclusive_overnight_extra, 0) }}">
+                                        @error('exclusive_overnight_extra')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

@@ -51,6 +51,8 @@ class ResortController extends Controller
         $resort->bank_accountnumber = $request->bank_accountnumber;
         $resort->gcash_account = $request->gcash_account;
         $resort->gcash_number = $request->gcash_number;
+        $resort->exclusive_day_extra = $request->exclusive_day_extra;
+        $resort->exclusive_overnight_extra = $request->exclusive_overnight_extra;
         $resort->save();
 
         session()->flash('notification', 'Successfully updated!');
