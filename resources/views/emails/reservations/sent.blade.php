@@ -3,8 +3,8 @@
 @if ($transaction->payment_id != 1)
 Thank you for booking. It's on-hold until we confirm that payment has been received. In the meantime, here's a reminder of what you booked:<br> 
 
-<strong>Send the deposit slip through our Facebook Page's Messenger. <br> 
-Account: SAKA RESORT</strong><br>
+# Send the deposit slip through our Facebook Page's Messenger. <br> 
+# Account: SAKA RESORT <br>
 @else 
 Thank you for booking. Here's a reminder of what you booked:<br> 
 @endif
