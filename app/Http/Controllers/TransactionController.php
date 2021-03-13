@@ -146,15 +146,16 @@ class TransactionController extends Controller
             return 1;
             // 'Sorry, the date is not available.';
         }
+        $resort = Resort::find(1);
         $extraPerson = null;
         $totalpax = $adults + $kids + $senior;
-        $maxpax = $type == 'day' ? 60 : 30;
+        $maxpax = $type == 'day' ? $resort->exclusive_daycapacity : $resort->exclusive_overnightcapacity;
         $extraPersonTotal = 0;
         if($totalpax > $maxpax) {
             $extraPerson = $totalpax - $maxpax;
-            $extraPersonTotal = $extraPerson * ($type == 'day' ? 200 : 250);
+            $extraPersonTotal = $extraPerson * ($type == 'day' ? $resort->exclusive_day_extra : $resort->exclusive_overnight_extra);
         }
-        $rentBill = $type == 'day' ? 15000 : 25000;
+        $rentBill = $type == 'day' ? $resort->exclusive_dayprice : $resort->exclusive_overnightprice;
         $totalBill = $extraPersonTotal + $rentBill;
 
         do {
@@ -323,8 +324,8 @@ class TransactionController extends Controller
 
         $rentBill = 0;
         $extraPersonTotal = 0;
-        if(!empty($room->extraPerson) && $totalpax > $room->min && $room->entrancefee == 'Inclusive') {
-            $extraPerson = ($room->min && $room->max ? ($totalpax - $room->max) : ($room->min ? ($totalpax - $room->min) : ($totalpax - $room->max)));
+        if($totalpax > $room->max) {
+            $extraPerson = $totalpax - $room->max;
             $extraPersonTotal = $extraPerson * $room->extraPerson;
         }
         if($room->entrancefee == 'Inclusive') {
@@ -842,8 +843,8 @@ class TransactionController extends Controller
 
         $rentBill = 0;
         $extraPersonTotal = 0;
-        if(!empty($room->extraPerson) && $totalpax > $room->min && $room->entrancefee == 'Inclusive') {
-            $extraPerson = ($room->min && $room->max ? ($totalpax - $room->max) : ($room->min ? ($totalpax - $room->min) : ($totalpax - $room->max)));
+        if($totalpax > $room->max) {
+            $extraPerson = $totalpax - $room->max;
             $extraPersonTotal = $extraPerson * $room->extraPerson;
         }
         if($room->entrancefee == 'Inclusive') {
@@ -908,15 +909,16 @@ class TransactionController extends Controller
             $checkout = Carbon::parse($request->checkin)->setHour(17);
         }
 
+        $resort = Resort::find(1);
         $extraPerson = null;
         $totalpax = $request->adults + $request->kids + $request->senior;
-        $maxpax = $request->type == 'day' ? 60 : 30;
+        $maxpax = $request->type == 'day' ? $resort->exclusive_daycapacity : $resort->exclusive_overnightcapacity;
         $extraPersonTotal = 0;
         if($totalpax > $maxpax) {
             $extraPerson = $totalpax - $maxpax;
-            $extraPersonTotal = $extraPerson * ($request->type == 'day' ? 200 : 250);
+            $extraPersonTotal = $extraPerson * ($request->type == 'day' ? $resort->exclusive_day_extra : $resort->exclusive_overnight_extra);
         }
-        $rentBill = $request->type == 'day' ? 15000 : 25000;
+        $rentBill = $request->type == 'day' ? $resort->exclusive_dayprice : $resort->exclusive_overnightprice;
         $totalBill = $extraPersonTotal + $rentBill;
 
 
@@ -1014,8 +1016,8 @@ class TransactionController extends Controller
             $rent_name = 'Room - '.$room->name;
             $rentBill = 0;
             $extraPersonTotal = 0;
-            if(!empty($room->extraPerson) && $totalpax > $room->min && $room->entrancefee == 'Inclusive') {
-                $extraPerson = ($room->min && $room->max ? ($totalpax - $room->max) : ($room->min ? ($totalpax - $room->min) : ($totalpax - $room->max)));
+            if($totalpax > $room->max) {
+                $extraPerson = $totalpax - $room->max;
                 $extraPersonTotal = $extraPerson * $room->extraPerson;
             }
             if($room->entrancefee == 'Inclusive') {
@@ -1034,16 +1036,17 @@ class TransactionController extends Controller
     
             $totalBill = $totalEntranceFee + $extraPersonTotal + $breakfastfees + $rentBill;
         } else {
+            $resort = Resort::find(1);
             $rent_name = 'Exclusive Rental';
             $extraPerson = null;
             $totalpax = $request->adults + $request->kids + $request->senior_citizen;
-            $maxpax = $request->type == 'day' ? 60 : 30;
+            $maxpax = $request->type == 'day' ? $resort->exclusive_daycapacity : $resort->exclusive_overnightcapacity;
             $extraPersonTotal = 0;
             if($totalpax > $maxpax) {
                 $extraPerson = $totalpax - $maxpax;
-                $extraPersonTotal = $extraPerson * ($request->type == 'day' ? 200 : 250);
+                $extraPersonTotal = $extraPerson * ($request->type == 'day' ? $resort->exclusive_day_extra : $resort->exclusive_overnight_extra);
             }
-            $rentBill = $request->type == 'day' ? 15000 : 25000;
+            $rentBill = $request->type == 'day' ? $resort->exclusive_dayprice : $resort->exclusive_overnightprice;
             $totalBill = $extraPersonTotal + $rentBill;
         }
 
@@ -1060,6 +1063,9 @@ class TransactionController extends Controller
                                     <strong>Use:</strong> '.ucfirst($request->type).' Use<br>
                                     <strong>Check In:</strong> '.date('m/d/Y h:i a', strtotime($checkin)).' <br>
                                     <strong>Check Out:</strong> '.date('m/d/Y h:i a', strtotime($checkout)).' <br>
+                                    <strong>Adults:</strong> '.$request->adults.' <br>
+                                    <strong>Kids:</strong> '.$request->kids.' <br>
+                                    <strong>Senior Citizens:</strong> '.$request->senior_citizen.' <br>
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <strong>Guest:</strong> '.(!empty($guest) ? $guest->firstName : $request->firstName).' '.(!empty($guest) ? $guest->lastName : $request->lastName).' <br>
@@ -1073,7 +1079,7 @@ class TransactionController extends Controller
         if($request->rent_type == 'cottage') {
             $html .='   <div class="row">
                             <div class="col-lg-12 mt-5">
-                                <strong>Bills Summary</strong>
+                                <strong>Bill Summary</strong>
                                 <div class="table-responsive mt-2">
                                     <table class="table table-bordered table-md">
                                         <thead>
@@ -1155,7 +1161,7 @@ class TransactionController extends Controller
         } elseif($request->rent_type == 'room') {
             $html .='   <div class="row">
                             <div class="col-lg-12 mt-5">
-                                <strong>Bills Summary</strong>
+                                <strong>Bill Summary</strong>
                                 <div class="table-responsive mt-2">
                                     <table class="table table-bordered table-md">
                                         <thead>
@@ -1265,7 +1271,7 @@ class TransactionController extends Controller
         } else {
             $html .='   <div class="row">
                             <div class="col-lg-12 mt-5">
-                                <strong>Bills Summary</strong>
+                                <strong>Bill Summary</strong>
                                 <div class="table-responsive mt-2">
                                     <table class="table table-bordered table-md">
                                         <thead>
@@ -1287,7 +1293,7 @@ class TransactionController extends Controller
                                                 $html .='    <tr>
                                                     <td>Extra Person</td>
                                                     <td>'. $extraPerson .'</td>
-                                                    <td>P'. number_format(($request->type == 'day' ? 200 : 250), 2) .'</td>
+                                                    <td>P'. number_format(($request->type == 'day' ? $resort->exclusive_day_extra : $resort->exclusive_overnight_extra), 2) .'</td>
                                                     <td>P<span class="totalprice">'.  number_format($extraPersonTotal, 2) .'</span></td>
                                                 </tr>';
                                             }

@@ -98,17 +98,17 @@
             <div class="row">
                 <div class="col-lg-4">
                     <h1 class="title room">Exclusive Rental</h1>
-                    <div class="price">15,000&nbsp;PHP - 25,000&nbsp;PHP</div>
+                    <div class="price">{{ number_format(config('yourconfig.resort')->exclusive_dayprice, 0) }}&nbsp;PHP - {{ number_format(config('yourconfig.resort')->exclusive_overnightprice, 0) }}&nbsp;PHP</div>
                     <div class="divider room-page"></div>
-                    <p class="paragraph room">Exclusive rental is 15,000php good for 60pax(all cottages for day tour included) <br>
-                        200php per head for extra person <br>
+                    <p class="paragraph room">Exclusive rental is {{ number_format(config('yourconfig.resort')->exclusive_dayprice, 0) }}php good for {{ config('yourconfig.resort')->exclusive_daycapacity }}pax(all cottages for day tour included) <br>
+                        {{ number_format(config('yourconfig.resort')->exclusive_day_extra, 0) }}php per head for extra person <br>
                         Check in is 9am and Check out is 5pm<br> <br>
-                        For overnight 25,000php for 30pax(all a/c rooms and non a/c rooms are included except A-house). <br>
-                        250php per head for extra person  <br>
+                        For overnight {{ number_format(config('yourconfig.resort')->exclusive_overnightprice, 0) }}php for {{ config('yourconfig.resort')->exclusive_overnightcapacity }}pax(all a/c rooms and non a/c rooms are included except A-house). <br>
+                        {{ number_format(config('yourconfig.resort')->exclusive_overnight_extra, 0) }}php per head for extra person  <br>
                         Check in is 9am and Check out is 11am</p>
                 </div>
                 <div class="col-lg-8">
-                    <div class="card reservate-room">
+                    <div class="card reservate-room" id="reservation-summary">
                         <div class="reservate-room-title-wrapper">
                             <h3>Reserve Cottage/Room</h3>
                         </div>
@@ -162,8 +162,8 @@
                                         </div>
 
                                         <div class="col-lg-12 mb-2">
-                                            <span class="day-tour">Good for 60pax, 200php for extra person</span>
-                                            <span class="overnight-tour d-none">Good for 30pax, 250php for extra person</span>
+                                            <span class="day-tour">Good for {{ config('yourconfig.resort')->exclusive_daycapacity }}pax, {{ number_format(config('yourconfig.resort')->exclusive_day_extra, 0) }}php for extra person</span>
+                                            <span class="overnight-tour d-none">Good for {{ config('yourconfig.resort')->exclusive_overnightcapacity }}pax, {{ number_format(config('yourconfig.resort')->exclusive_overnight_extra, 0) }}php for extra person</span>
                                         </div>
 
                                         <div class="form-group col-lg-4">
@@ -512,10 +512,20 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function (result) {
+                        if(result.status == 'error') {
+                            swal({
+                                title: 'Error!',
+                                text: result.message,
+                                icon: "error",
+                                button: true,
+                            });
+                        } else {
+                            $('.room-reservation-form').hide();
+                            $('.reservation-summary').show();
+                            $('.reservation-summary').html(result.data);
+                            document.getElementById('reservation-summary').scrollIntoView();
+                        }
                         var _this = $(".btn-submit");
-                        $('.room-reservation-form').hide();
-                        $('.reservation-summary').show();
-                        $('.reservation-summary').html(result.data);
                         _this.removeAttr("disabled");
                         _this.find('.spinner-border').remove();
                     }

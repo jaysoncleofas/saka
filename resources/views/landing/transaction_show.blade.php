@@ -12,7 +12,7 @@
 @section('content')
 @include('landing.nav2')
 
-<div class="section rooms">
+<div class="section show-reservation">
     <div class="container-small-616px text-center w-container">
         <h2 class="title request-info mb-5">Reservation</h2>
         {{-- <p>Find and reserve your selected room and get the lowest prices.</p> --}}
@@ -45,13 +45,9 @@
                                         <strong>Entrance Fee:</strong> {{ $transaction->room->entrancefee }} <br>
                                         @endif
                                         <strong>Payment Method:</strong> {{ $transaction->payment->name }} <br>
-                                        <strong>Adults:</strong> {{ $transaction->adults }} <br>
-                                        <strong>Kids:</strong> {{ $transaction->kids }} <br>
-                                        <strong>Senior Citizens:</strong> {{ $transaction->senior }} <br>
                                         @if ($transaction->is_breakfast)
-                                        <strong>Breakfast:</strong> {{ $transaction->is_breakfast == 1 ? 'Yes' : 'No' }}
-                                        <span class="ml-5">
-                                            <strong>Add ons:</strong>
+                                        <strong>Breakfast:</strong> Free <br>
+                                        <strong>Add ons:</strong>
                                             @php
                                                 $breakfasts_array = [];
                                                 foreach ($transaction->breakfasts as $breakfast) {
@@ -59,11 +55,13 @@
                                                 }
                                                 echo implode(', ', $breakfasts_array);
                                             @endphp
-                                        </span>
                                         @endif
                                     </div>
 
                                     <div class="col-lg-6">
+                                        <strong>Adults:</strong> {{ $transaction->adults }} <br>
+                                        <strong>Kids:</strong> {{ $transaction->kids }} <br>
+                                        <strong>Senior Citizens:</strong> {{ $transaction->senior }} <br>
                                         <strong>Guest:</strong> {{ $transaction->guest->fullname }} <br>
                                         <strong>Contact Number:</strong> {{ $transaction->guest->contact }} <br>
                                         <strong>Email:</strong> {{ $transaction->guest->email }} <br>
@@ -77,7 +75,7 @@
 
                         <div class="row">
                             <div class="col-lg-12 mt-5">
-                                <strong>Bills Summary</strong>
+                                <strong>Bill Summary</strong>
                                 <div class="table-responsive mt-2">
                                     <!-- Item list -->
                                     <table class="table table-bordered table-md">
@@ -168,12 +166,12 @@
                                                 <tr>
                                                     <td>Extra Person</td>
                                                     <td>{{ $transaction->extraPerson }}</td>
-                                                    <td>P{{ number_format(($transaction->type == 'day' ? 200 : 250), 2) }}</td>
+                                                    <td>P{{ number_format(($transaction->type == 'day' ? config('yourconfig.resort')->exclusive_day_extra : config('yourconfig.resort')->exclusive_overnight_extra), 2) }}</td>
                                                     <td>P<span class="totalprice">{{  number_format($transaction->extraPersonTotal, 2) }}</span></td>
                                                 </tr>
                                             @endif
 
-                                            @if ($transaction->room_id && $transaction->type == 'overnight')
+                                            @if (count($transaction->breakfasts) > 0 && $transaction->type == 'overnight')
                                                 <tr>
                                                     <td>Breakfast Add ons:</td>
                                                     <td></td>
@@ -207,6 +205,18 @@
                     </div>
                 </div>
             </div>
+
+            @if ($transaction->room_id)
+            <div class="col-lg-12 mt-5 text-center">
+                <a href="{{ route('landing.rooms') }}" class="btn btn-lg btn-outline-dark button-secondary large radius-zero">would you like to book another room?</a>
+            </div>
+            @endif
+
+            @if ($transaction->cottage_id)
+            <div class="col-lg-12 mt-5 text-center">
+                <a href="{{ route('landing.rooms') }}" class="btn btn-lg btn-outline-dark button-secondary large radius-zero">would you like to book another cottage?</a>
+            </div>
+            @endif
         </div>
     </div>
 </div>

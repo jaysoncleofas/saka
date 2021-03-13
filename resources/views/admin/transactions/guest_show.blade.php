@@ -94,7 +94,7 @@
 
                         <div class="row">
                             <div class="col-lg-12 mt-5">
-                                <strong>Bills Summary</strong>
+                                <strong>Bill Summary</strong>
                                 <div class="table-responsive mt-2">
                                     <!-- Item list -->
                                     <table class="table table-bordered table-md">
@@ -215,7 +215,7 @@
                                                 <tr>
                                                     <td>Extra Person</td>
                                                     <td>{{ $transaction->extraPerson }}</td>
-                                                    <td>P{{ number_format(($transaction->type == 'day' ? 200 : 250), 2) }}</td>
+                                                    <td>P{{ number_format(($transaction->type == 'day' ? config('yourconfig.resort')->exclusive_day_extra : config('yourconfig.resort')->exclusive_overnight_extra), 2) }}</td>
                                                     <td>P<span class="totalprice">{{  number_format($transaction->extraPersonTotal, 2) }}</span></td>
                                                 </tr>
                                             @endif
