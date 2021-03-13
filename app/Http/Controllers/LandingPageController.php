@@ -446,7 +446,8 @@ class LandingPageController extends Controller
         $entranceFees = Entrancefee::all();
         Mail::to($guest)->send(new ReservationSent($transaction, $resort));
         // $guest->notify(new ReservationSent($transaction));
-        $msg = "Thank you for checking us out. We are reviewing your reservation: control#".$transaction->id.". We sent the reservation link to your email.";
+        // $msg = "Thank you for checking us out. We are reviewing your reservation: control#".$transaction->id.". We sent the reservation link to your email.";
+        $msg = "Thank you for checking us out. We are currently reviewing your reservation: control#".$transaction->id.". Please check your email for the payment details.";
         $smsResult = \App\Helpers\CustomSMS::send($guest->contact, $msg);
         session()->flash('type', 'success');
         if($transaction->payment_id == 1) {
@@ -753,7 +754,8 @@ class LandingPageController extends Controller
         $entranceFees = Entrancefee::all();
         Mail::to($guest)->send(new ReservationSent($transaction, $resort));
         // $guest->notify(new ReservationSent($transaction));
-        $msg = "Thank you for checking us out. We are reviewing your reservation: control#".$transaction->id.". We sent the reservation link to your email.";
+        // $msg = "Thank you for checking us out. We are reviewing your reservation: control#".$transaction->id.". We sent the reservation link to your email.";
+        $msg = "Thank you for checking us out. We are currently reviewing your reservation: control#".$transaction->id.". Please check your email for the payment details.";
         $smsResult = \App\Helpers\CustomSMS::send($guest->contact, $msg);
         session()->flash('type', 'success');
         if($transaction->payment_id == 1) {
@@ -986,7 +988,8 @@ class LandingPageController extends Controller
         $entranceFees = Entrancefee::all();
         Mail::to($guest)->send(new ReservationSent($transaction, $resort));
         // $guest->notify(new ReservationSent($transaction));
-        $msg = "Thank you for checking us out. We are reviewing your reservation: control#".$transaction->id.". We sent the reservation link to your email.";
+        // $msg = "Thank you for checking us out. We are reviewing your reservation: control#".$transaction->id.". We sent the reservation link to your email.";
+        $msg = "Thank you for checking us out. We are currently reviewing your reservation: control#".$transaction->id.". Please check your email for the payment details.";
         $smsResult = \App\Helpers\CustomSMS::send($guest->contact, $msg);
         session()->flash('type', 'success');
         if($transaction->payment_id == 1) {
