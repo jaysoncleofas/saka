@@ -324,12 +324,16 @@ class TransactionController extends Controller
 
         $rentBill = 0;
         $extraPersonTotal = 0;
-        if($totalpax > $room->max) {
-            $extraPerson = $totalpax - $room->max;
-            $extraPersonTotal = $extraPerson * $room->extraPerson;
-        }
+        $totalEntranceFee = 0;
         if($room->entrancefee == 'Inclusive') {
-            $totalEntranceFee = 0;
+            if($totalpax > $room->max) {
+                $extraPerson = $totalpax - $room->max;
+                $extraPersonTotal = $extraPerson * $room->extraPerson;
+            }
+        } else {
+            // Exclusive 
+            $extraPerson = $totalpax;
+            $extraPersonTotal = $extraPerson * $room->extraPerson;
         }
         $rentBill = $room->price;
 
@@ -843,12 +847,16 @@ class TransactionController extends Controller
 
         $rentBill = 0;
         $extraPersonTotal = 0;
-        if($totalpax > $room->max) {
-            $extraPerson = $totalpax - $room->max;
-            $extraPersonTotal = $extraPerson * $room->extraPerson;
-        }
+        $totalEntranceFee = 0;
         if($room->entrancefee == 'Inclusive') {
-            $totalEntranceFee = 0;
+            if($totalpax > $room->max) {
+                $extraPerson = $totalpax - $room->max;
+                $extraPersonTotal = $extraPerson * $room->extraPerson;
+            }
+        } else {
+            // Exclusive 
+            $extraPerson = $totalpax;
+            $extraPersonTotal = $extraPerson * $room->extraPerson;
         }
         $rentBill = $room->price;
 
@@ -871,7 +879,7 @@ class TransactionController extends Controller
         $transaction->senior = $request->senior;
         $transaction->type = $request->type;
         $transaction->is_freebreakfast = 1;
-        $transaction->status = 'active';
+        // $transaction->status = 'active';
         $transaction->notes = $request->notes;
         $transaction->extraPerson = $extraPerson;
         $transaction->extraPersonTotal = $extraPersonTotal;
@@ -1016,12 +1024,16 @@ class TransactionController extends Controller
             $rent_name = 'Room - '.$room->name;
             $rentBill = 0;
             $extraPersonTotal = 0;
-            if($totalpax > $room->max) {
-                $extraPerson = $totalpax - $room->max;
-                $extraPersonTotal = $extraPerson * $room->extraPerson;
-            }
+            $totalEntranceFee = 0;
             if($room->entrancefee == 'Inclusive') {
-                $totalEntranceFee = 0;
+                if($totalpax > $room->max) {
+                    $extraPerson = $totalpax - $room->max;
+                    $extraPersonTotal = $extraPerson * $room->extraPerson;
+                }
+            } else {
+                // Exclusive 
+                $extraPerson = $totalpax;
+                $extraPersonTotal = $extraPerson * $room->extraPerson;
             }
             $rentBill = $room->price;
     
@@ -1180,70 +1192,19 @@ class TransactionController extends Controller
                                                 <td>P<span class="totalprice">'.number_format($room->price, 2).'</span></td>
                                             </tr>';
                 if($room->entrancefee == 'Exclusive') {
-                foreach ($entranceFees as $entrancefee) {
-                    if ($entrancefee->title == 'Adults' && $request->adults > 0) {
-                    $html .='           <tr>
-                                            <td>Adults</td>
-                                            <td>'.$request->adults.'</td>
-                                            <td>';
-                                            $fees = 0;
-                                            if($request->type == 'day') {
-                                                $fees = $entrancefee->price;
-                                            } elseif($request->type == 'night') {
-                                                $fees = $entrancefee->nightPrice;
-                                            } else {
-                                                $fees = $entrancefee->overnightPrice;
-                                            }
-                                            $html .='P'.number_format($fees, 2).'';
-                    $html .='               </td>
-                                            <td>P'.number_format($adultfees, 2).'</td>
-                                        </tr>';
-                    }
-                    if ($entrancefee->title == 'Kids' && $request->kids > 0) {
-                        $html .='           <tr>
-                                                <td>Kids</td>
-                                                <td>'.$request->kids.'</td>
-                                                <td>';
-                                                $fees = 0;
-                                                if($request->type == 'day') {
-                                                    $fees = $entrancefee->price;
-                                                } elseif($request->type == 'night') {
-                                                    $fees = $entrancefee->nightPrice;
-                                                } else {
-                                                    $fees = $entrancefee->overnightPrice;
-                                                }
-                                                $html .='P'.number_format($fees, 2).'';
-                        $html .='               </td>
-                                                <td>P'.number_format($kidfees, 2).'</td>
-                                            </tr>';
-                    }
-                    if ($entrancefee->title == 'Senior Citizen' && $request->senior_citizen > 0) {
-                        $html .='           <tr>
-                                                <td>Senior Citizens</td>
-                                                <td>'.$request->senior_citizen.'</td>
-                                                <td>';
-                                                $fees = 0;
-                                                if($request->type == 'day') {
-                                                    $fees = $entrancefee->price;
-                                                } elseif($request->type == 'night') {
-                                                    $fees = $entrancefee->nightPrice;
-                                                } else {
-                                                    $fees = $entrancefee->overnightPrice;
-                                                }
-                                                $html .='P'.number_format($fees, 2).'';
-                        $html .='               </td>
-                                                <td>P'.number_format($seniorfees, 2).'</td>
-                                            </tr>';
-                    }
-                }
-                }
-                if ($extraPerson){
-                $html .='    <tr>
-                    <td>Extra Person</td>
-                    <td>'. $extraPerson .'</td>
-                    <td>P'. number_format($room->extraPerson, 2) .'</td>
-                    <td>P<span class="totalprice">'.  number_format($extraPersonTotal, 2) .'</span></td>
-                </tr>';
+                    $html .='<tr>';
+                    $html .='    <td>'. number_format($room->extraPerson, 0) .' per head</td>';
+                    $html .='    <td>'. $extraPerson .'</td>';
+                    $html .='    <td>P'. number_format($room->extraPerson, 2) .'</td>';
+                    $html .='    <td>P'.number_format($extraPersonTotal, 2).'</td>';
+                    $html .='</tr>';
+                } else {
+                    $html .='    <tr>
+                        <td>Extra Person</td>
+                        <td>'. $extraPerson .'</td>
+                        <td>P'. number_format($room->extraPerson, 2) .'</td>
+                        <td>P<span class="totalprice">'.  number_format($extraPersonTotal, 2) .'</span></td>
+                    </tr>';
                 }
                 if ($request->breakfast && $request->type == 'overnight'){
                 $html .='    <tr>

@@ -122,12 +122,16 @@ class LandingPageController extends Controller
 
         $rentBill = 0;
         $extraPersonTotal = 0;
-        if($totalpax > $room->max) {
-            $extraPerson = $totalpax - $room->max;
-            $extraPersonTotal = $extraPerson * $room->extraPerson;
-        }
+        $totalEntranceFee = 0;
         if($room->entrancefee == 'Inclusive') {
-            $totalEntranceFee = 0;
+            if($totalpax > $room->max) {
+                $extraPerson = $totalpax - $room->max;
+                $extraPersonTotal = $extraPerson * $room->extraPerson;
+            }
+        } else {
+            // Exclusive 
+            $extraPerson = $totalpax;
+            $extraPersonTotal = $extraPerson * $room->extraPerson;
         }
         $rentBill = $room->price;
 
@@ -192,64 +196,13 @@ class LandingPageController extends Controller
                                             <td>P<span class="totalprice">'.number_format($room->price, 2).'</span></td>
                                         </tr>';
         if($room->entrancefee == 'Exclusive') {
-            foreach ($entranceFees as $entrancefee) {
-                if ($entrancefee->title == 'Adults' && $request->adults > 0) {
-                $html .='           <tr>
-                                        <td>Adults</td>
-                                        <td>'.$request->adults.'</td>
-                                        <td>';
-                                        $fees = 0;
-                                        if($request->type == 'day') {
-                                            $fees = $entrancefee->price;
-                                        } elseif($request->type == 'night') {
-                                            $fees = $entrancefee->nightPrice;
-                                        } else {
-                                            $fees = $entrancefee->overnightPrice;
-                                        }
-                                        $html .='P'.number_format($fees, 2).'';
-                $html .='               </td>
-                                        <td>P'.number_format($adultfees, 2).'</td>
-                                    </tr>';
-                }
-                if ($entrancefee->title == 'Kids' && $request->kids > 0) {
-                    $html .='           <tr>
-                                            <td>Kids</td>
-                                            <td>'.$request->kids.'</td>
-                                            <td>';
-                                            $fees = 0;
-                                            if($request->type == 'day') {
-                                                $fees = $entrancefee->price;
-                                            } elseif($request->type == 'night') {
-                                                $fees = $entrancefee->nightPrice;
-                                            } else {
-                                                $fees = $entrancefee->overnightPrice;
-                                            }
-                                            $html .='P'.number_format($fees, 2).'';
-                    $html .='               </td>
-                                            <td>P'.number_format($kidfees, 2).'</td>
-                                        </tr>';
-                }
-                if ($entrancefee->title == 'Senior Citizen' && $request->senior_citizen > 0) {
-                    $html .='           <tr>
-                                            <td>Senior Citizens</td>
-                                            <td>'.$request->senior_citizen.'</td>
-                                            <td>';
-                                            $fees = 0;
-                                            if($request->type == 'day') {
-                                                $fees = $entrancefee->price;
-                                            } elseif($request->type == 'night') {
-                                                $fees = $entrancefee->nightPrice;
-                                            } else {
-                                                $fees = $entrancefee->overnightPrice;
-                                            }
-                                            $html .='P'.number_format($fees, 2).'';
-                    $html .='               </td>
-                                            <td>P'.number_format($seniorfees, 2).'</td>
-                                        </tr>';
-                }
-            }
-        }
-        if ($extraPerson){
+            $html .='    <tr>
+                <td>'. number_format($room->extraPerson, 0) .' per head</td>
+                <td>'. $extraPerson .'</td>
+                <td>P'. number_format($room->extraPerson, 2) .'</td>
+                <td>P<span class="totalprice">'.  number_format($extraPersonTotal, 2) .'</span></td>
+            </tr>';
+        } else if ($room->entrancefee == 'Inclusive' && $extraPerson){
             $html .='    <tr>
                 <td>Extra Person</td>
                 <td>'. $extraPerson .'</td>
@@ -378,12 +331,16 @@ class LandingPageController extends Controller
 
         $rentBill = 0;
         $extraPersonTotal = 0;
-        if($totalpax > $room->max) {
-            $extraPerson = $totalpax - $room->max;
-            $extraPersonTotal = $extraPerson * $room->extraPerson;
-        }
+        $totalEntranceFee = 0;
         if($room->entrancefee == 'Inclusive') {
-            $totalEntranceFee = 0;
+            if($totalpax > $room->max) {
+                $extraPerson = $totalpax - $room->max;
+                $extraPersonTotal = $extraPerson * $room->extraPerson;
+            }
+        } else {
+            // Exclusive 
+            $extraPerson = $totalpax;
+            $extraPersonTotal = $extraPerson * $room->extraPerson;
         }
         $rentBill = $room->price;
 
@@ -861,7 +818,7 @@ class LandingPageController extends Controller
                                             $html .='    <tr>
                                                 <td>Extra Person</td>
                                                 <td>'. $extraPerson .'</td>
-                                                <td>P'. number_format(($request->type == 'day' ? 200 : 250), 2) .'</td>
+                                                <td>P'. number_format(($request->type == 'day' ? $resort->exclusive_day_extra : $resort->exclusive_overnight_extra), 2) .'</td>
                                                 <td>P<span class="totalprice">'.  number_format($extraPersonTotal, 2) .'</span></td>
                                             </tr>';
                                         }

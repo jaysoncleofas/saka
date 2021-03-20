@@ -147,7 +147,7 @@
                                                     <td>P<span class="totalprice">{{ number_format($transaction->rentBill, 2) }}</span></td>
                                                 </tr>
                                             @else
-                                                @if ($transaction->cottage || $transaction->room->entrancefee == 'Exclusive')
+                                                @if ($transaction->cottage)
                                                     @if ($transaction->adults)
                                                     <tr>
                                                         <td>Adults</td>
@@ -220,12 +220,21 @@
                                             @endif
 
                                             @if ($transaction->extraPerson && $transaction->room)
-                                                <tr>
-                                                    <td>Extra Person</td>
-                                                    <td>{{ $transaction->extraPerson }}</td>
-                                                    <td>P{{ number_format($transaction->room->extraPerson, 2) }}</td>
-                                                    <td>P<span class="totalprice">{{  number_format($transaction->room->extraPerson*$transaction->extraPerson, 2) }}</span></td>
-                                                </tr>
+                                                @if ($transaction->room->entrancefee == 'Exclusive')
+                                                    <tr>
+                                                        <td>{{ number_format($transaction->room->extraPerson, 0) }} per head</td>
+                                                        <td>{{ $transaction->extraPerson }}</td>
+                                                        <td>P{{ number_format($transaction->room->extraPerson, 2) }}</td>
+                                                        <td>P<span class="totalprice">{{  number_format($transaction->room->extraPerson*$transaction->extraPerson, 2) }}</span></td>
+                                                    </tr>
+                                                @else 
+                                                    <tr>
+                                                        <td>Extra Person</td>
+                                                        <td>{{ $transaction->extraPerson }}</td>
+                                                        <td>P{{ number_format($transaction->room->extraPerson, 2) }}</td>
+                                                        <td>P<span class="totalprice">{{  number_format($transaction->room->extraPerson*$transaction->extraPerson, 2) }}</span></td>
+                                                    </tr>
+                                                @endif
                                             @elseif($transaction->extraPerson && $transaction->is_exclusive)
                                                 <tr>
                                                     <td>Extra Person</td>

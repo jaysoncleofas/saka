@@ -89,7 +89,7 @@
                                                     <td>P<span class="totalprice">{{ number_format($transaction->rentBill, 2) }}</span></td>
                                                 </tr>
                                             @else
-                                                @if ($transaction->cottage || $transaction->room->entrancefee == 'Exclusive')
+                                                @if ($transaction->cottage)
                                                     @if ($transaction->adults)
                                                     <tr>
                                                         <td>Adults</td>
@@ -132,12 +132,21 @@
                                             @endif
 
                                             @if ($transaction->extraPerson && $transaction->room)
-                                                <tr>
-                                                    <td>Extra Person</td>
-                                                    <td>{{ $transaction->extraPerson }}</td>
-                                                    <td>P{{ number_format($transaction->room->extraPerson, 2) }}</td>
-                                                    <td>P<span class="totalprice">{{  number_format($transaction->room->extraPerson*$transaction->extraPerson, 2) }}</span></td>
-                                                </tr>
+                                                @if ($transaction->room->entrancefee == 'Exclusive')
+                                                    <tr>
+                                                        <td>{{ number_format($transaction->room->extraPerson, 0) }} per head</td>
+                                                        <td>{{ $transaction->extraPerson }}</td>
+                                                        <td>P{{ number_format($transaction->room->extraPerson, 2) }}</td>
+                                                        <td>P<span class="totalprice">{{  number_format($transaction->room->extraPerson*$transaction->extraPerson, 2) }}</span></td>
+                                                    </tr>
+                                                @else 
+                                                    <tr>
+                                                        <td>Extra Person</td>
+                                                        <td>{{ $transaction->extraPerson }}</td>
+                                                        <td>P{{ number_format($transaction->room->extraPerson, 2) }}</td>
+                                                        <td>P<span class="totalprice">{{  number_format($transaction->room->extraPerson*$transaction->extraPerson, 2) }}</span></td>
+                                                    </tr>
+                                                @endif
                                             @elseif($transaction->extraPerson && $transaction->is_exclusive)
                                                 <tr>
                                                     <td>Extra Person</td>
@@ -147,23 +156,23 @@
                                                 </tr>
                                             @endif
 
-                                            @if ($transaction->is_breakfast)
-                                                <tr>
-                                                    <td>Breakfast</td>
-                                                    <td>1</td>
-                                                    <td>P{{ ($transaction->is_freebreakfast == 0 ) ? number_format(config('yourconfig.resort')->breakfastPrice, 2) : 0 }}</td>
-                                                    <td>P<span class="totalprice">{{ ($transaction->is_freebreakfast == 0 ) ? number_format(config('yourconfig.resort')->breakfastPrice, 2) : 0 }}</span></td>
-                                                </tr>
+                                            @if ($transaction->room_id && $transaction->type == 'overnight')
+                                            <tr>
+                                                <td>Breakfast Add ons:</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
 
-                                                @foreach ($transaction->breakfasts as $breakfast)
-                                                <tr>
-                                                    <td>{{ $breakfast->title }}</td>
-                                                    <td>1</td>
-                                                    <td>P{{ number_format($breakfast->price, 2) }}</td>
-                                                    <td>P<span class="totalprice">{{ number_format($breakfast->price, 2) }}</span></td>
-                                                </tr>
-                                                @endforeach
-                                            @endif
+                                            @foreach ($transaction->breakfasts as $breakfast)
+                                            <tr>
+                                                <td>{{ $breakfast->title }}</td>
+                                                <td>1</td>
+                                                <td>P{{ number_format($breakfast->price, 2) }}</td>
+                                                <td>P<span class="totalprice">{{ number_format($breakfast->price, 2) }}</span></td>
+                                            </tr>
+                                            @endforeach
+                                        @endif
     
                                         </tbody>
                                     </table>
