@@ -22,8 +22,8 @@ class LandingPageController extends Controller
 {
     public function index()
     {
-        $data['rooms'] = Room::all();
-        $data['cottages'] = Cottage::all();
+        $data['rooms'] = Room::orderBy('name')->get();
+        $data['cottages'] = Cottage::orderBy('name')->get();
         return view('landing.index', $data);
     }
 
@@ -34,23 +34,23 @@ class LandingPageController extends Controller
 
     public function rooms()
     {
-        $data['rooms'] = Room::all();
+        $data['rooms'] = Room::orderBy('name')->get();
         return view('landing.rooms', $data);
     }
 
     public function cottages()
     {
-        $data['cottages'] = Cottage::all();
+        $data['cottages'] = Cottage::orderBy('name')->get();
         return view('landing.cottages', $data);
     }
 
     public function contact()
     {
-        $data['cottages'] = Cottage::all();
-        $data['rooms'] = Room::all();
-        $data['entranceFees'] = Entrancefee::all();
-        $data['breakfasts'] = Breakfast::where('is_active', 1)->get();
-        return view('landing.contact', $data);
+        // $data['cottages'] = Cottage::all();
+        // $data['rooms'] = Room::all();
+        // $data['entranceFees'] = Entrancefee::all();
+        // $data['breakfasts'] = Breakfast::where('is_active', 1)->get();
+        return view('landing.contact');
     }
 
     public function room_show($id)
@@ -978,30 +978,31 @@ class LandingPageController extends Controller
         return view('landing.cottageshow', $data);
     }
 
-    public function room_book($id)
-    {
-        $data['room'] = Room::findOrFail($id);
-        $data['cottages'] = Cottage::all();
-        $data['rooms'] = Room::all();
-        $data['entranceFees'] = Entrancefee::all();
-        $data['breakfasts'] = Breakfast::where('is_active', 1)->get();
-        return view('landing.roombook', $data);
-    }
+    // public function room_book($id)
+    // {
+    //     $data['room'] = Room::findOrFail($id);
+    //     $data['cottages'] = Cottage::all();
+    //     $data['rooms'] = Room::all();
+    //     $data['entranceFees'] = Entrancefee::all();
+    //     $data['breakfasts'] = Breakfast::where('is_active', 1)->get();
+    //     return view('landing.roombook', $data);
+    //     // dito 
+    // }
 
-    public function room_available(Request $request)
-    {
+    // public function room_available(Request $request)
+    // {
   
-        $checkin = Carbon::parse($request->checkin); 
-        $checkout = Carbon::parse($request->checkout); 
-        $slot = Transaction::where('cottage_id', null)->where('status', '!=', 'cancelled')->whereBetween('checkIn_at', [$checkin, $checkout])->orWhereBetween('checkOut_at', [$checkin, $checkout])->pluck('id')->toArray();
+    //     $checkin = Carbon::parse($request->checkin); 
+    //     $checkout = Carbon::parse($request->checkout); 
+    //     $slot = Transaction::where('cottage_id', null)->where('status', '!=', 'cancelled')->whereBetween('checkIn_at', [$checkin, $checkout])->orWhereBetween('checkOut_at', [$checkin, $checkout])->pluck('id')->toArray();
 
-        if(!empty($slot)) {
-            $rooms = Room::whereNotIn('id', $slot)->get();
-            return response()->json(['rooms' => $rooms], 200);
-        }
-        $rooms = Room::all();
-        return response()->json(['rooms' => $rooms ], 200);
-    }
+    //     if(!empty($slot)) {
+    //         $rooms = Room::whereNotIn('id', $slot)->get();
+    //         return response()->json(['rooms' => $rooms], 200);
+    //     }
+    //     $rooms = Room::all();
+    //     return response()->json(['rooms' => $rooms ], 200);
+    // }
 
     public function getrooms_available($id)
     {
@@ -1059,27 +1060,27 @@ class LandingPageController extends Controller
             $cottages = Cottage::whereNotIn('id', $slot)->get();
             return response()->json(['cottages' => $cottages], 200);
         }
-        $cottages = Cottage::all();
+        $cottages = Cottage::orderBy('name')->get();
         return response()->json(['cottages' => $cottages ], 200);
     }
 
-    public function available_rooms(Request $request, $id)
-    {
-        $room = Room::findOrFail($id);
+    // public function available_rooms(Request $request, $id)
+    // {
+    //     $room = Room::findOrFail($id);
 
-        $checkin = Carbon::parse($request->checkin)->startOfDay(); 
-        $checkout = Carbon::parse($request->checkin)->endOfDay();
+    //     $checkin = Carbon::parse($request->checkin)->startOfDay(); 
+    //     $checkout = Carbon::parse($request->checkin)->endOfDay();
 
-        $checkout = Carbon::parse($request->checkout); 
-        $slot = Transaction::where('cottage_id', null)->where('status', '!=', 'cancelled')->whereBetween('checkIn_at', [$checkin, $checkout])->orWhereBetween('checkOut_at', [$checkin, $checkout])->pluck('id')->toArray();
+    //     $checkout = Carbon::parse($request->checkout); 
+    //     $slot = Transaction::where('cottage_id', null)->where('status', '!=', 'cancelled')->whereBetween('checkIn_at', [$checkin, $checkout])->orWhereBetween('checkOut_at', [$checkin, $checkout])->pluck('id')->toArray();
 
-        if(!empty($slot)) {
-            $rooms = Room::whereNotIn('id', $slot)->get();
-            return response()->json(['rooms' => $rooms], 200);
-        }
-        $rooms = Room::all();
-        return response()->json(['rooms' => $rooms ], 200);
-    }
+    //     if(!empty($slot)) {
+    //         $rooms = Room::whereNotIn('id', $slot)->get();
+    //         return response()->json(['rooms' => $rooms], 200);
+    //     }
+    //     $rooms = Room::all();
+    //     return response()->json(['rooms' => $rooms ], 200);
+    // }
 
     public function exclusive_rental()
     {

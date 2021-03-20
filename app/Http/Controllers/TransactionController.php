@@ -37,8 +37,8 @@ class TransactionController extends Controller
 
     public function create()
     {
-        $data['cottages'] = Cottage::all();
-        $data['rooms'] = Room::all();
+        $data['cottages'] = Cottage::orderBy('name')->get();
+        $data['rooms'] = Room::orderBy('name')->get();
         $data['entranceFees'] = Entrancefee::all();
         $data['breakfasts'] = Breakfast::where('is_active', 1)->get();
         return view('admin.transactions.create', $data);
@@ -46,8 +46,8 @@ class TransactionController extends Controller
 
     public function guest_create()
     {
-        $data['cottages'] = Cottage::all();
-        $data['rooms'] = Room::all();
+        $data['cottages'] = Cottage::orderBy('name')->get();
+        $data['rooms'] = Room::orderBy('name')->get();
         $data['entranceFees'] = Entrancefee::all();
         $data['breakfasts'] = Breakfast::where('is_active', 1)->get();
         return view('admin.transactions.guest', $data);
@@ -407,8 +407,8 @@ class TransactionController extends Controller
     public function edit($id)
     {
         $data['transaction'] = Transaction::findOrFail($id);
-        $data['cottages'] = Cottage::all();
-        $data['rooms'] = Room::all();
+        $data['cottages'] = Cottage::orderBy('name')->get();
+        $data['rooms'] = Room::orderBy('name')->get();
         $data['entranceFees'] = Entrancefee::all();
         $data['breakfasts'] = Breakfast::where('is_active', 1)->get();
         return view('admin.transactions.edit', $data);
@@ -641,7 +641,7 @@ class TransactionController extends Controller
         $checkin = Carbon::parse($request->checkin);
         $available_data = [];
         if($request->rent_type == 'cottage') {
-            $cottages = Cottage::all();
+            $cottages = Cottage::orderBy('name')->get();
             foreach($cottages as $cottage) {
                 $slot = Transaction::where('cottage_id', $cottage->id)->whereDate('checkIn_at', $checkin)->where('type', $request->type)->where('status', '!=', 'cancelled')->count();
                 if($slot && $request->edit == 1 && $request->cottageid == $cottage->id) {
@@ -678,7 +678,7 @@ class TransactionController extends Controller
                     $new_arr[] = $item;
                 }
             }
-            $rooms = Room::whereNotIn('id', $new_arr)->get();
+            $rooms = Room::whereNotIn('id', $new_arr)->orderBy('name')->get();
             foreach($rooms as $room) {
                 $exclusive = Transaction::whereDate('checkIn_at', $checkin)->where('type', 'overnight')->where('is_exclusive', 1)->where('status', '!=', 'cancelled')->count();
                 if(!$exclusive){
@@ -697,7 +697,7 @@ class TransactionController extends Controller
     public function edit_cottage($id)
     {
         $data['transaction'] = Transaction::findOrFail($id);
-        $data['cottages'] = Cottage::all();
+        $data['cottages'] = Cottage::orderBy('name')->get();
         $data['entranceFees'] = Entrancefee::all();
         return view('admin.transactions.edit_cottage', $data);
     }
@@ -705,7 +705,7 @@ class TransactionController extends Controller
     public function edit_room($id)
     {
         $data['transaction'] = Transaction::findOrFail($id);
-        $data['rooms'] = Room::all();
+        $data['rooms'] = Room::orderBy('name')->get();
         $data['entranceFees'] = Entrancefee::all();
         $data['breakfasts'] = Breakfast::where('is_active', 1)->get();
         $data['transactionbreakfasts'] = [];

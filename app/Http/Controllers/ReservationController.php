@@ -36,8 +36,8 @@ class ReservationController extends Controller
 
     public function create()
     {
-        $data['cottages'] = Cottage::all();
-        $data['rooms'] = Room::all();
+        $data['cottages'] = Cottage::orderBy('name')->get();
+        $data['rooms'] = Room::orderBy('name')->get();
         $data['entranceFees'] = Entrancefee::all();
         $data['breakfasts'] = Breakfast::all();
         return view('admin.reservations.create', $data);

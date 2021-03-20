@@ -196,7 +196,7 @@ class RoomController extends Controller
 
     public function datatables()
     {
-        $rooms = Room::orderBy('name', 'desc')->get();
+        $rooms = Room::orderBy('name')->get();
 
         return DataTables::of($rooms)
                 ->addColumn('actions', function ($room) {

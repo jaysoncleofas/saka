@@ -190,7 +190,7 @@ class CottageController extends Controller
 
     public function datatables()
     {
-        $cottages = Cottage::orderBy('name', 'desc')->get();
+        $cottages = Cottage::orderBy('name')->get();
 
         return DataTables::of($cottages)
                 ->addColumn('actions', function ($cottage) {
