@@ -244,7 +244,7 @@
                                                 </tr>
                                             @endif
 
-                                            @if ($transaction->room_id && $transaction->type == 'overnight')
+                                            @if ($transaction->breakfasts->count() > 0)
                                                 <tr>
                                                     <td>Breakfast Add ons:</td>
                                                     <td></td>

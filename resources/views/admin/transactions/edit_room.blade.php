@@ -142,7 +142,7 @@
     <div class="section-body">
         <div class="container-fluid" id="grad1">
             <div class="row mt-0">
-                <div class="col-lg-8 col-md-10 col-sm-12 text-center p-0 mt-3 mb-2">
+                <div class="col-lg-12 text-center p-0 mt-3 mb-2">
                     <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
                         <div class="card-header">
                             <h4>Edit Transaction</h4>
@@ -466,7 +466,7 @@
             var notes = $('#notes').val();
             var addons = [];
             $('.breakfastaddonscheckbox:checked').each(function () {
-                var add = $(this).data('value');
+                var add = $(this).val();
                 addons.push(add);
             });
 

@@ -156,23 +156,23 @@
                                                 </tr>
                                             @endif
 
-                                            @if ($transaction->room_id && $transaction->type == 'overnight')
-                                            <tr>
-                                                <td>Breakfast Add ons:</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
+                                            @if ($transaction->breakfasts->count() > 0)
+                                                <tr>
+                                                    <td>Breakfast Add ons:</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
 
-                                            @foreach ($transaction->breakfasts as $breakfast)
-                                            <tr>
-                                                <td>{{ $breakfast->title }}</td>
-                                                <td>1</td>
-                                                <td>P{{ number_format($breakfast->price, 2) }}</td>
-                                                <td>P<span class="totalprice">{{ number_format($breakfast->price, 2) }}</span></td>
-                                            </tr>
-                                            @endforeach
-                                        @endif
+                                                @foreach ($transaction->breakfasts as $breakfast)
+                                                <tr>
+                                                    <td>{{ $breakfast->title }}</td>
+                                                    <td>1</td>
+                                                    <td>P{{ number_format($breakfast->price, 2) }}</td>
+                                                    <td>P<span class="totalprice">{{ number_format($breakfast->price, 2) }}</span></td>
+                                                </tr>
+                                                @endforeach
+                                            @endif
     
                                         </tbody>
                                     </table>

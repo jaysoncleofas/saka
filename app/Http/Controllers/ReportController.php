@@ -28,8 +28,10 @@ class ReportController extends Controller
             DB::raw('YEAR(completed_at) year, MONTH(completed_at) month'))
             ->groupby('month','year')
             ->where('status', 'completed')
-            ->orderBy('completed_at')
-            ->pluck('sums');
+            ->orderBy('completed_at', 'desc')
+            ->take(6)
+            ->pluck('sums')
+            ->toArray();
 
         $data['total_entrance'] = Transaction::select(
             DB::raw('sum(totalEntranceFee) as sums'), 
@@ -37,8 +39,10 @@ class ReportController extends Controller
             DB::raw('YEAR(completed_at) year, MONTH(completed_at) month'))
             ->groupby('month','year')
             ->where('status', 'completed')
-            ->orderBy('completed_at')
-            ->pluck('sums');
+            ->orderBy('completed_at', 'desc')
+            ->take(6)
+            ->pluck('sums')
+            ->toArray();
 
         // return $data['monthly_sales'];    
         $data['monthly_names'] = Transaction::select(
@@ -46,8 +50,10 @@ class ReportController extends Controller
                     DB::raw('YEAR(completed_at) year, MONTH(completed_at) month'))
                     ->groupby('month','year')
                     ->where('status', 'completed')
-                    ->orderBy('completed_at')
-                    ->pluck('new_date');
+                    ->orderBy('completed_at', 'desc')
+                    ->take(6)
+                    ->pluck('new_date')
+                    ->toArray();
 
         $data['pending'] = Transaction::whereStatus('pending')->count();
         $data['confirmed'] = Transaction::whereIn('status', ['confirmed', 'active'])->count();

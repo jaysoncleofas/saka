@@ -891,6 +891,8 @@ class TransactionController extends Controller
 
         if($request->addons) {
             $transaction->breakfasts()->sync($request->addons);
+        } else {
+            $transaction->breakfasts()->sync(array());
         }
 
         return response()->json(['status' => 'success', 'link' => route('transaction.show', $transaction->id)], 200);
@@ -1198,7 +1200,7 @@ class TransactionController extends Controller
                     $html .='    <td>P'. number_format($room->extraPerson, 2) .'</td>';
                     $html .='    <td>P'.number_format($extraPersonTotal, 2).'</td>';
                     $html .='</tr>';
-                } else {
+                } else if($room->entrancefee == 'Inclusive' && $extraPerson) {
                     $html .='    <tr>
                         <td>Extra Person</td>
                         <td>'. $extraPerson .'</td>

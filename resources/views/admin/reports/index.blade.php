@@ -160,10 +160,10 @@
 @section('scripts')
 <script>
     var ctx = document.getElementById("myChart").getContext('2d');
-    var json = '{!! str_replace("\u0022","\\\\\"",json_encode( $monthly_names,JSON_HEX_QUOT)) !!}'; 
+    var json = '{!! str_replace("\u0022","\\\\\"",json_encode( array_reverse($monthly_names),JSON_HEX_QUOT)) !!}'; 
     var months = JSON.parse(json);
-    var total_transactions = JSON.parse('{!! json_encode($monthly_sales) !!}');
-    var total_entrance = JSON.parse('{!! json_encode($total_entrance) !!}');
+    var total_transactions = JSON.parse('{!! json_encode(array_reverse($monthly_sales)) !!}');
+    var total_entrance = JSON.parse('{!! json_encode(array_reverse($total_entrance)) !!}');
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {

@@ -127,7 +127,7 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label for="twitter">Twitter link</label>
                                 <input type="text" class="form-control @error('twitter') is-invalid @enderror" name="twitter" id="twitter"value="{{ $resort->twitter }}">
                                 @error('twitter')
@@ -135,7 +135,7 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <div class="form-group">
                                 <div class="control-label">SMS Notification ({{ number_format($resort->points, 0) }} Credits)</div>

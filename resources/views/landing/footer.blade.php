@@ -23,10 +23,10 @@
                         <div><i class="fab fa-instagram"></i></div>
                     </a>
 
-                    <a href="{{ config('yourconfig.resort')->twitter }}" target="_blank"
+                    {{-- <a href="{{ config('yourconfig.resort')->twitter }}" target="_blank"
                         class="footer-social-media-wrapper w-inline-block">
                         <div> <i class="fab fa-twitter"></i> </div>
-                    </a>
+                    </a> --}}
                 </div>
             </div>
         </div>

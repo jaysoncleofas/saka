@@ -1,7 +1,7 @@
 @component('mail::message')
 # Hi {{ $transaction->guest->fullname }}, 
 @if ($transaction->payment_id != 1)
-Thank you for booking. It's on-hold until we confirm that payment has been received. In the meantime, here's a reminder of what you booked:<br> 
+Thank you for booking. It's on-hold until we confirm that payment has been received. Please pay within 2 days upon receiving this email. Or the transaction shall be cancelled. In the meantime, here's a reminder of what you booked:<br> 
 
 # Send the deposit slip through our Facebook Page's Messenger. <br> 
 # Account: SAKA RESORT <br>

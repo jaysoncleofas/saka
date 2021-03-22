@@ -26,7 +26,7 @@ class ResortController extends Controller
             'overnight' => 'required',
             'facebook' => 'required',
             'instagram' => 'required',
-            'twitter' => 'required',
+            // 'twitter' => 'required',
         ]);
 
        
@@ -39,7 +39,7 @@ class ResortController extends Controller
         $resort->overnight = $request->overnight;
         $resort->facebook = $request->facebook;
         $resort->instagram = $request->instagram;
-        $resort->twitter = $request->twitter;
+        // $resort->twitter = $request->twitter;
         $resort->sms_on = $request->sms_notification ? 1 : 0;
 
         $resort->exclusive_dayprice = $request->exclusive_dayprice;
