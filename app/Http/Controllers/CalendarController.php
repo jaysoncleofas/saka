@@ -46,7 +46,7 @@ class CalendarController extends Controller
         // Read and parse our events JSON file into an array of event data arrays.
         $transactions = Transaction::orderBy('checkIn_at')->get();
         $jsontest = DB::table('transactions')
-                        ->select(DB::raw('CONCAT(firstName,", ",rooms.name,", ",type,", ",status) AS title'), 'checkIn_at as start', 'checkOut_at as end')
+                        ->select(DB::raw('CONCAT(firstName,", ",rooms.name,", ",type,", ",status) AS title'), 'checkIn_at as start', 'checkOut_at as end', 'status as classNames')
                         ->leftJoin('guests', 'transactions.guest_id', '=', 'guests.id')
                         ->leftJoin('rooms', 'transactions.room_id', '=', 'rooms.id')
                         ->whereBetween('checkIn_at', [$range_start, $range_end])
@@ -54,7 +54,7 @@ class CalendarController extends Controller
                         ->get();
         
         $jsontest1 = DB::table('transactions')
-                        ->select(DB::raw('CONCAT(firstName,", ",cottages.name,", ",type,", ",status) AS title'), 'checkIn_at as start', 'checkOut_at as end')
+                        ->select(DB::raw('CONCAT(firstName,", ",cottages.name,", ",type,", ",status) AS title'), 'checkIn_at as start', 'checkOut_at as end', 'status as classNames')
                         ->leftJoin('guests', 'transactions.guest_id', '=', 'guests.id')
                         ->leftJoin('cottages', 'transactions.cottage_id', '=', 'cottages.id')
                         ->whereBetween('checkIn_at', [$range_start, $range_end])
@@ -62,7 +62,7 @@ class CalendarController extends Controller
                         ->get();
 
         $jsontest2 = DB::table('transactions')
-                        ->select(DB::raw('CONCAT(firstName,", Exclusive, ",type,", ",status) AS title'), 'checkIn_at as start', 'checkOut_at as end')
+                        ->select(DB::raw('CONCAT(firstName,", Exclusive, ",type,", ",status) AS title'), 'checkIn_at as start', 'checkOut_at as end', 'status as classNames')
                         ->leftJoin('guests', 'transactions.guest_id', '=', 'guests.id')
                         ->whereBetween('checkIn_at', [$range_start, $range_end])
                         ->where('transactions.is_exclusive', 1)

@@ -55,3 +55,71 @@
     top: 10px;
     right: 10px;
   }
+
+.fc-daygrid-event-harness.fc-daygrid-event-harness-abs .pending {
+    border: 1px solid #cdd3d8;
+    border: 1px solid var(--fc-event-border-color, #cdd3d8);
+    background-color: #cdd3d8;
+    background-color: var(--fc-event-bg-color, #cdd3d8);
+}
+.pending .fc-daygrid-event-dot { /* the actual dot */
+    margin: 0 4px;
+    box-sizing: content-box;
+    width: 0;
+    height: 0;
+    border: 4px solid #cdd3d8 !important;
+    border: calc(var(--fc-daygrid-event-dot-width, 8px) / 2) solid var(--fc-event-border-color, #cdd3d8) !important;
+    border-radius: 4px;
+    border-radius: calc(var(--fc-daygrid-event-dot-width, 8px) / 2);
+}
+
+.fc-daygrid-event-harness.fc-daygrid-event-harness-abs .active {
+    border: 1px solid #6777ef;
+    border: 1px solid var(--fc-event-border-color, #6777ef);
+    background-color: #6777ef;
+    background-color: var(--fc-event-bg-color, #6777ef);
+}
+.active .fc-daygrid-event-dot { /* the actual dot */
+    margin: 0 4px;
+    box-sizing: content-box;
+    width: 0;
+    height: 0;
+    border: 4px solid #6777ef;
+    border: calc(var(--fc-daygrid-event-dot-width, 8px) / 2) solid var(--fc-event-border-color, #6777ef);
+    border-radius: 4px;
+    border-radius: calc(var(--fc-daygrid-event-dot-width, 8px) / 2);
+}
+
+.fc-daygrid-event-harness.fc-daygrid-event-harness-abs .completed {
+    border: 1px solid #47c363;
+    border: 1px solid var(--fc-event-border-color, #47c363);
+    background-color: #47c363;
+    background-color: var(--fc-event-bg-color, #47c363);
+}
+.completed .fc-daygrid-event-dot { /* the actual dot */
+    margin: 0 4px;
+    box-sizing: content-box;
+    width: 0;
+    height: 0;
+    border: 4px solid #47c363;
+    border: calc(var(--fc-daygrid-event-dot-width, 8px) / 2) solid var(--fc-event-border-color, #47c363);
+    border-radius: 4px;
+    border-radius: calc(var(--fc-daygrid-event-dot-width, 8px) / 2);
+}
+
+.fc-daygrid-event-harness.fc-daygrid-event-harness-abs .cancelled {
+    border: 1px solid #fc544b;
+    border: 1px solid var(--fc-event-border-color, #fc544b);
+    background-color: #fc544b;
+    background-color: var(--fc-event-bg-color, #fc544b);
+}
+.cancelled .fc-daygrid-event-dot { /* the actual dot */
+    margin: 0 4px;
+    box-sizing: content-box;
+    width: 0;
+    height: 0;
+    border: 4px solid #fc544b;
+    border: calc(var(--fc-daygrid-event-dot-width, 8px) / 2) solid var(--fc-event-border-color, #fc544b);
+    border-radius: 4px;
+    border-radius: calc(var(--fc-daygrid-event-dot-width, 8px) / 2);
+}
