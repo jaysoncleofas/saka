@@ -114,3 +114,6 @@ Route::put('/transaction/{id}/edit/cottage', [App\Http\Controllers\TransactionCo
 Route::put('/transaction/{id}/edit/room', [App\Http\Controllers\TransactionController::class, 'update_room'])->name('transaction.update_room');
 Route::put('/transaction/{id}/edit/exclusive', [App\Http\Controllers\TransactionController::class, 'update_exclusive'])->name('transaction.update_exclusive');
 Route::post('/transaction/summary', [App\Http\Controllers\TransactionController::class, 'summary'])->name('transaction.summary');
+
+Route::get('/calendar', [App\Http\Controllers\CalendarController::class, 'index'])->name('calendar.index');
+Route::get('/calendar/getEvent', [App\Http\Controllers\CalendarController::class, 'getEvent'])->name('calendar.getEvent');

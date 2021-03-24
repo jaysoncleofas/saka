@@ -19,6 +19,10 @@
                 <a class="nav-link" href="{{ route('reservation.index') }}"><i class="far fa-file-alt"></i> <span>Reservations</span></a>
             </li>
 
+            <li class="{{ Nav::isRoute('calendar.index') }}">
+                <a class="nav-link" href="{{ route('calendar.index') }}"><i class="far fa-calendar"></i> <span>Calendar</span></a>
+            </li>
+
             @if (auth()->user()->role_id == 1)
             <li class="{{ Nav::isRoute('report.index') }}">
                 <a class="nav-link" href="{{ route('report.index') }}"><i class="fas fa-file-invoice-dollar"></i> <span>Reports</span></a>

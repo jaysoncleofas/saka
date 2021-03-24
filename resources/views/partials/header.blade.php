@@ -27,6 +27,7 @@
     <link href="{{ asset('stisla/assets/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('stisla/assets/css/components.css') }}" rel="stylesheet">
     <link href="{{ asset('DataTables/datatables.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('fullcalendar-5.5.1/lib/main.css') }}" rel="stylesheet">
     <style>
         .is-size-15 {
             line-height: 2;

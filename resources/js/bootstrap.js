@@ -39,6 +39,8 @@ window.datepicker = require('bootstrap-datepicker');
 
 window.Chart = require('chart.js');
 
+// window.FullCalendar  = require('fullcalendar');
+
 // window.Cleave = require('cleave.js');
 // import "cleave.js/dist/addons/cleave-phone.ph.js";
 

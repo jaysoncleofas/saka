@@ -272,7 +272,10 @@ class LandingPageController extends Controller
         //     return redirect()->back()->withInput($request->input());
         // }
         $checkIn_at = Carbon::parse($request->checkin);
-        if($request->type == 'night') {
+        if($request->type == 'day') {
+            $checkin = Carbon::parse($request->checkin)->setHour(9);  
+            $checkout = Carbon::parse($request->checkin)->setHour(17);  
+        } elseif($request->type == 'night') {
             $checkin = Carbon::parse($request->checkin)->setHour(17);  
             $checkout = Carbon::parse($request->checkin)->setHour(21);  
         } else {

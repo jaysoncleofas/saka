@@ -954,7 +954,7 @@
                             position: 'topRight'
                         });
                         setTimeout(function(){ 
-                            window.location.href = result.link;
+                            // window.location.href = result.link;
                          }, 1000);
                     } 
                     if(result.status == 'error') {

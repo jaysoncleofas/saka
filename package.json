@@ -10,6 +10,7 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@types/fullcalendar": "^3.8.0",
         "axios": "^0.19",
         "bootstrap": "^4.6.0",
         "cross-env": "^7.0.3",
@@ -28,6 +29,7 @@
         "chart.js": "^2.9.4",
         "cleave.js": "^1.6.0",
         "daterangepicker": "^3.1.0",
+        "fullcalendar": "^5.5.1",
         "izitoast": "^1.4.0",
         "jquery-mask-plugin": "^1.14.16",
         "moment": "^2.29.1",
