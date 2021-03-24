@@ -9,9 +9,9 @@
     <div class="row">
         <div class="col-lg-12">
           <div class="card">
-            {{-- <div class="card-header">
-              <h4>Calendar</h4>
-            </div> --}}
+            <div class="card-header">
+              <h4>Reservation Calendar</h4>
+            </div>
             <div class="card-body">
               <div id='loading'>loading...</div>
               <div id='calendar'></div>

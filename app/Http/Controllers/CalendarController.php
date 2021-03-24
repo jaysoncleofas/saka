@@ -51,6 +51,7 @@ class CalendarController extends Controller
                         ->leftJoin('rooms', 'transactions.room_id', '=', 'rooms.id')
                         ->whereBetween('checkIn_at', [$range_start, $range_end])
                         ->where('transactions.room_id', '!=', null)
+                        ->where('transactions.is_reservation', 1)
                         ->get();
         
         $jsontest1 = DB::table('transactions')
@@ -59,6 +60,7 @@ class CalendarController extends Controller
                         ->leftJoin('cottages', 'transactions.cottage_id', '=', 'cottages.id')
                         ->whereBetween('checkIn_at', [$range_start, $range_end])
                         ->where('transactions.cottage_id', '!=', null)
+                        ->where('transactions.is_reservation', 1)
                         ->get();
 
         $jsontest2 = DB::table('transactions')
@@ -66,6 +68,7 @@ class CalendarController extends Controller
                         ->leftJoin('guests', 'transactions.guest_id', '=', 'guests.id')
                         ->whereBetween('checkIn_at', [$range_start, $range_end])
                         ->where('transactions.is_exclusive', 1)
+                        ->where('transactions.is_reservation', 1)
                         ->get();
 
         $json =  json_decode(json_encode($jsontest), true); 
